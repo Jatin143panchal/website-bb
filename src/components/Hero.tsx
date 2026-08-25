@@ -277,48 +277,40 @@ export const Hero = () => {
 
       <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
 
-        {/* LEFT SIDE - Content */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="lg:col-span-5 text-left space-y-4"
-        >
-
-
+        {/* LEFT SIDE - Content (Immediate Rendering for Sub-Second LCP) */}
+        <div className="lg:col-span-5 text-left space-y-4">
 
           {/* Badge */}
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3.5 py-1.5 border rounded-full bg-white/80 backdrop-blur-md border-amber-200/80 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 border rounded-full bg-white/80 backdrop-blur-md border-amber-200/80 shadow-sm">
             <span className="w-2 h-2 rounded-full bg-[#D97706] animate-ping" />
             <span className="text-[9px] font-black tracking-[0.16em] uppercase text-[#111111] flex items-center gap-1.5">
               <Sparkles size={11} className="text-[#D97706] fill-[#D97706]" />
                PRODUCT LAUNCH COMPANY
             </span>
-          </motion.div>
+          </div>
 
-          {/* Headings */}
-          <motion.div variants={itemVariants} className="space-y-2">
+          {/* Headings - Direct rendering for instant LCP score */}
+          <div className="space-y-2">
             <h1 className="text-3xl md:text-5xl xl:text-[3.1rem] font-black leading-[1.08] tracking-tight uppercase text-[#111111]">
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#D97706] via-[#f59e0b] to-[#b45309]">
                 India's Leading Product Launch Company
               </span>
             </h1>
-              <h2 className="text-base md:text-lg xl:text-[1.25rem] font-bold leading-snug tracking-tight text-[#D97706]">
-          You Have The Product Idea 
-We Build The Brand
+            <h2 className="text-base md:text-lg xl:text-[1.25rem] font-bold leading-snug tracking-tight text-[#D97706]">
+              You Have The Product Idea • We Build The Brand
             </h2>
             <h2 className="text-base md:text-lg xl:text-[1.25rem] font-bold leading-snug tracking-tight text-[#D97706]">
               Formulation • Manufacturing • Branding • Market Launch
             </h2>
-          </motion.div>
+          </div>
 
           {/* H3 Brand Description */}
-          <motion.h3 variants={itemVariants} className="text-sm md:text-[0.95rem] font-semibold max-w-xl leading-relaxed text-[#555555]">
+          <h3 className="text-sm md:text-[0.95rem] font-semibold max-w-xl leading-relaxed text-[#555555]">
             BanegaBrand helps entrepreneurs and businesses launch successful Perfume, Cosmetic, Skincare, Ayurveda, Beauty, Wellness and D2C brands in India — from product idea to market launch.
-          </motion.h3>
+          </h3>
 
           {/* CTA Buttons */}
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center pt-2">
             <Link
               to="/contact"
               className="text-center px-6 py-3.5 bg-[#111111] text-white hover:bg-[#D97706] rounded-xl font-black text-xs uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-lg flex items-center justify-center gap-2"
@@ -333,9 +325,9 @@ We Build The Brand
             >
               OUR 6-STEP FRAMEWORK
             </button>
-          </motion.div>
+          </div>
 
-        </motion.div>
+        </div>
 
         {/* RIGHT SIDE - 3D Carousel with Luxury Glow */}
         <motion.div
