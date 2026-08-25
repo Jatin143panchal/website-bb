@@ -51,8 +51,8 @@ export const WhyBanegaBrandSection = () => {
           <span className="text-3xl font-black uppercase tracking-[0.1em] text-[#D97706] block mb-4">
             WHY BANEGA BRAND
           </span>
-          <h2 className="text-4xl md:text-6xl lg:text-7.5xl font-sans font-black tracking-tight text-[#111111]  leading-[0.95] mb-6 italic">
-            Is he Preferred  <br />
+          <h2 className="text-4xl md:text-6xl lg:text-7.5xl font-sans font-black tracking-tight text-[#111111] leading-[0.95] mb-6">
+            Is The Preferred <br />
             <span className="text-[#D97706]">Product Launch Company in India.</span>
           </h2>
               <p className="text-lg md:text-xl text-[#666666] font-bold leading-relaxed max-w-2xl">
