@@ -89,18 +89,9 @@ export const BackendProcessSection = () => {
             The 6-Step Product <br />
             <span className="text-[#D97706]">Launch Framework</span>
           </h2>
-          <p className="text-xs md:text-sm text-white/70 font-medium max-w-xl mx-auto mt-1 mb-10">
+          <p className="text-xs md:text-sm text-white/70 font-medium max-w-xl mx-auto mt-1 mb-6 md:mb-8">
             A proven process designed to reduce risk and help founders launch with confidence.
           </p>
-          
-          <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-white/10 relative group mt-8">
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none z-10" />
-            <img 
-              src="/assets/framework_6_step.webp" 
-              alt="6-Step Product Launch Framework Roadmap" 
-              className="w-full h-auto max-h-[400px] object-cover transform transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
         </div>
 
         {/* Two Column Layout - Steps Left | Detail Right */}
