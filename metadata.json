@@ -1,0 +1,8 @@
+{
+  "name": "BanegaBrand - Build Your Brand",
+  "description": "A premium brand agency platform helping first-time founders launch powerful brands in Perfume, Ayurveda, Nutraceuticals, and Cosmetics from scratch.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
