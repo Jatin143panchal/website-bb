@@ -69,6 +69,7 @@ export const BackendProcessSection = () => {
           muted
           playsInline
           loop
+          preload="none"
         >
           <source src="/assets/2.mp4" type="video/mp4" />
           Your browser does not support the video tag.

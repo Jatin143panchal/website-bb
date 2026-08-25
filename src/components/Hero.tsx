@@ -171,7 +171,9 @@ const Carousel3D = ({
           >
             <img
               src={it.src}
-              alt={it.name || 'carousel item'}
+              alt={`${it.brand} ${it.name}`}
+              width={cardWidth}
+              height={cardHeight}
               loading={i === 0 ? 'eager' : 'lazy'}
               fetchPriority={i === 0 ? 'high' : 'auto'}
               decoding="async"

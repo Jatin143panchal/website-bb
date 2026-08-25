@@ -230,6 +230,7 @@ export const Navbar = () => {
         <Link 
           to="/" 
           className="flex items-center gap-2.5 group transition-transform duration-300 hover:scale-105 active:scale-95 shrink-0 py-1"
+          aria-label="Banega Brand Home"
           onClick={(e) => {
             e.preventDefault();
             scrollToSection('/');
@@ -238,7 +239,9 @@ export const Navbar = () => {
           <div className="relative">
             <img 
               src="/assets/main_logo.webp" 
-              alt="Banega Brand" 
+              alt="Banega Brand Logo" 
+              width="160"
+              height="40"
               className="h-8 md:h-10 w-auto object-contain relative z-10"
               referrerPolicy="no-referrer"
             />
@@ -278,6 +281,8 @@ export const Navbar = () => {
                   <>
                     <button
                       onClick={handleDropdownClick}
+                      aria-expanded={activeDropdown === 'About Us'}
+                      aria-label="Toggle About Us menu"
                       className={cn(
                         "relative z-10 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap cursor-pointer",
                         isCurrentActive 
@@ -411,6 +416,7 @@ export const Navbar = () => {
               href="mailto:help@banegabrand.com" 
               className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all duration-200 group"
               title="Email Us"
+              aria-label="Email Banega Brand support"
             >
               <Mail size={15} className="text-zinc-600 group-hover:text-[#D97706] transition-colors" />
             </a>
@@ -419,6 +425,7 @@ export const Navbar = () => {
               href="tel:+918796755169" 
               className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all duration-200 group"
               title="Call Us"
+              aria-label="Call Banega Brand support"
             >
               <Phone size={15} className="text-zinc-600 group-hover:text-[#D97706] transition-colors" />
             </a>

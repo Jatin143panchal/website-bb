@@ -257,6 +257,7 @@ export const TrustSection = () => {
     <motion.button
       key={`${keyPrefix}-${brand.name}`}
       onClick={() => setSelectedBrand(brand)}
+      aria-label={`View ${brand.name} brand launch case study`}
       whileHover={{ scale: 1.04, y: -3, boxShadow: '0 12px 32px -8px rgba(217,119,6,0.25)' }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: 'spring', stiffness: 400, damping: 28 }}

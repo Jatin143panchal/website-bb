@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useEffect } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Hero } from '../components/Hero';
 import { Navbar } from '../components/Navbar';
@@ -18,27 +18,6 @@ const ConsultationSection = lazy(() => import('../components/ConsultationSection
 const SectionLoader = () => <div className="h-40 w-full animate-pulse bg-zinc-900/5 rounded-[48px] my-6" />;
 
 export const LandingPage = () => {
-  // Set cursor to black
-  useEffect(() => {
-    document.body.style.cursor = 'default';
-    // Add black cursor style
-    const style = document.createElement('style');
-    style.textContent = `
-      * {
-        cursor: default !important;
-      }
-      button, a, .interactive, [role="button"], input, select, textarea {
-        cursor: pointer !important;
-      }
-    `;
-    document.head.appendChild(style);
-    
-    return () => {
-      document.head.removeChild(style);
-      document.body.style.cursor = '';
-    };
-  }, []);
-
   return (
     <div className="relative bg-[#FAFAFA] text-[#111111] selection:bg-[black] selection:text-white">
       <Helmet>

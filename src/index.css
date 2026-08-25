@@ -23,7 +23,13 @@
   }
 }
 
-/* Remove custom cursor styles - using default browser cursor */
+/* Cursor styles */
+body {
+  cursor: default;
+}
+button, a, .interactive, [role="button"], input, select, textarea {
+  cursor: pointer;
+}
 
 /* Lenis smooth scroll core styles */
 html.lenis {

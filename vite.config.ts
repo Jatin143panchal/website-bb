@@ -17,6 +17,23 @@ export default defineConfig(({ mode }) => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      target: 'esnext',
+      minify: 'esbuild',
+      cssMinify: true,
+      sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor-react': ['react', 'react-dom', 'react-router-dom', 'react-helmet-async'],
+            'vendor-motion': ['motion'],
+            'vendor-icons': ['lucide-react'],
+            'vendor-scroll': ['lenis'],
+          },
+        },
+      },
+      chunkSizeWarningLimit: 600,
+    },
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       watch: {

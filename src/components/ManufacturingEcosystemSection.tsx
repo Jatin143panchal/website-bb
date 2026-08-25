@@ -12,6 +12,7 @@ export const ManufacturingEcosystemSection = () => {
           muted
           playsInline
           loop
+          preload="none"
         >
           <source src="/assets/3.mp4" type="video/mp4" />
           Your browser does not support the video tag.
