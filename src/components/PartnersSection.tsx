@@ -129,9 +129,9 @@ export const PartnersSection = () => {
         <div className="mt-32 pt-16 border-t border-gray-100 grid grid-cols-2 lg:grid-cols-4 gap-12">
           {[
             { name: "Perfume", icon: Droplets },
+            { name: "Cosmetics", icon: Star },
             { name: "Ayurveda", icon: Sparkles },
-            { name: "Nutraceuticals", icon: Zap },
-            { name: "Cosmetics", icon: Star }
+            { name: "Skincare", icon: ShoppingBag }
           ].map((cat, i) => (
             <motion.div 
                key={i}

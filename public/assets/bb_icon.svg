@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="10 6 76 71" width="76" height="71" fill="none">
+  <!-- Dual 'BB' Iconic Monogram with Pure Transparency -->
+  <g id="BB-Icon">
+    <!-- Back Charcoal B -->
+    <path d="M42 8 H62 C74 8 82 15 82 25 C82 32 77 38 70 40 C78 42 84 49 84 57 C84 68 75 75 61 75 H42 V8 Z M56 20 V33 H62 C67 33 70 30 70 26.5 C70 23 67 20 62 20 H56 Z M56 46 V62 H62 C68 62 71 58.5 71 54 C71 49.5 68 46 62 46 H56 Z" fill="#2B2F3E"/>
+    
+    <!-- Front Vibrant Orange B with Overlap Geometry -->
+    <path d="M12 8 H32 C44 8 52 15 52 25 C52 32 47 38 40 40 C48 42 54 49 54 57 C54 68 45 75 31 75 H12 V8 Z M26 20 V33 H32 C37 33 40 30 40 26.5 C40 23 37 20 32 20 H26 Z M26 46 V62 H32 C38 62 41 58.5 41 54 C41 49.5 38 46 32 46 H26 Z" fill="#FF5722"/>
+  </g>
+</svg>

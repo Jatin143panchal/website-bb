@@ -1,110 +1,296 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { motion } from 'motion/react';
-import { Sparkles, Compass, CheckCircle2, Shield, Flame, Clock, Award } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
 import { Navbar } from '../../components/Navbar';
-import { MainFooter } from '../../components/MainFooter';
+import { FigmaFooter } from '../../components/FigmaFooter';
 
-export const LaunchPersonalCarePage = () => {
+// 20 Dedicated Skincare & Clinical Derma Components
+import { SkincareHero } from '../../components/skincare/SkincareHero';
+import { SkincareProductCategoriesSection } from '../../components/skincare/SkincareProductCategoriesSection';
+import { SkincareProductBuilderSection } from '../../components/skincare/SkincareProductBuilderSection';
+import { SkincarePurposeSection } from '../../components/skincare/SkincarePurposeSection';
+import { SkincareActiveIngredientsSection } from '../../components/skincare/SkincareActiveIngredientsSection';
+import { SkincareScopeSection } from '../../components/skincare/SkincareScopeSection';
+import { SkincareProcessSection } from '../../components/skincare/SkincareProcessSection';
+import { SkincareTextureSection } from '../../components/skincare/SkincareTextureSection';
+import { SkincarePackagingSection } from '../../components/skincare/SkincarePackagingSection';
+import { SkincareBrandingSection } from '../../components/skincare/SkincareBrandingSection';
+import { SkincareRangeBuilderSection } from '../../components/skincare/SkincareRangeBuilderSection';
+import { SkincareRoutineBuilderSection } from '../../components/skincare/SkincareRoutineBuilderSection';
+import { SkincareManufacturingSection } from '../../components/skincare/SkincareManufacturingSection';
+import { SkincareCostVariablesSection } from '../../components/skincare/SkincareCostVariablesSection';
+import { SkincareCaseStudiesSection } from '../../components/skincare/SkincareCaseStudiesSection';
+import { SkincareWhyBanegaSection } from '../../components/skincare/SkincareWhyBanegaSection';
+import { SkincareEmotionalBannerSection } from '../../components/skincare/SkincareEmotionalBannerSection';
+import { SkincareRoadmapSection } from '../../components/skincare/SkincareRoadmapSection';
+import { SkincareFaqSection } from '../../components/skincare/SkincareFaqSection';
+import { SkincareFinalCtaSection } from '../../components/skincare/SkincareFinalCtaSection';
+
+// Interactive Guided Launch Modal & Sticky CTA
+import { SkincareLaunchWizardModal, SkincareWizardPrefill } from '../../components/skincare/SkincareLaunchWizardModal';
+import { SkincareStickyCta } from '../../components/skincare/SkincareStickyCta';
+
+export const LaunchPersonalCarePage: React.FC = () => {
+  const [isWizardOpen, setIsWizardOpen] = useState<boolean>(false);
+  const [wizardPrefill, setWizardPrefill] = useState<SkincareWizardPrefill>({});
+
+  const handleOpenWizard = useCallback((prefillData?: SkincareWizardPrefill) => {
+    setWizardPrefill(prefillData || {});
+    setIsWizardOpen(true);
+  }, []);
+
+  const handleCloseWizard = useCallback(() => {
+    setIsWizardOpen(false);
+  }, []);
+
+  const handleScrollToCategories = useCallback(() => {
+    const elem = document.getElementById('skincare-categories');
+    if (elem) {
+      elem.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
   return (
-    <div className="relative bg-[#FAFAFA] text-[#111111] selection:bg-[#D97706] selection:text-white font-sans overflow-x-hidden min-h-screen">
+    <div className="relative bg-white text-[#111111] selection:bg-black selection:text-white font-sans overflow-x-hidden min-h-screen">
       <Helmet>
-        <title>Launch Personal Care Brand in India | Banega Brand – India's Leading Product Launch Company</title>
-        <meta name="description" content="Launch your personal care, grooming, and hygiene brand with India's leading Product Launch Company. End-to-end product development, formulations, and digital growth." />
-        <meta name="keywords" content="Launch Personal Care Brand India, Grooming Products Manufacturer, Personal Care Consultant, Product Launch Company India, Banega Brand" />
-        <link rel="canonical" href="https://banegabrand.com/launch-personal-care-brand" />
-        <meta property="og:title" content="Launch Personal Care Brand in India | Banega Brand" />
-        <meta property="og:description" content="Launch your personal care, grooming, and hygiene brand with India's leading Product Launch Company." />
-        <meta property="og:url" content="https://banegabrand.com/launch-personal-care-brand" />
+        <title>Launch Your Skincare Brand in India | Banega Brand</title>
+        <meta
+          name="description"
+          content="From active serum development and texture formulation to airless packaging, manufacturing, branding and launch — build your skincare brand with one launch partner in 45–90 days."
+        />
+        <meta
+          name="keywords"
+          content="launch skincare brand, skincare contract manufacturing india, private label serum, vitamin c serum manufacturer, sunscreen spf 50 formulation, ceramide moisturizer lab, private label skincare india"
+        />
+        <link rel="canonical" href="https://banegabrand.com/industry/skincare" />
+
+        {/* OpenGraph */}
+        <meta property="og:title" content="Your Skincare Idea. Your Formula. Your Brand. | Banega Brand" />
+        <meta
+          property="og:description"
+          content="From product development and formulation to packaging, manufacturing, branding and launch — build your skincare brand with one launch partner."
+        />
+        <meta property="og:url" content="https://banegabrand.com/industry/skincare" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://banegabrand.com/assets/Banner%204.png" />
+
+        {/* Structured Data / Schema.org for SEO & AEO (Google AI Overviews, Perplexity, ChatGPT Search) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@graph': [
+              {
+                '@type': 'Service',
+                '@id': 'https://banegabrand.com/industry/skincare#service',
+                'name': 'Clinical Skincare & Derma Brand Launch Services',
+                'provider': {
+                  '@type': 'Organization',
+                  'name': 'Banega Brand',
+                  'url': 'https://banegabrand.com',
+                  'logo': 'https://banegabrand.com/assets/banega_logo_official.png',
+                },
+                'serviceType': 'Turnkey Clinical Skincare Formulation, Airless Packaging & GMP Manufacturing',
+                'areaServed': ['India', 'United States', 'Europe', 'Middle East'],
+                'description':
+                  'End-to-end active serum formulation, stabilized Vitamin C & Niacinamide, airless dispensers, in-vivo SPF testing, dermatological patch testing, and marketplace onboarding in 45–90 days.',
+              },
+              {
+                '@type': 'BreadcrumbList',
+                'itemListElement': [
+                  {
+                    '@type': 'ListItem',
+                    'position': 1,
+                    'name': 'Home',
+                    'item': 'https://banegabrand.com',
+                  },
+                  {
+                    '@type': 'ListItem',
+                    'position': 2,
+                    'name': 'Industries',
+                    'item': 'https://banegabrand.com/services',
+                  },
+                  {
+                    '@type': 'ListItem',
+                    'position': 3,
+                    'name': 'Clinical Skincare & Derma',
+                    'item': 'https://banegabrand.com/industry/skincare',
+                  },
+                ],
+              },
+              {
+                '@type': 'FAQPage',
+                'mainEntity': [
+                  {
+                    '@type': 'Question',
+                    'name': 'Can I launch a clinical skincare brand in India starting with just an idea?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'Yes. More than 70% of skincare founders begin with just a problem statement (e.g. gentle Niacinamide serum for sensitive barrier repair). We engineer the active formula, source airless vacuum bottles, conduct dermatological patch testing, and manage GMP manufacturing from scratch.',
+                    },
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'What is the minimum order quantity (MOQ) for custom skincare manufacturing?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'We offer low starting pilot batch MOQs beginning at 250 to 500 units per SKU for market validation launches, scaling up to 5,000+ units for commercial volume runs.',
+                    },
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'How does Banega Brand verify formulation stability and active efficacy?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'All skincare formulas undergo 90-day accelerated stability testing (45°C/75% RH), freeze-thaw challenge assays, microbial PET testing, and independent dermatological safety patch tests with verified Certificate of Analysis (COA).',
+                    },
+                  },
+                  {
+                    '@type': 'Question',
+                    'name': 'Who owns the custom skincare formula IP and rights?',
+                    'acceptedAnswer': {
+                      '@type': 'Answer',
+                      'text': 'You retain 100% intellectual property ownership of your formulation, batch recipes, component toolings, and branding design assets under a binding IP assignment agreement.',
+                    },
+                  },
+                ],
+              },
+            ],
+          })}
+        </script>
       </Helmet>
+
+      {/* Global Navigation */}
       <Navbar />
 
-      <main className="pt-24">
-        {/* Hero Section */}
-        <section className="py-20 lg:py-28 px-6 bg-white relative">
-          <div className="max-w-5xl mx-auto text-center space-y-6">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FAFAFA] border border-[#EAEAEA] text-[10px] font-black uppercase tracking-[0.2em] text-[#D97706]">
-              BRAND LAUNCH & PRODUCT MARKETING SERVICES
-            </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-sans font-black uppercase tracking-tight text-[#111111] leading-none mb-4">
-              Launch Your Product, Build Your Brand & Scale Your Business <br />
-              <span className="text-[#D97706]">India’s Leading Product Launch Company</span>
-            </h1>
-            <p className="text-sm md:text-lg text-[#666666] font-bold max-w-2xl mx-auto leading-relaxed">
-              In today’s competitive business landscape, launching a product successfully requires much more than manufacturing and distribution. Businesses need a strategic approach that combines branding, marketing, positioning, digital visibility, customer acquisition, and long-term growth planning. This is where Banega Brand stands apart as a trusted Product Launch Company in India.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-              <Link 
-                to="/contact"
-                className="bg-[#D97706] text-white px-8 py-4.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#111111] transition-all"
-              >
-                BOOK PERSONAL CARE CALL
-              </Link>
-              <Link 
-                to="/industries"
-                className="bg-[#FAFAFA] text-[#111111] border border-[#EAEAEA] px-8 py-4.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white transition-all"
-              >
-                BACK TO INDUSTRIES
-              </Link>
-            </div>
-          </div>
-        </section>
+      <main className="w-full">
+        {/* 01 — HERO */}
+        <SkincareHero
+          onOpenWizard={(opts) => handleOpenWizard(opts)}
+          onScrollToExplore={handleScrollToCategories}
+        />
 
-        {/* Tactical Info Section */}
-        <section className="py-16 md:py-24 px-6 bg-[#FAFAFA]">
-          <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-start text-left">
-            
-            <div className="space-y-6">
-              <h2 className="text-2xl md:text-4xl font-sans font-black uppercase tracking-tight text-[#111111]">
-                COMPLETE PRODUCT LAUNCH SERVICES
-              </h2>
-              <p className="text-xs md:text-sm font-semibold text-[#666666] leading-relaxed">
-                Launching a personal care product needs market research, strong positioning, premium branding, and high-converting digital campaigns. Banega Brand covers every stage to maximize visibility and profitability.
-              </p>
+        {/* 02 — WHAT DO YOU WANT TO LAUNCH? */}
+        <SkincareProductCategoriesSection
+          onSelectCategory={(catName) => handleOpenWizard({ productType: catName })}
+        />
 
-              <div className="space-y-3 pt-4">
-                {[
-                  'End-to-End Product Launch Services with a proven framework',
-                  'Market Research & Product Validation to reduce risks',
-                  'Product Positioning & Brand Development (story, messaging, packaging)',
-                  'Performance Marketing & Lead Generation for measurable growth'
-                ].map((item, idx) => (
-                  <div key={idx} className="flex gap-3 items-center">
-                    <CheckCircle2 className="w-5 h-5 text-indigo-600 shrink-0" />
-                    <span className="text-xs font-black uppercase tracking-tight text-zinc-800">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {/* 03 — PRODUCT BUILDER */}
+        <SkincareProductBuilderSection
+          onProceed={(data) =>
+            handleOpenWizard({
+              productType: data.productType,
+              kind: data.kind,
+              format: data.format,
+            })
+          }
+        />
 
-            <div className="bg-white border border-[#EAEAEA] p-8 rounded-[36px] space-y-6">
-              <h3 className="text-lg font-black uppercase text-[#111111]">
-                OUR LAUNCH PILLARS
-              </h3>
-              
-              <div className="space-y-4">
-                <div className="p-4 bg-[#FAFAFA] rounded-xl flex justify-between items-center">
-                  <span className="text-[10px] font-black uppercase text-zinc-400">MARKET RESEARCH</span>
-                  <span className="text-xs font-black uppercase text-[#D97706]">Validation Ready</span>
-                </div>
-                <div className="p-4 bg-[#FAFAFA] rounded-xl flex justify-between items-center">
-                  <span className="text-[10px] font-black uppercase text-zinc-400">BRAND DEVELOPMENT</span>
-                  <span className="text-xs font-black uppercase text-indigo-600">Positioning First</span>
-                </div>
-                <div className="p-4 bg-[#FAFAFA] rounded-xl flex justify-between items-center">
-                  <span className="text-[10px] font-black uppercase text-zinc-400">DIGITAL LAUNCH</span>
-                  <span className="text-xs font-black uppercase text-[#111111]">Lead Gen + Growth</span>
-                </div>
-              </div>
-            </div>
+        {/* 04 — WHAT IS YOUR PRODUCT'S PURPOSE? */}
+        <SkincarePurposeSection
+          onSelectPurpose={(purposeName) => handleOpenWizard({ kind: purposeName })}
+        />
 
-          </div>
-        </section>
+        {/* 05 — INGREDIENT / ACTIVE DIRECTION */}
+        <SkincareActiveIngredientsSection />
+
+        {/* 06 — HOW MUCH SHOULD BANEGA HANDLE? */}
+        <SkincareScopeSection
+          onSelectScope={(scopeId, label) => handleOpenWizard({ scope: label })}
+        />
+
+        {/* 07 — FROM IDEA TO SKINCARE PRODUCT */}
+        <SkincareProcessSection
+          onStartSkincare={() => handleOpenWizard()}
+        />
+
+        {/* 08 — TEXTURE SECTION */}
+        <SkincareTextureSection
+          onBuildFormula={() => handleOpenWizard({ format: 'Custom Texture' })}
+        />
+
+        {/* 09 — PACKAGING */}
+        <SkincarePackagingSection
+          onDesignSkincare={() => handleOpenWizard({ scope: 'Product + Packaging' })}
+        />
+
+        {/* 10 — BRANDING */}
+        <SkincareBrandingSection
+          onBuildBrand={() => handleOpenWizard({ scope: 'Brand + Product' })}
+        />
+
+        {/* 11 — BUILD YOUR SKINCARE RANGE */}
+        <SkincareRangeBuilderSection
+          onBuildRange={(data) =>
+            handleOpenWizard({
+              products: data.selectedItems,
+              totalProducts: data.totalProducts,
+            })
+          }
+        />
+
+        {/* 12 — SKINCARE ROUTINE BUILDER */}
+        <SkincareRoutineBuilderSection
+          onTurnIntoBrand={(routine) =>
+            handleOpenWizard({
+              routine,
+              scope: 'End-to-End Turnkey',
+            })
+          }
+        />
+
+        {/* 13 — MANUFACTURING */}
+        <SkincareManufacturingSection
+          onTalkSpecialist={() => handleOpenWizard({ scope: 'Product Only' })}
+        />
+
+        {/* 14 — WHAT DOES IT TAKE? */}
+        <SkincareCostVariablesSection
+          onGetLaunchPlan={() => handleOpenWizard()}
+        />
+
+        {/* 15 — CASE STUDIES */}
+        <SkincareCaseStudiesSection
+          onStartSkincare={() => handleOpenWizard()}
+        />
+
+        {/* 16 — WHY BANEGA? */}
+        <SkincareWhyBanegaSection
+          onStartJourney={() => handleOpenWizard()}
+        />
+
+        {/* 17 — YOU DON'T NEED TO KNOW THE FORMULA */}
+        <SkincareEmotionalBannerSection
+          onHelpStart={() => handleOpenWizard({ scope: 'End-to-End Turnkey' })}
+        />
+
+        {/* 18 — LAUNCH ROADMAP */}
+        <SkincareRoadmapSection
+          onBuildRoadmap={() => handleOpenWizard()}
+        />
+
+        {/* 19 — FAQ */}
+        <SkincareFaqSection />
+
+        {/* 20 — FINAL CTA */}
+        <SkincareFinalCtaSection
+          onStartLaunch={() => handleOpenWizard()}
+          onTalkSpecialist={() => handleOpenWizard()}
+        />
       </main>
 
-      <MainFooter />
+      {/* Global Footer */}
+      <FigmaFooter />
+
+      {/* Interactive Guided Launch Modal */}
+      <SkincareLaunchWizardModal
+        isOpen={isWizardOpen}
+        onClose={handleCloseWizard}
+        prefill={wizardPrefill}
+      />
+
+      {/* Persistent Bottom Conversion CTA Bar */}
+      <SkincareStickyCta onOpenWizard={() => handleOpenWizard()} />
     </div>
   );
 };
+
+export default LaunchPersonalCarePage;

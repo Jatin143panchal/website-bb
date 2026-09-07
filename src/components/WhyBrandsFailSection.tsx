@@ -82,7 +82,7 @@ export const WhyBrandsFailSection = () => {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <img 
-          src="/assets/1.webp" 
+          src="/assets/perfume/perfume-manufacturer-india.jpg" 
           alt="Background" 
           className="w-full h-full object-cover"
         />

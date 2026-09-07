@@ -1,681 +1,888 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Menu, 
-  X, 
-  Mail, 
-  Phone, 
-  ChevronDown, 
-  Target, 
-  Award, 
-  Users,
-  ShieldCheck,
-  ArrowRight,
-  Home,
-  Layers,
-  Briefcase,
-  Info,
-  Sparkles,
-  CheckCircle,
-  Star,
-  BookOpen
-} from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
-import { cn } from '../lib/utils';
+import { motion, AnimatePresence } from 'motion/react';
+import {
+  Send,
+  Instagram,
+  Youtube,
+  Menu,
+  X,
+  ArrowRight,
+  ArrowUpRight
+} from 'lucide-react';
 
-export const Navbar = () => {
+const LOGO_ROTATING_TAGS = [
+  '.product launch',
+  '.launch your product',
+  '.scale your brand',
+  '.grow your brand',
+];
+
+const AnimatedLogoTagline: React.FC<{ isScrolled?: boolean }> = ({ isScrolled }) => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % LOGO_ROTATING_TAGS.length);
+    }, 2400);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="relative inline-flex items-end overflow-hidden h-9 sm:h-10 pb-1 ml-1 sm:ml-1.5">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={LOGO_ROTATING_TAGS[index]}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          className="text-[#111111] font-black text-sm sm:text-base md:text-[17px] lg:text-[18px] tracking-tight whitespace-nowrap lowercase select-none leading-none"
+          style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+        >
+          {LOGO_ROTATING_TAGS[index]}
+        </motion.span>
+      </AnimatePresence>
+    </div>
+  );
+};
+
+export const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [mobileDropdownOpen, setMobileDropdownOpen] = useState<string | null>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+  const [isAboutDropdownOpen, setIsAboutDropdownOpen] = useState(false);
+  const [isIndustryDropdownOpen, setIsIndustryDropdownOpen] = useState(false);
+  const [activeServiceTab, setActiveServiceTab] = useState<'product' | 'brand'>('product');
   const location = useLocation();
+  const servicesTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const aboutTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const industryTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Handle scroll for navbar styling
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      setIsScrolled(window.scrollY > 35);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle click outside dropdown
+  // Close dropdowns and mobile menu on route change
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setActiveDropdown(null);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    setIsMobileMenuOpen(false);
+    setIsServicesDropdownOpen(false);
+    setIsAboutDropdownOpen(false);
+    setIsIndustryDropdownOpen(false);
+  }, [location]);
 
-  // ================= AUTO-REGRESSION: SCROLL TO SECTION =================
-  const scrollToSection = (path: string) => {
-    // Check if path contains a hash (e.g., /about#founder)
-    if (path.includes('#')) {
-      const [basePath, hash] = path.split('#');
-      
-      // If we're not on the base path, navigate first
-      if (location.pathname !== basePath && basePath !== '') {
-        // Navigate to the page first, then scroll after navigation
-        window.location.href = path;
-        return;
-      }
-      
-      // We're on the right page, scroll to section
-      const element = document.getElementById(hash);
-      if (element) {
-        // Get navbar height for offset
-        const navbar = document.querySelector('nav') as HTMLElement;
-        const navbarHeight = navbar?.offsetHeight || 80;
-        
-        // Calculate position with offset
-        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-        const offsetPosition = elementPosition - navbarHeight - 20;
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-        
-        // Close mobile menu if open
-        setIsMobileMenuOpen(false);
-        setActiveDropdown(null);
-        setMobileDropdownOpen(null);
-        
-        // Update URL without causing a page reload
-        window.history.pushState(null, '', path);
-      }
-    } else {
-      // Regular navigation
-      window.location.href = path;
+  // Services Dropdown Handlers
+  const handleMouseEnterServices = () => {
+    if (servicesTimerRef.current) clearTimeout(servicesTimerRef.current);
+    if (aboutTimerRef.current) clearTimeout(aboutTimerRef.current);
+    if (industryTimerRef.current) clearTimeout(industryTimerRef.current);
+    setIsAboutDropdownOpen(false);
+    setIsIndustryDropdownOpen(false);
+    setIsServicesDropdownOpen(true);
+  };
+
+  const handleMouseLeaveServices = () => {
+    servicesTimerRef.current = setTimeout(() => {
+      setIsServicesDropdownOpen(false);
+    }, 250);
+  };
+
+  // About Dropdown Handlers
+  const handleMouseEnterAbout = () => {
+    if (aboutTimerRef.current) clearTimeout(aboutTimerRef.current);
+    if (servicesTimerRef.current) clearTimeout(servicesTimerRef.current);
+    if (industryTimerRef.current) clearTimeout(industryTimerRef.current);
+    setIsServicesDropdownOpen(false);
+    setIsIndustryDropdownOpen(false);
+    setIsAboutDropdownOpen(true);
+  };
+
+  const handleMouseLeaveAbout = () => {
+    aboutTimerRef.current = setTimeout(() => {
+      setIsAboutDropdownOpen(false);
+    }, 250);
+  };
+
+  // Industry Dropdown Handlers
+  const handleMouseEnterIndustry = () => {
+    if (industryTimerRef.current) clearTimeout(industryTimerRef.current);
+    if (aboutTimerRef.current) clearTimeout(aboutTimerRef.current);
+    if (servicesTimerRef.current) clearTimeout(servicesTimerRef.current);
+    setIsAboutDropdownOpen(false);
+    setIsServicesDropdownOpen(false);
+    setIsIndustryDropdownOpen(true);
+  };
+
+  const handleMouseLeaveIndustry = () => {
+    industryTimerRef.current = setTimeout(() => {
+      setIsIndustryDropdownOpen(false);
+    }, 250);
+  };
+
+  const navLinks = [
+    { name: 'Our Work', path: '/how-we-work', dropdownType: 'about' },
+    { name: 'Services', path: '/services', dropdownType: 'services' },
+    { name: 'Industry', path: '/services', dropdownType: 'industry' },
+    { name: 'Blog', path: '/blog' },
+  ];
+
+  const isLinkActive = (path: string) => {
+    if (path === '/services') {
+      return (
+        location.pathname === '/services' ||
+        location.pathname.startsWith('/launch-') ||
+        location.pathname === '/industries' ||
+        location.pathname === '/manufacturer-network'
+      );
     }
-  };
-
-  // Handle link click with auto-regression
-  const handleNavClick = (e: React.MouseEvent, path: string) => {
-    e.preventDefault();
-    scrollToSection(path);
-  };
-
-  // Handle dropdown item click
-  const handleDropdownItemClick = (e: React.MouseEvent, path: string) => {
-    e.preventDefault();
-    scrollToSection(path);
-  };
-
-  // Check if current location matches the section
-  const isActiveSection = (path: string) => {
-    if (path.includes('#')) {
-      const [basePath, hash] = path.split('#');
-      // Check if we're on the right page and the hash matches
-      if (location.pathname === basePath || (basePath === '' && location.pathname === '/')) {
-        const element = document.getElementById(hash);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top < 200 && rect.bottom > 0;
-        }
-      }
-      return false;
+    if (path === '/how-we-work' || path === '/about') {
+      return (
+        location.pathname === '/about' ||
+        location.pathname === '/how-we-work' ||
+        location.pathname === '/our-partnerships' ||
+        location.pathname === '/news-centre' ||
+        location.pathname === '/team'
+      );
     }
     return location.pathname === path;
   };
 
-  // Check if any dropdown item is active
-  const isDropdownActive = (dropdownItems: any[]) => {
-    return dropdownItems.some(item => {
-      if (item.path.includes('#')) {
-        const [basePath, hash] = item.path.split('#');
-        return location.pathname === basePath || (basePath === '' && location.pathname === '/');
-      }
-      return location.pathname === item.path;
-    });
+  // 2 Separate Photo Cards for Product Launch vs Brand Solutions
+  const serviceCards = {
+    product: [
+      {
+        tag: 'PERFUME & FINE FRAGRANCES',
+        title: 'Luxury Perfume Launch Blueprint',
+        image: '/assets/Banner 1.png',
+        link: '/services',
+        badge: 'LAUNCH',
+      },
+      {
+        tag: 'SKINCARE & COLOR COSMETICS',
+        title: 'Clinical Formulation & Factory Sourcing',
+        image: '/assets/Banner 4.png',
+        link: '/services',
+        badge: 'FORMULATION',
+      },
+    ],
+    brand: [
+      {
+        tag: 'IDENTITY & 3D PACKAGING',
+        title: 'Luxury Bottle Moulds & Mono-Cartons',
+        image: '/assets/Banner 3.png',
+        link: '/services',
+        badge: 'DESIGN',
+      },
+      {
+        tag: 'D2C & MARKETPLACE SCALE',
+        title: 'Amazon, Nykaa & Blinkit Distribution',
+        image: '/assets/klust_landing_page.webp',
+        link: '/services',
+        badge: 'SCALE',
+      },
+    ],
   };
-
-  const navLinks = [
-    { 
-      name: 'Home', 
-      path: '/',
-      icon: Home
-    },
-    { 
-      name: 'Process', 
-      path: '/process',
-      icon: Layers
-    },
-    { 
-      name: 'Services', 
-      path: '/services',
-      icon: Briefcase
-    },
-    { 
-      name: 'Blog', 
-      path: '/blog',
-      icon: BookOpen
-    },
-    { 
-      name: 'About Us', 
-      path: '/about',
-      icon: Info,
-      hasDropdown: true,
-      isDropdownActive: isDropdownActive([
-        { path: '/about#vision-mission' },
-        { path: '/about#achievements' },
-        { path: '/about#founder' },
-        { path: '/about#why-choose-us' }
-      ]),
-      dropdownItems: [
-        { 
-          name: 'Vision & Mission', 
-          path: '/about#vision-mission',
-          icon: Target,
-          description: 'Our purpose & future aspirations'
-        },
-        { 
-          name: 'Our Achievements', 
-          path: '/about#achievements',
-          icon: Award,
-          description: 'Milestones & recognitions'
-        },
-        { 
-          name: 'Meet the Founder', 
-          path: '/about#founder',
-          icon: Users,
-          description: 'Leadership & expertise'
-        },
-        { 
-          name: 'Why Choose Us', 
-          path: '/about#why-choose-us',
-          icon: ShieldCheck,
-          description: 'Our competitive advantage'
-        }
-      ]
-    },
-  ];
-
-  const handleDropdownEnter = () => {
-    setActiveDropdown('About Us');
-  };
-
-  const handleDropdownLeave = () => {
-    setTimeout(() => {
-      setActiveDropdown(null);
-    }, 200);
-  };
-
-  const handleDropdownClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setActiveDropdown(activeDropdown === 'About Us' ? null : 'About Us');
-  };
-
-  const toggleMobileDropdown = (name: string) => {
-    setMobileDropdownOpen(mobileDropdownOpen === name ? null : name);
-  };
-
-  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   return (
-    <header className={cn(
-      "fixed top-0 left-0 w-full z-50 transition-all duration-300",
-      "bg-white/90 backdrop-blur-xl border-b border-zinc-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)]"
-    )}>
-      {/* Top micro announcement bar / gradient glow line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-[#D97706]/20 via-[#D97706] to-[#f59e0b]/40" />
+    <header
+      className="fixed top-3 sm:top-5 inset-x-0 z-50 flex flex-col items-center px-3 sm:px-6 pointer-events-none"
+      style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+    >
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 md:h-20 flex items-center justify-between">
-        {/* Logo */}
-        <Link 
-          to="/" 
-          className="flex items-center gap-2.5 group transition-transform duration-300 hover:scale-105 active:scale-95 shrink-0 py-1"
-          aria-label="Banega Brand Home"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToSection('/');
-          }}
+      {/* ── MAIN FLOATING PILL NAVBAR ──────────────────────────────────────── */}
+      <nav
+        className={`pointer-events-auto relative transition-all duration-500 ease-out flex items-center justify-between ${isScrolled
+          ? 'w-full max-w-7xl px-4 sm:px-8 py-3 bg-transparent border-transparent shadow-none'
+          : 'w-full max-w-4xl lg:max-w-[1020px] px-4 sm:px-6 py-2.5 sm:py-3 rounded-full bg-white/85 backdrop-blur-xl border border-white/80 shadow-[0_10px_35px_rgba(0,0,0,0.06)] hover:bg-white/90'
+          }`}
+        aria-label="Main Navigation"
+      >
+
+        {/* ── 1. LOGO / FAVICON ICON + .PRODUCT LAUNCH ANIMATION ──── */}
+        <div
+          className={`flex items-center select-none transition-all duration-500 ${isScrolled
+            ? 'absolute left-1/2 -translate-x-1/2 z-20 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border border-white/90 ring-1 ring-black/[0.05] shadow-[0_14px_45px_rgba(0,0,0,0.13),0_2px_8px_rgba(0,0,0,0.04)]'
+            : 'z-10'
+            }`}
+          style={isScrolled ? {
+            backgroundColor: 'rgba(255, 255, 255, 0.72)',
+            backdropFilter: 'blur(28px) saturate(190%)',
+            WebkitBackdropFilter: 'blur(28px) saturate(190%)',
+          } : undefined}
         >
-          <div className="relative">
-            <img 
-              src="/assets/main_logo.webp" 
-              alt="Banega Brand Logo" 
-              width="160"
-              height="40"
-              className="h-8 md:h-10 w-auto object-contain relative z-10"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-        </Link>
-
-        {/* Desktop Navigation - Interactive Center Navigation */}
-        <nav 
-          className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-100/70 border border-zinc-200/60 backdrop-blur-md"
-          onMouseLeave={() => setHoveredLink(null)}
-        >
-          {navLinks.map((item) => {
-            const isCurrentActive = location.pathname === item.path || (item.hasDropdown && (location.pathname.includes('/about') || item.isDropdownActive));
-            const isHovered = hoveredLink === item.name;
-
-            return (
-              <div 
-                key={item.name} 
-                className="relative"
-                ref={item.hasDropdown ? dropdownRef : undefined}
-                onMouseEnter={() => {
-                  setHoveredLink(item.name);
-                  if (item.hasDropdown) handleDropdownEnter();
-                }}
-                onMouseLeave={item.hasDropdown ? handleDropdownLeave : undefined}
-              >
-                {/* Floating animated pill background when hovered */}
-                {isHovered && (
-                  <motion.div
-                    layoutId="navHoverPill"
-                    className="absolute inset-0 rounded-full bg-white shadow-sm border border-zinc-200/60 -z-0"
-                    transition={{ type: "spring", stiffness: 350, damping: 28 }}
-                  />
-                )}
-
-                {item.hasDropdown ? (
-                  <>
-                    <button
-                      onClick={handleDropdownClick}
-                      aria-expanded={activeDropdown === 'About Us'}
-                      aria-label="Toggle About Us menu"
-                      className={cn(
-                        "relative z-10 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap cursor-pointer",
-                        isCurrentActive 
-                          ? "text-[#D97706] font-black" 
-                          : "text-zinc-700 hover:text-[#111111]",
-                        activeDropdown === 'About Us' && "text-[#D97706]"
-                      )}
-                    >
-                      <Info size={14} className={cn(
-                        "transition-colors shrink-0",
-                        isCurrentActive ? "text-[#D97706]" : "text-zinc-400 group-hover:text-zinc-600"
-                      )} />
-                      <span>{item.name}</span>
-                      <ChevronDown 
-                        size={12} 
-                        className={cn(
-                          "transition-transform duration-200 shrink-0",
-                          activeDropdown === 'About Us' && "rotate-180 text-[#D97706]"
-                        )} 
-                      />
-                    </button>
-
-                    {/* Dropdown Menu with Enhanced Glassmorphism */}
-                    <AnimatePresence>
-                      {activeDropdown === 'About Us' && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10, scale: 0.96 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.96 }}
-                          transition={{ duration: 0.22, ease: "easeOut" }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[340px] bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-zinc-200/80 overflow-hidden z-50 p-2"
-                        >
-                          {/* Dropdown Header */}
-                          <div className="bg-gradient-to-br from-[#D97706]/10 via-amber-500/5 to-transparent px-4 py-3 rounded-xl border border-[#D97706]/15 mb-2">
-                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-[#D97706] flex items-center gap-1.5">
-                              <Sparkles size={11} className="fill-[#D97706]" /> About Banega Brand
-                            </span>
-                            <p className="text-xs text-zinc-600 font-semibold mt-0.5">
-                              India's #1 Product Launch Engine
-                            </p>
-                          </div>
-
-                          {/* Dropdown Items */}
-                          <div className="space-y-1">
-                            {item.dropdownItems?.map((dropdownItem) => {
-                              const Icon = dropdownItem.icon;
-                              const isActive = isActiveSection(dropdownItem.path);
-                              return (
-                                <a
-                                  key={dropdownItem.name}
-                                  href={dropdownItem.path}
-                                  onClick={(e) => handleDropdownItemClick(e, dropdownItem.path)}
-                                  className={cn(
-                                    "flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200 group cursor-pointer",
-                                    isActive ? "bg-[#D97706]/10 text-[#D97706]" : "hover:bg-zinc-100/80 text-zinc-800"
-                                  )}
-                                >
-                                  <div className={cn(
-                                    "p-2 rounded-lg transition-all duration-200 shrink-0",
-                                    isActive ? "bg-[#D97706] text-white" : "bg-zinc-100 text-zinc-600 group-hover:bg-[#D97706] group-hover:text-white group-hover:shadow-md"
-                                  )}>
-                                    <Icon size={15} />
-                                  </div>
-                                  <div className="flex-1 min-w-0">
-                                    <span className={cn(
-                                      "block text-xs font-black uppercase tracking-tight",
-                                      isActive ? "text-[#D97706]" : "text-zinc-900 group-hover:text-[#111111]"
-                                    )}>
-                                      {dropdownItem.name}
-                                    </span>
-                                    <span className="text-[10px] font-medium text-zinc-400 block truncate">
-                                      {dropdownItem.description}
-                                    </span>
-                                  </div>
-                                  {isActive ? (
-                                    <CheckCircle size={13} className="text-[#D97706] shrink-0" />
-                                  ) : (
-                                    <ArrowRight size={13} className="text-zinc-300 group-hover:text-[#D97706] group-hover:translate-x-1 transition-all shrink-0" />
-                                  )}
-                                </a>
-                              );
-                            })}
-                          </div>
-
-                          {/* Dropdown Footer */}
-                          <div className="mt-2 pt-2 border-t border-zinc-150 px-2">
-                            <a
-                              href="/about"
-                              onClick={(e) => handleNavClick(e, '/about')}
-                              className="flex items-center justify-between py-2 px-3 rounded-lg text-[10px] font-black uppercase tracking-widest text-[#D97706] hover:bg-[#D97706]/10 transition-colors group cursor-pointer"
-                            >
-                              <span>Explore Full Story</span>
-                              <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform shrink-0" />
-                            </a>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <a 
-                    href={item.path}
-                    onClick={(e) => handleNavClick(e, item.path)}
-                    className={cn(
-                      "relative z-10 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap cursor-pointer",
-                      isCurrentActive 
-                        ? "text-[#D97706] font-black" 
-                        : "text-zinc-700 hover:text-[#111111]"
-                    )}
-                  >
-                    <item.icon size={14} className={cn(
-                      "transition-colors shrink-0",
-                      isCurrentActive ? "text-[#D97706]" : "text-zinc-400 group-hover:text-zinc-600"
-                    )} />
-                    <span>{item.name}</span>
-                    {isCurrentActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#D97706] animate-pulse ml-0.5" />
-                    )}
-                  </a>
-                )}
-              </div>
-            );
-          })}
-        </nav>
-
-        {/* Right Actions - Interactive Contact & Strategy Call Button */}
-        <div className="hidden md:flex items-center gap-3 shrink-0">
-          {/* Quick Contact Capsule */}
-          <div className="flex items-center gap-1 bg-zinc-100/80 p-1 rounded-full border border-zinc-200/60 backdrop-blur-sm">
-            <a 
-              href="mailto:help@banegabrand.com" 
-              className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all duration-200 group"
-              title="Email Us"
-              aria-label="Email Banega Brand support"
-            >
-              <Mail size={15} className="text-zinc-600 group-hover:text-[#D97706] transition-colors" />
-            </a>
-            <div className="w-[1px] h-3.5 bg-zinc-200" />
-            <a 
-              href="tel:+918796755169" 
-              className="p-2 hover:bg-white hover:shadow-sm rounded-full transition-all duration-200 group"
-              title="Call Us"
-              aria-label="Call Banega Brand support"
-            >
-              <Phone size={15} className="text-zinc-600 group-hover:text-[#D97706] transition-colors" />
-            </a>
-          </div>
-
-          {/* Interactive Glowing CTA Button */}
-          <a 
-            href="/contact"
-            onClick={(e) => handleNavClick(e, '/contact')}
-            className="relative group overflow-hidden bg-[#111111] text-white px-5 py-2.5 rounded-full font-black text-xs uppercase tracking-widest hover:bg-[#D97706] transition-all duration-300 hover:scale-105 active:scale-95 shadow-md hover:shadow-lg hover:shadow-[#D97706]/20 text-center whitespace-nowrap flex items-center gap-2 cursor-pointer"
+          <Link
+            to="/"
+            onClick={() => {
+              if (isScrolled) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+            className="inline-flex items-end gap-0 group transition-transform duration-200 hover:scale-[1.02] active:scale-95 select-none"
+            aria-label="Banega Brand Home"
           >
-            <Sparkles size={13} className="text-[#D97706] group-hover:text-white fill-[#D97706] group-hover:fill-white animate-pulse shrink-0" />
-            <span>Book Strategy Call</span>
-            <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
-          </a>
+            {isScrolled ? (
+              <img
+                src="/assets/banega_logo_official.png"
+                alt="Banega Brand"
+                width="140"
+                height="44"
+                className="h-8 sm:h-9 md:h-10 w-auto object-contain transition-all duration-300 drop-shadow-sm shrink-0"
+              />
+            ) : (
+              <img
+                src="/assets/banega_logo_official.png"
+                alt="Banega Brand"
+                width="160"
+                height="48"
+                className="h-8 sm:h-9 md:h-10 lg:h-11 w-auto object-contain transition-all duration-300 drop-shadow-xs shrink-0"
+              />
+            )}
+            <AnimatedLogoTagline isScrolled={isScrolled} />
+          </Link>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className="xl:hidden p-2.5 rounded-xl bg-zinc-100 hover:bg-zinc-200 text-zinc-800 transition-all duration-200 shrink-0 cursor-pointer"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
+        {/* ── 2. CENTER COLUMN: NAVIGATION LINKS (Visible when NOT Scrolled) ── */}
+        {!isScrolled && (
+          <div className="hidden md:flex items-center justify-center gap-1.5 lg:gap-2 z-10 flex-1">
+            {navLinks.map((link) => {
+              const active = isLinkActive(link.path);
 
-      {/* Mobile Menu */}
+              if (link.dropdownType === 'about') {
+                return (
+                  <div
+                    key={link.name}
+                    onMouseEnter={handleMouseEnterAbout}
+                    onMouseLeave={handleMouseLeaveAbout}
+                    className="relative"
+                  >
+                    <Link
+                      to={link.path}
+                      className={`px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-[13px] font-semibold transition-all duration-200 select-none flex items-center gap-1 ${active || isAboutDropdownOpen
+                        ? 'text-[#FF5722] font-bold bg-orange-50/90 shadow-2xs'
+                        : 'text-zinc-800 hover:text-[#FF5722] hover:bg-black/[0.04]'
+                        }`}
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  </div>
+                );
+              }
+
+              if (link.dropdownType === 'services') {
+                return (
+                  <div
+                    key={link.name}
+                    onMouseEnter={handleMouseEnterServices}
+                    onMouseLeave={handleMouseLeaveServices}
+                    className="relative"
+                  >
+                    <Link
+                      to={link.path}
+                      className={`px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-[13px] font-semibold transition-all duration-200 select-none flex items-center gap-1 ${active || isServicesDropdownOpen
+                        ? 'text-[#FF5722] font-bold bg-orange-50/90 shadow-2xs'
+                        : 'text-zinc-800 hover:text-[#FF5722] hover:bg-black/[0.04]'
+                        }`}
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  </div>
+                );
+              }
+
+              if (link.dropdownType === 'industry') {
+                return (
+                  <div
+                    key={link.name}
+                    onMouseEnter={handleMouseEnterIndustry}
+                    onMouseLeave={handleMouseLeaveIndustry}
+                    className="relative"
+                  >
+                    <Link
+                      to={link.path}
+                      className={`px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-[13px] font-semibold transition-all duration-200 select-none flex items-center gap-1 ${active || isIndustryDropdownOpen
+                        ? 'text-[#FF5722] font-bold bg-orange-50/90 shadow-2xs'
+                        : 'text-zinc-800 hover:text-[#FF5722] hover:bg-black/[0.04]'
+                        }`}
+                    >
+                      <span>{link.name}</span>
+                    </Link>
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={link.name}
+                  to={link.path}
+                  className={`px-3.5 lg:px-4 py-1.5 rounded-full text-xs lg:text-[13px] font-semibold transition-all duration-200 select-none ${active
+                    ? 'text-[#FF5722] font-bold bg-orange-50/90 shadow-2xs'
+                    : 'text-zinc-800 hover:text-[#FF5722] hover:bg-black/[0.04]'
+                    }`}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+
+        {/* ── 3. RIGHT COLUMN: START YOUR LAUNCH BUTTON (TOP ONLY) + MOBILE BURGER BUTTON ───────────── */}
+        <div
+          className={`ml-auto flex items-center justify-end gap-1.5 sm:gap-2 z-20 flex-shrink-0 transition-all duration-300 ${
+            isScrolled
+              ? 'md:hidden'
+              : ''
+          }`}
+        >
+          {/* Bold Black & Orange Gradient "Start Your Launch" CTA Button (Only visible at the top, hidden on scroll) */}
+          {!isScrolled && (
+            <Link
+              to="/contact"
+              className="hidden sm:inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-gradient-to-r from-[#111111] via-[#2b1810] to-[#FF5722] hover:from-[#FF5722] hover:to-[#111111] text-white font-extrabold text-xs sm:text-[13px] uppercase tracking-wider shadow-[0_4px_20px_rgba(255,87,34,0.35)] hover:shadow-[0_6px_25px_rgba(255,87,34,0.6)] border border-orange-400/25 transition-all duration-300 active:scale-95 select-none shrink-0 group cursor-pointer"
+            >
+              <span>Start Your Launch</span>
+              <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform text-[#FF8A65]" />
+            </Link>
+          )}
+
+          {/* Mobile Menu Toggle Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden w-8 h-8 rounded-full flex items-center justify-center bg-zinc-100/90 hover:bg-zinc-200 text-zinc-800 transition-colors shadow-2xs border border-zinc-200/50 cursor-pointer ml-1"
+            aria-label="Toggle Menu"
+          >
+            {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* ── 4. ABOUT US MEGA MENU DROPDOWN (DESKTOP) ────────────────────────── */}
+      <AnimatePresence>
+        {isAboutDropdownOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.99 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={handleMouseEnterAbout}
+            onMouseLeave={handleMouseLeaveAbout}
+            className="pointer-events-auto hidden md:block w-full max-w-4xl lg:max-w-5xl mt-3 p-6 sm:p-7 rounded-2xl bg-white/98 backdrop-blur-2xl border border-zinc-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.14)] z-40 select-none"
+          >
+            <div className="grid grid-cols-12 gap-8 items-start">
+
+              {/* LEFT COLUMN: About Navigation List */}
+              <div className="col-span-5 space-y-3.5 pr-6 border-r border-zinc-100">
+                {[
+                  { label: 'How We Work', path: '/how-we-work' },
+                  { label: 'Our Partnerships', path: '/our-partnerships' },
+                  { label: 'News Centre', path: '/news-centre' },
+                  { label: 'Meet The Team', path: '/team' },
+                ].map((item, idx) => (
+                  <Link
+                    key={idx}
+                    to={item.path}
+                    onClick={() => setIsAboutDropdownOpen(false)}
+                    className="group flex items-center justify-between py-1.5 px-2 rounded-xl transition-all cursor-pointer hover:bg-zinc-50"
+                  >
+                    <span className="text-lg sm:text-xl font-bold tracking-tight text-[#111111] group-hover:text-[#FF5722] transition-colors">
+                      {item.label}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+
+              {/* RIGHT COLUMN: 2 Featured Blog / Article Cards */}
+              <div className="col-span-7 grid grid-cols-2 gap-5">
+
+                {/* Article Card 1 */}
+                <Link
+                  to="/blog"
+                  onClick={() => setIsAboutDropdownOpen(false)}
+                  className="group flex flex-col space-y-2 cursor-pointer"
+                >
+                  <div
+                    className="relative rounded-2xl overflow-hidden p-5 sm:p-6 text-white min-h-[170px] flex flex-col justify-between shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+                    style={{
+                      background: 'linear-gradient(135deg, #78004B 0%, #4A002C 100%)',
+                    }}
+                  >
+                    <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-white/90">
+                      <span>BANEGA BRAND</span>
+                      <span className="px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-xs text-[9px]">ARTICLE</span>
+                    </div>
+
+                    <div className="space-y-1 my-auto pt-2">
+                      <h4 className="text-base sm:text-lg font-black uppercase tracking-tight leading-tight text-white group-hover:underline">
+                        HOW A CATCHY LINE RECEIVED 193M+ VIEWS
+                      </h4>
+                    </div>
+
+                    <div className="text-sm font-black text-white/60">#</div>
+                  </div>
+
+                  <p className="text-xs font-semibold text-zinc-700 leading-snug group-hover:text-[#FF5722] transition-colors">
+                    How A Catchy Line Received 193M+ Views And Started A Cultural Conversation
+                  </p>
+                </Link>
+
+                {/* Article Card 2 */}
+                <Link
+                  to="/blog"
+                  onClick={() => setIsAboutDropdownOpen(false)}
+                  className="group flex flex-col space-y-2 cursor-pointer"
+                >
+                  <div
+                    className="relative rounded-2xl overflow-hidden p-5 sm:p-6 text-white min-h-[170px] flex flex-col justify-between shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
+                    style={{
+                      background: 'linear-gradient(135deg, #0284C7 0%, #0369A1 100%)',
+                    }}
+                  >
+                    <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-wider text-white/90">
+                      <span>BANEGA BRAND</span>
+                      <span className="px-2 py-0.5 rounded-full bg-white/20 backdrop-blur-xs text-[9px]">ARTICLE</span>
+                    </div>
+
+                    <div className="space-y-1 my-auto pt-2">
+                      <h4 className="text-base sm:text-lg font-black uppercase tracking-tight leading-tight text-white group-hover:underline">
+                        HOW TO EXPAND YOUR DIGITAL FOOTPRINT
+                      </h4>
+                    </div>
+
+                    <div className="text-sm font-black text-white/60">#</div>
+                  </div>
+
+                  <p className="text-xs font-semibold text-zinc-700 leading-snug group-hover:text-[#FF5722] transition-colors">
+                    How To Expand Your Digital Footprint with Omnichannel Strategy
+                  </p>
+                </Link>
+
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── 5. SERVICES MEGA MENU DROPDOWN (DESKTOP) ────────────────────────── */}
+      <AnimatePresence>
+        {isServicesDropdownOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.99 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={handleMouseEnterServices}
+            onMouseLeave={handleMouseLeaveServices}
+            className="pointer-events-auto hidden md:block w-full max-w-4xl lg:max-w-5xl mt-3 p-6 sm:p-7 rounded-2xl bg-white/98 backdrop-blur-2xl border border-zinc-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.14)] z-40 select-none"
+          >
+            <div className="grid grid-cols-12 gap-8 items-start">
+
+              {/* LEFT COLUMN: Services Navigation */}
+              <div className="col-span-5 space-y-2 pr-6 border-r border-zinc-100">
+                {[
+                  { id: 'product', label: 'Product Launch Solutions', path: '/services' },
+                  { id: 'brand', label: 'Scale & Performance Growth', path: '/services' },
+                ].map((item) => {
+                  const isSelected = activeServiceTab === item.id;
+                  return (
+                    <Link
+                      key={item.id}
+                      to={item.path}
+                      onMouseEnter={() => setActiveServiceTab(item.id as any)}
+                      onClick={() => setIsServicesDropdownOpen(false)}
+                      className="group flex items-center justify-between py-3 px-3 rounded-xl transition-all cursor-pointer hover:bg-zinc-50"
+                    >
+                      <span className={`text-xl sm:text-2xl font-bold tracking-tight transition-colors duration-200 ${isSelected ? 'text-[#FF5722] translate-x-1' : 'text-[#111111] group-hover:text-[#FF5722]'
+                        }`}>
+                        {item.label}
+                      </span>
+                      <ArrowRight size={18} className={`transition-all duration-200 ${isSelected ? 'opacity-100 text-[#FF5722] translate-x-0' : 'opacity-0 -translate-x-2'
+                        }`} />
+                    </Link>
+                  );
+                })}
+
+                <div className="pt-2 px-3">
+                  <Link
+                    to="/services"
+                    onClick={() => setIsServicesDropdownOpen(false)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-black transition-colors"
+                  >
+                    <span>View All Services</span>
+                    <ArrowUpRight size={13} />
+                  </Link>
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: 2 Dedicated Clickable Photo Cards */}
+              <div className="col-span-7 grid grid-cols-2 gap-4">
+                {serviceCards[activeServiceTab].map((card, idx) => (
+                  <Link
+                    key={idx}
+                    to={card.link}
+                    onClick={() => setIsServicesDropdownOpen(false)}
+                    className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200/90 shadow-2xs hover:shadow-lg hover:border-black/50 transition-all duration-300 flex flex-col justify-between p-3"
+                  >
+                    {/* Image Container */}
+                    <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden bg-zinc-100 mb-3">
+                      <img
+                        src={card.image}
+                        alt={card.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/70 backdrop-blur-xs text-[9px] font-mono font-bold uppercase tracking-wider text-white">
+                        {card.badge}
+                      </span>
+                    </div>
+
+                    {/* Card Meta Content */}
+                    <div className="space-y-1 px-1 pb-1">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-[#FF5722] block">
+                        {card.tag}
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-bold text-[#111111] leading-snug group-hover:text-[#FF5722] transition-colors">
+                        {card.title}
+                      </h4>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── 6. INDUSTRY MEGA MENU DROPDOWN (DESKTOP) ────────────────────────── */}
+      <AnimatePresence>
+        {isIndustryDropdownOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.99 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.99 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            onMouseEnter={handleMouseEnterIndustry}
+            onMouseLeave={handleMouseLeaveIndustry}
+            className="pointer-events-auto hidden md:block w-full max-w-5xl lg:max-w-6xl mt-3 p-6 sm:p-7 rounded-2xl bg-white/98 backdrop-blur-2xl border border-zinc-200/90 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.14)] z-40 select-none"
+          >
+            <div className="grid grid-cols-12 gap-7 items-start">
+
+              {/* LEFT COLUMN: Industry Vertical Links */}
+              <div className="col-span-4 space-y-2 pr-5 border-r border-zinc-100">
+                <span className="text-[10px] font-black uppercase tracking-widest text-[#FF5722] px-3 block mb-1">
+                  Key Launch Verticals
+                </span>
+
+                {[
+                  { title: 'Perfume & Fine Fragrances', sub: 'Custom Fragrance Development', path: '/industry/perfume' },
+                  { title: 'Color Cosmetics & Makeup', sub: 'High-Pigment Lab Formulations', path: '/industry/cosmetics' },
+                  { title: 'Authentic Ayurveda', sub: 'AYUSH Certified Range', path: '/industry/ayurveda' },
+                  { title: 'Clinical Skincare & Derma', sub: 'Active Peptides & SPF Blends', path: '/industry/skincare' },
+                ].map((item, idx) => (
+                  <Link
+                    key={idx}
+                    to={item.path}
+                    onClick={() => setIsIndustryDropdownOpen(false)}
+                    className="group flex flex-col py-2.5 px-3 rounded-xl transition-all cursor-pointer hover:bg-zinc-50 border border-transparent hover:border-zinc-100"
+                  >
+                    <span className="text-base font-bold tracking-tight text-[#111111] group-hover:text-[#FF5722] transition-colors">
+                      {item.title}
+                    </span>
+                    <span className="text-[11px] text-zinc-400 font-medium group-hover:text-zinc-600 transition-colors">
+                      {item.sub}
+                    </span>
+                  </Link>
+                ))}
+
+                <div className="pt-2 px-3">
+                  <Link
+                    to="/services"
+                    onClick={() => setIsIndustryDropdownOpen(false)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-500 hover:text-black transition-colors"
+                  >
+                    <span>View All 4 Industries</span>
+                    <ArrowUpRight size={13} />
+                  </Link>
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: 4 High-Impact Visual Photo Cards (Perfume, Cosmetics, Ayurveda, Skincare) */}
+              <div className="col-span-8 grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+
+                {/* Card 1: Perfume */}
+                <Link
+                  to="/industry/perfume"
+                  onClick={() => setIsIndustryDropdownOpen(false)}
+                  className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200/90 shadow-2xs hover:shadow-lg hover:border-[#FF5722]/50 transition-all duration-300 flex flex-col justify-between p-2"
+                >
+                  <div className="relative aspect-[4/3] w-full rounded-lg overflow-hidden bg-zinc-100 mb-2">
+                    <img
+                      src="/assets/perfume/venotine_ruby_midnight.jpg"
+                      alt="Perfume & Fine Fragrances"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-xs text-[8.5px] font-mono font-bold uppercase tracking-wider text-white">
+                      PERFUME
+                    </span>
+                  </div>
+                  <div className="space-y-0.5 px-0.5 pb-1">
+                    <span className="text-[8.5px] font-black uppercase tracking-widest text-[#FF5722] block">
+                      FINE FRAGRANCES
+                    </span>
+                    <h4 className="text-xs font-bold text-[#111111] leading-snug group-hover:text-[#FF5722] transition-colors truncate">
+                      Luxury Perfume Launch
+                    </h4>
+                    <p className="text-[10px] text-zinc-500 leading-tight line-clamp-2">
+                      Custom blends &amp; glass flacons.
+                    </p>
+                  </div>
+                </Link>
+
+                {/* Card 2: Cosmetics */}
+                <Link
+                  to="/industry/cosmetics"
+                  onClick={() => setIsIndustryDropdownOpen(false)}
+                  className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200/90 shadow-2xs hover:shadow-lg hover:border-[#FF5722]/50 transition-all duration-300 flex flex-col justify-between p-2"
+                >
+                  <div className="relative aspect-[4/3] w-full rounded-lg overflow-hidden bg-zinc-100 mb-2">
+                    <img
+                      src="/assets/Banner 2.png"
+                      alt="Color Cosmetics"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-xs text-[8.5px] font-mono font-bold uppercase tracking-wider text-white">
+                      COSMETICS
+                    </span>
+                  </div>
+                  <div className="space-y-0.5 px-0.5 pb-1">
+                    <span className="text-[8.5px] font-black uppercase tracking-widest text-[#FF5722] block">
+                      COLOR MAKEUP
+                    </span>
+                    <h4 className="text-xs font-bold text-[#111111] leading-snug group-hover:text-[#FF5722] transition-colors truncate">
+                      Color Cosmetics
+                    </h4>
+                    <p className="text-[10px] text-zinc-500 leading-tight line-clamp-2">
+                      High pigments &amp; matte lipsticks.
+                    </p>
+                  </div>
+                </Link>
+
+                {/* Card 3: Ayurveda */}
+                <Link
+                  to="/industry/ayurveda"
+                  onClick={() => setIsIndustryDropdownOpen(false)}
+                  className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200/90 shadow-2xs hover:shadow-lg hover:border-[#FF5722]/50 transition-all duration-300 flex flex-col justify-between p-2"
+                >
+                  <div className="relative aspect-[4/3] w-full rounded-lg overflow-hidden bg-zinc-100 mb-2">
+                    <img
+                      src="/assets/Banner 3.png"
+                      alt="Authentic Ayurveda"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-xs text-[8.5px] font-mono font-bold uppercase tracking-wider text-white">
+                      AYURVEDA
+                    </span>
+                  </div>
+                  <div className="space-y-0.5 px-0.5 pb-1">
+                    <span className="text-[8.5px] font-black uppercase tracking-widest text-[#FF5722] block">
+                      HERBAL &amp; AYUSH
+                    </span>
+                    <h4 className="text-xs font-bold text-[#111111] leading-snug group-hover:text-[#FF5722] transition-colors truncate">
+                      Authentic Ayurveda
+                    </h4>
+                    <p className="text-[10px] text-zinc-500 leading-tight line-clamp-2">
+                      AYUSH certified botanical oils.
+                    </p>
+                  </div>
+                </Link>
+
+                {/* Card 4: Clinical Skincare */}
+                <Link
+                  to="/industry/skincare"
+                  onClick={() => setIsIndustryDropdownOpen(false)}
+                  className="group relative rounded-xl overflow-hidden bg-white border border-zinc-200/90 shadow-2xs hover:shadow-lg hover:border-[#FF5722]/50 transition-all duration-300 flex flex-col justify-between p-2"
+                >
+                  <div className="relative aspect-[4/3] w-full rounded-lg overflow-hidden bg-zinc-100 mb-2">
+                    <img
+                      src="/assets/skincare/grevety_skincare_full_collection.jpg"
+                      alt="Clinical Skincare & Derma"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-black/75 backdrop-blur-xs text-[8.5px] font-mono font-bold uppercase tracking-wider text-white">
+                      SKINCARE
+                    </span>
+                  </div>
+                  <div className="space-y-0.5 px-0.5 pb-1">
+                    <span className="text-[8.5px] font-black uppercase tracking-widest text-[#FF5722] block">
+                      CLINICAL DERMA
+                    </span>
+                    <h4 className="text-xs font-bold text-[#111111] leading-snug group-hover:text-[#FF5722] transition-colors truncate">
+                      Clinical Skincare
+                    </h4>
+                    <p className="text-[10px] text-zinc-500 leading-tight line-clamp-2">
+                      Active serums &amp; derma blends.
+                    </p>
+                  </div>
+                </Link>
+
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── 7. FULL-FEATURED RESPONSIVE MOBILE DRAWER MENU ─────────────────── */}
       <AnimatePresence>
         {isMobileMenuOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="pointer-events-auto md:hidden w-full max-w-sm sm:max-w-md mt-3 bg-white/95 backdrop-blur-2xl rounded-3xl p-5 sm:p-6 border border-zinc-200/90 shadow-[0_20px_50px_rgba(0,0,0,0.18)] max-h-[82vh] overflow-y-auto space-y-5"
+          >
+            {/* Primary Navigation Links */}
+            <div className="flex flex-col space-y-1">
+              <Link
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-xl font-bold text-base text-zinc-900 hover:bg-zinc-100 transition-colors text-left"
+              >
+                Home
+              </Link>
+
+              <Link
+                to="/how-we-work"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-xl font-bold text-base text-zinc-900 hover:bg-zinc-100 transition-colors text-left flex items-center justify-between"
+              >
+                <span>Our Work</span>
+                <span className="text-xs text-zinc-400 font-normal">Manifesto &amp; Network</span>
+              </Link>
+
+              <div className="pl-4 pr-2 py-1 space-y-1 border-l-2 border-orange-100 ml-4 mb-2">
+                {[
+                  { label: 'How We Work', path: '/how-we-work' },
+                  { label: 'Meet The Team', path: '/team' },
+                  { label: 'Our Partnerships', path: '/our-partnerships' },
+                ].map((sub, i) => (
+                  <Link
+                    key={i}
+                    to={sub.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-600 hover:text-[#FF5722] hover:bg-orange-50/60"
+                  >
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                to="/services"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-xl font-bold text-base text-zinc-900 hover:bg-zinc-100 transition-colors text-left flex items-center justify-between"
+              >
+                <span>Services</span>
+                <span className="text-xs text-zinc-400 font-normal">All Blueprints</span>
+              </Link>
+
+              <Link
+                to="/services"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-xl font-bold text-base text-zinc-900 hover:bg-zinc-100 transition-colors text-left flex items-center justify-between"
+              >
+                <span>Industry</span>
+                <span className="text-xs text-zinc-400 font-normal">4 Dedicated Verticals</span>
+              </Link>
+
+              <div className="pl-4 pr-2 py-1 space-y-1 border-l-2 border-orange-100 ml-4 mb-2">
+                {[
+                  { label: 'Perfume & Fine Fragrances', path: '/industry/perfume' },
+                  { label: 'Color Cosmetics & Makeup', path: '/industry/cosmetics' },
+                  { label: 'Authentic Ayurveda & Herbal', path: '/industry/ayurveda' },
+                  { label: 'Clinical Skincare & Derma', path: '/industry/skincare' },
+                ].map((sub, i) => (
+                  <Link
+                    key={i}
+                    to={sub.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-3 py-1.5 rounded-lg text-xs font-semibold text-zinc-600 hover:text-[#FF5722] hover:bg-orange-50/60"
+                  >
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
+
+              <Link
+                to="/blog"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-4 py-2.5 rounded-xl font-bold text-base text-zinc-900 hover:bg-zinc-100 transition-colors text-left"
+              >
+                Blog &amp; Insights
+              </Link>
+            </div>
+
+            {/* Mobile Call-To-Action Button */}
+            <Link
+              to="/contact"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="fixed inset-0 bg-black/30 z-40 xl:hidden"
-            />
-            <motion.div
-              initial={{ opacity: 0, x: '100%' }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: '100%' }}
-              transition={{ type: "spring", damping: 30, stiffness: 300 }}
-              className="fixed top-0 right-0 w-full max-w-sm h-full bg-white z-50 xl:hidden shadow-2xl"
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-[#111111] via-[#2b1810] to-[#FF5722] text-white font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-[0_6px_20px_rgba(255,87,34,0.35)] border border-orange-400/25 transition-all active:scale-95"
             >
-              {/* Mobile Menu Header */}
-              <div className="flex items-center justify-between p-5 border-b border-gray-100">
-                <a 
-                  href="/"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection('/');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="flex items-center gap-2"
-                >
-                  <img 
-                    src="/assets/main_logo.webp" 
-                    alt="Banega Brand" 
-                    className="h-7 w-auto"
-                    referrerPolicy="no-referrer"
-                  />
-                  <span className="text-sm font-black uppercase tracking-tight">
-                    Banega <span className="text-[#D97706]">Brand</span>
-                  </span>
-                </a>
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-2 hover:bg-gray-50 rounded-lg transition-colors"
-                >
-                  <X size={22} />
-                </button>
-              </div>
+              <span>Start Your Launch</span>
+              <ArrowRight size={14} className="text-[#FF8A65]" />
+            </Link>
 
-              {/* Mobile Menu Content */}
-              <div className="p-5 overflow-y-auto h-[calc(100%-80px)]">
-                <div className="space-y-1">
-                  {navLinks.map((item) => {
-                    if (item.hasDropdown) {
-                      const isOpen = mobileDropdownOpen === item.name;
-                      return (
-                        <div key={item.name} className="border-b border-gray-100 last:border-0">
-                          <button
-                            onClick={() => toggleMobileDropdown(item.name)}
-                            className="flex items-center justify-between w-full py-3.5 text-left"
-                          >
-                            <div className="flex items-center gap-3">
-                              <item.icon size={18} className="text-[#D97706] shrink-0" />
-                              <span className="text-sm font-bold text-[#111111]">
-                                {item.name}
-                              </span>
-                            </div>
-                            <ChevronDown 
-                              size={18} 
-                              className={cn(
-                                "transition-transform duration-200 text-gray-400 shrink-0",
-                                isOpen && "rotate-180"
-                              )} 
-                            />
-                          </button>
-                          
-                          <AnimatePresence>
-                            {isOpen && (
-                              <motion.div
-                                initial={{ opacity: 0, height: 0 }}
-                                animate={{ opacity: 1, height: 'auto' }}
-                                exit={{ opacity: 0, height: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="pl-9 pb-3 space-y-1 overflow-hidden"
-                              >
-                                {item.dropdownItems?.map((dropdownItem) => {
-                                  const Icon = dropdownItem.icon;
-                                  const isActive = isActiveSection(dropdownItem.path);
-                                  return (
-                                    <a
-                                      key={dropdownItem.name}
-                                      href={dropdownItem.path}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        scrollToSection(dropdownItem.path);
-                                        setIsMobileMenuOpen(false);
-                                        setMobileDropdownOpen(null);
-                                      }}
-                                      className={cn(
-                                        "flex items-center gap-3 p-2.5 rounded-lg transition-all group",
-                                        isActive ? "bg-[#D97706]/5" : "hover:bg-gray-50"
-                                      )}
-                                    >
-                                      <div className={cn(
-                                        "p-1.5 rounded-lg transition-colors shrink-0",
-                                        isActive ? "bg-[#D97706]" : "bg-[#D97706]/10 group-hover:bg-[#D97706]"
-                                      )}>
-                                        <Icon size={14} className={cn(
-                                          "transition-colors",
-                                          isActive ? "text-white" : "text-[#D97706] group-hover:text-white"
-                                        )} />
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <span className={cn(
-                                          "block text-sm font-bold",
-                                          isActive ? "text-[#D97706]" : "text-[#111111]"
-                                        )}>
-                                          {dropdownItem.name}
-                                        </span>
-                                        <span className="text-[10px] text-gray-400">
-                                          {dropdownItem.description}
-                                        </span>
-                                      </div>
-                                      {isActive && (
-                                        <CheckCircle size={12} className="text-[#D97706] shrink-0" />
-                                      )}
-                                    </a>
-                                  );
-                                })}
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
-                      );
-                    }
-                    const isActive = location.pathname === item.path;
-                    return (
-                      <a
-                        key={item.name}
-                        href={item.path}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          scrollToSection(item.path);
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className={cn(
-                          "flex items-center gap-3 py-3.5 border-b border-gray-100 last:border-0 transition-colors",
-                          isActive ? "text-[#D97706]" : "text-[#111111] hover:text-[#D97706]"
-                        )}
-                      >
-                        <item.icon size={18} className={cn(
-                          "shrink-0 transition-colors",
-                          isActive ? "text-[#D97706]" : "text-gray-400"
-                        )} />
-                        <span className="text-sm font-bold">{item.name}</span>
-                        {isActive && (
-                          <span className="ml-auto text-[8px] font-bold text-[#D97706] bg-[#D97706]/10 px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
-                            Active
-                          </span>
-                        )}
-                      </a>
-                    );
-                  })}
-                </div>
-
-                {/* Mobile Contact Section */}
-                <div className="mt-6 pt-5 border-t border-gray-100">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-3">
-                    Get in Touch
-                  </p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <a 
-                      href="mailto:help@banegabrand.com" 
-                      className="flex items-center gap-2.5 p-3.5 bg-gray-50 rounded-lg hover:bg-[#D97706]/5 transition-colors"
-                    >
-                      <Mail size={16} className="text-[#D97706] shrink-0" />
-                      <div className="min-w-0">
-                        <span className="block text-[9px] font-bold uppercase tracking-wider text-gray-400">Email</span>
-                        <span className="text-[10px] font-bold text-[#111111] truncate">help@banegabrand.com</span>
-                      </div>
-                    </a>
-                    <a 
-                      href="tel:+918796755169" 
-                      className="flex items-center gap-2.5 p-3.5 bg-gray-50 rounded-lg hover:bg-[#D97706]/5 transition-colors"
-                    >
-                      <Phone size={16} className="text-[#D97706] shrink-0" />
-                      <div className="min-w-0">
-                        <span className="block text-[9px] font-bold uppercase tracking-wider text-gray-400">Call</span>
-                        <span className="text-[10px] font-bold text-[#111111]">+91 87967 55169</span>
-                      </div>
-                    </a>
-                  </div>
-                </div>
-
-                {/* Mobile CTA */}
-                <a
-                  href="/contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection('/contact');
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="mt-5 w-full bg-[#D97706] text-white px-5 py-3.5 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-[#0f172a] transition-all text-center flex items-center justify-center gap-2"
-                >
-                  <Sparkles size={15} className="shrink-0" />
-                  <span>Book Strategy Call</span>
-                </a>
-
-                {/* Trust Badges */}
-                <div className="mt-5 flex items-center justify-center gap-6">
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle size={11} className="text-emerald-500 shrink-0" />
-                    <span className="text-[8px] font-bold uppercase tracking-wider text-gray-400">120+ Launches</span>
-                  </div>
-                  <div className="w-px h-4 bg-gray-200" />
-                  <div className="flex items-center gap-1.5">
-                    <Star size={11} className="text-[#D97706] shrink-0" />
-                    <span className="text-[8px] font-bold uppercase tracking-wider text-gray-400">4.9 Rating</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </>
+            {/* Mobile Social Links Row */}
+            <div className="pt-2 border-t border-zinc-100 flex items-center justify-center gap-3">
+              <a
+                href="https://t.me/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-zinc-100 text-zinc-700 hover:bg-[#229ED9] hover:text-white transition-all shadow-xs"
+                aria-label="Telegram"
+              >
+                <Send size={15} className="-rotate-12" />
+              </a>
+              <a
+                href="https://facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-zinc-100 text-zinc-700 hover:bg-[#1877F2] hover:text-white transition-all shadow-xs"
+                aria-label="Facebook"
+              >
+                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                </svg>
+              </a>
+              <a
+                href="https://instagram.com/banegabrand"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-zinc-100 text-zinc-700 hover:bg-gradient-to-tr hover:from-[#F58529] hover:via-[#DD2A7B] hover:to-[#8134AF] hover:text-white transition-all shadow-xs"
+                aria-label="Instagram"
+              >
+                <Instagram size={15} />
+              </a>
+              <a
+                href="https://youtube.com/@BanegaBrand"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-full flex items-center justify-center bg-zinc-100 text-zinc-700 hover:bg-[#FF0000] hover:text-white transition-all shadow-xs"
+                aria-label="YouTube"
+              >
+                <Youtube size={15} />
+              </a>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </header>
   );
 };
+
+export default Navbar;

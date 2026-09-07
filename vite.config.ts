@@ -37,7 +37,18 @@ export default defineConfig(({ mode }) => {
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       watch: {
-        ignored: ['**/dist/**'],
+        ignored: [
+          '**/dist/**',
+          '**/*.zip',
+          '**/dist.zip',
+          '**/.git/**',
+          '**/public/**',
+          '**/*.webp',
+          '**/*.png',
+          '**/*.jpg',
+          '**/*.jpeg',
+          '**/*.mp4',
+        ],
       },
     },
   };

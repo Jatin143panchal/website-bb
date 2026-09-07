@@ -14,7 +14,7 @@ export const ManufacturingEcosystemSection = () => {
           loop
           preload="none"
         >
-          <source src="/assets/3.mp4" type="video/mp4" />
+          <source src="/assets/showcase/core.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         {/* Dark Overlay for readability */}

@@ -1,28 +1,58 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, MessageCircle } from 'lucide-react';
 
-export const ConsultationSection = () => {
+const INDUSTRIES = [
+  'Perfume & Fine Fragrances',
+  'Color Cosmetics & Makeup',
+  'Authentic Ayurveda',
+  'Clinical Skincare & Derma',
+];
+
+const BUDGETS = [
+  'Under ₹5 Lakhs',
+  '₹5 Lakhs - ₹15 Lakhs',
+  '₹15 Lakhs - ₹30 Lakhs',
+  '₹30 Lakhs+',
+];
+
+const TIMELINES = [
+  'Under 30 Days',
+  '30-60 Days',
+  '60-90 Days',
+  'Flexible',
+];
+
+const STAGES = [
+  'Just an Idea',
+  'Sampling',
+  'Ready to Manufacture',
+  'Fully Operational',
+];
+
+export const ConsultationSection: React.FC = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    industry: 'Luxury Perfume',
+    industry: 'Perfume & Fine Fragrances',
     budget: '₹5 Lakhs - ₹15 Lakhs',
     timeline: '30-60 Days',
     stage: 'Just an Idea',
-    idea: ''
+    idea: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: "5eda95b0-84fb-4620-8e31-abaa006328c2",
+          access_key: '5eda95b0-84fb-4620-8e31-abaa006328c2',
           ...formData,
         }),
       });
@@ -35,293 +65,359 @@ export const ConsultationSection = () => {
             name: '',
             phone: '',
             email: '',
-            industry: 'Luxury Perfume',
+            industry: 'Perfume & Fine Fragrances',
             budget: '₹5 Lakhs - ₹15 Lakhs',
             timeline: '30-60 Days',
             stage: 'Just an Idea',
-            idea: ''
+            idea: '',
           });
-        }, 5000);
+        }, 6000);
       }
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error('Form submission error:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="relative py-24 md:py-32 text-[#111111] overflow-hidden border-t border-zinc-200 font-sans" id="consultation">
+    <section id="consultation" className="relative w-full bg-[#FAFAF9] text-[#111111] py-24 sm:py-32 md:py-40 px-4 sm:px-6 lg:px-12 overflow-hidden border-t border-zinc-200">
       
-      {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="none"
-          className="w-full h-full object-cover opacity-30"
-        >
-          <source src="/assets/4.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        {/* Dark overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FAFAFA]/90 via-[#FAFAFA]/80 to-[#FAFAFA]/90" />
-      </div>
+      {/* Background Architectural Grid Lines */}
+      <div className="absolute inset-0 opacity-[0.035] pointer-events-none -z-0"
+        style={{
+          backgroundImage: 'linear-gradient(to right, #111 1px, transparent 1px), linear-gradient(to bottom, #111 1px, transparent 1px)',
+          backgroundSize: '48px 48px',
+        }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+      <div className="max-w-[1400px] mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
           
-          {/* Left Side: Editorial Content */}
-          <div className="space-y-8 lg:sticky lg:top-32 text-left">
-            <div className="space-y-4">
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D97706] block">
-                THE EXECUTION LAUNCHPAD
-              </span>
-              
-              <h2 className="text-4xl md:text-6xl font-sans font-black tracking-tight uppercase leading-[0.95]">
-                Start Your <br />
-                <span className="text-[#D97706]">Brand Journey</span>
+          {/* ── LEFT EDITORIAL BRIEFING COLUMN ─────────────────────────────── */}
+          <div className="lg:col-span-5 flex flex-col items-start space-y-6 lg:sticky lg:top-28 text-left">
+            
+            {/* Main Headline */}
+            <div className="space-y-3">
+              <h2 className="text-4xl sm:text-5xl md:text-6xl font-normal uppercase tracking-tight text-[#111111] leading-[1.02] space-y-1">
+                <span 
+                  className="block text-4xl sm:text-5xl md:text-6xl font-normal uppercase tracking-tight text-[#111111]"
+                  style={{ 
+                    fontFamily: "'Playfair Display', 'Bodoni MT', 'Didot', 'Cormorant Garamond', Georgia, serif",
+                    letterSpacing: '-0.015em' 
+                  }}
+                >
+                  Start Your
+                </span>
+                <span 
+                  className="block text-3xl sm:text-4xl md:text-5xl font-light uppercase tracking-wide text-[#555555]"
+                  style={{ 
+                    fontFamily: "'Mulish', 'Outfit', 'Sora', system-ui, sans-serif",
+                    letterSpacing: '0.01em',
+                    fontWeight: 300 
+                  }}
+                >
+                  Brand Journey
+                </span>
               </h2>
-              
-              <p className="text-lg md:text-xl text-[#666666] font-bold leading-relaxed max-w-lg">
+
+              <p 
+                className="text-base sm:text-lg text-zinc-600 font-normal leading-relaxed max-w-lg"
+                style={{ fontFamily: "'Mulish', 'Muli', system-ui, sans-serif" }}
+              >
                 Tell us your idea — even if it's just a concept. We'll map out the exact steps to take it from raw idea to shelves across India.
               </p>
             </div>
 
-            <div className="space-y-4 pt-4 border-t border-zinc-200">
+            {/* Clean Proof Points (Icon removed, clean spacing) */}
+            <div className="w-full space-y-2.5 pt-3 border-t border-zinc-200">
               {[
                 'End-to-end execution — formula to marketplace',
                 'GMP-certified factory network across India',
-                'Launched 215+ brands across Amazon, Flipkart & Nykaa'
+                'Launched 215+ brands across Amazon, Flipkart & Nykaa',
               ].map((item, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#D97706]/10 flex items-center justify-center text-[#D97706]">
-                    <CheckCircle2 size={12} className="stroke-[3]" />
-                  </div>
-                  <span className="text-sm font-black text-[#111111] uppercase tracking-tight">{item}</span>
+                <div key={i} className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF5722] shrink-0" />
+                  <span 
+                    className="text-xs sm:text-sm font-semibold text-zinc-800 tracking-tight"
+                    style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+                  >
+                    {item}
+                  </span>
                 </div>
               ))}
             </div>
 
-            {/* WhatsApp Quick Connect */}
-            <a
-              href="https://wa.me/918796755169?text=Hi%20Mayank%2C%20I%20want%20to%20launch%20my%20brand%20with%20BanegaBrand!"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-6 py-4 bg-[#25D366] hover:bg-[#1ebe5d] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all duration-200 active:scale-95 shadow-md"
-              aria-label="Chat with Mayank Tiwari on WhatsApp"
-            >
-              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current" xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-              </svg>
-              Chat on WhatsApp — Instant Reply
-            </a>
+            {/* WhatsApp Quick Connect Button */}
+            <div className="w-full sm:w-auto pt-1">
+              <a
+                href="https://wa.me/918796755169?text=Hi%20Mayank%2C%20I%20want%20to%20launch%20my%20brand%20with%20BanegaBrand!"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-200 shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
+                style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+                aria-label="Chat on WhatsApp"
+              >
+                <MessageCircle size={17} />
+                <span>Chat on WhatsApp — Instant Reply</span>
+              </a>
+            </div>
 
-            <div className="p-6 rounded-3xl bg-white/90 backdrop-blur-sm border border-zinc-200 shadow-sm inline-block max-w-md">
-              <span className="text-[8px] font-mono tracking-widest text-zinc-500 font-black uppercase block mb-1">
-                OUR SLA PLEDGE
-              </span>
-              <p className="text-xs font-bold text-[#666666] leading-relaxed italic">
+            {/* Architectural SLA Pledge Quote Box (Beautiful & Clean) */}
+            <div className="w-full p-5 sm:p-6 rounded-2xl bg-white border border-zinc-200/90 shadow-sm space-y-2 transition-all hover:border-zinc-300">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#FF5722] animate-pulse" />
+                <span 
+                  className="text-[11px] tracking-widest text-[#111111] font-bold uppercase"
+                  style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+                >
+                  OUR SLA PLEDGE
+                </span>
+              </div>
+              <p 
+                className="text-xs sm:text-[13px] font-medium text-zinc-600 italic leading-relaxed"
+                style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+              >
                 "No pressure. No spam. Just operational clarity to transform raw chemical ideas into market-ready brands."
               </p>
             </div>
+
           </div>
 
-          {/* Right Side: High-converting interactive input fields Form */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="bg-white/95 backdrop-blur-sm p-8 md:p-10 rounded-[40px] shadow-md border border-zinc-200 relative"
-          >
+          {/* ── RIGHT STUDIO INTAKE FORM (INTERNATIONAL LUXURY UI) ─────────── */}
+          <div className="lg:col-span-7 w-full bg-white rounded-3xl sm:rounded-[32px] p-6 sm:p-10 md:p-12 border border-zinc-200/90 shadow-xl relative overflow-hidden">
+            
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 <motion.div
                   key="success"
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
                   className="py-16 text-center space-y-6"
                 >
-                  <div className="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto border border-emerald-100">
+                  <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
                     <CheckCircle2 size={32} className="stroke-[2.5]" />
                   </div>
-                  <h3 className="text-2xl font-black text-[#111111]">LAUNCH INITIATED!</h3>
-                  <p className="text-[#666666] font-bold text-xs max-w-xs mx-auto leading-relaxed">
-                    We received your submission. An expert packaging and lab-sourcing strategist will reach out to you within 24 business hours.
-                  </p>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#111111]">
+                      Launch Blueprint Initiated
+                    </h3>
+                    <p className="text-zinc-600 font-medium text-sm max-w-sm mx-auto leading-relaxed">
+                      Your brand concept has been logged. Our chief formulation and manufacturing strategist will reach out within 24 hours with an actionable roadmap.
+                    </p>
+                  </div>
                 </motion.div>
               ) : (
-                <motion.form 
+                <motion.form
                   key="form"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="space-y-5 text-left" 
                   onSubmit={handleSubmit}
+                  className="space-y-7 text-left"
                 >
-                  {/* Name field */}
-                  <div className="space-y-1.5">
-                    <label htmlFor="consult-name" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                      Full Name
-                    </label>
-                    <input 
-                      id="consult-name"
-                      required 
-                      type="text" 
-                      placeholder="e.g., Aditya Sen" 
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none" 
-                    />
-                  </div>
-
-                  {/* Phone & Email Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Contact Info (Name, Phone, Email) */}
+                  <div className="space-y-4">
                     <div className="space-y-1.5">
-                      <label htmlFor="consult-phone" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                        Phone Number
+                      <label htmlFor="name" className="text-xs font-bold uppercase tracking-wider text-zinc-800">
+                        Full Name <span className="text-[#FF5722]">*</span>
                       </label>
-                      <input 
-                        id="consult-phone"
-                        required 
-                        type="tel" 
-                        placeholder="e.g., +91 87967 55169" 
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none" 
+                      <input
+                        id="name"
+                        required
+                        type="text"
+                        placeholder="e.g., Mayank Tiwari"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        className="w-full h-12 sm:h-13 px-4 rounded-xl bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-black focus:ring-1 focus:ring-black text-sm font-semibold text-zinc-900 outline-none transition-all"
                       />
                     </div>
-                    <div className="space-y-1.5">
-                      <label htmlFor="consult-email" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                        Email Address
-                      </label>
-                      <input 
-                        id="consult-email"
-                        required 
-                        type="email" 
-                        placeholder="e.g., aditya@somabotanicals.com" 
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none" 
-                      />
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1.5">
+                        <label htmlFor="phone" className="text-xs font-bold uppercase tracking-wider text-zinc-800">
+                          Phone Number <span className="text-[#FF5722]">*</span>
+                        </label>
+                        <input
+                          id="phone"
+                          required
+                          type="tel"
+                          placeholder="e.g., +91 87967 55169"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className="w-full h-12 sm:h-13 px-4 rounded-xl bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-black focus:ring-1 focus:ring-black text-sm font-semibold text-zinc-900 outline-none transition-all"
+                        />
+                      </div>
+
+                      <div className="space-y-1.5">
+                        <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-zinc-800">
+                          Email Address <span className="text-[#FF5722]">*</span>
+                        </label>
+                        <input
+                          id="email"
+                          required
+                          type="email"
+                          placeholder="e.g., founder@mybrand.com"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className="w-full h-12 sm:h-13 px-4 rounded-xl bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-black focus:ring-1 focus:ring-black text-sm font-semibold text-zinc-900 outline-none transition-all"
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Industry & Budget Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="consult-industry" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                        Industry Category
-                      </label>
-                      <select 
-                        id="consult-industry"
-                        value={formData.industry}
-                        onChange={(e) => setFormData({ ...formData, industry: e.target.value })}
-                        className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none cursor-pointer"
-                      >
-                        <option>Luxury Perfume</option>
-                        <option>Modern Ayurveda</option>
-                        <option>Cosmetics</option>
-                        <option>Nutraceuticals</option>
-                        <option>Personal Care</option>
-                        <option>Pet Care</option>
-                        <option>Other</option>
-                      </select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <label htmlFor="consult-budget" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                        Budget Segment
-                      </label>
-                      <select 
-                        id="consult-budget"
-                        value={formData.budget}
-                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                        className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none cursor-pointer"
-                      >
-                        <option>Under ₹5 Lakhs</option>
-                        <option>₹5 Lakhs - ₹15 Lakhs</option>
-                        <option>₹15 Lakhs - ₹30 Lakhs</option>
-                        <option>₹30 Lakhs+</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Timeline & Current Stage Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <label htmlFor="consult-timeline" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                        Launch Timeline
-                      </label>
-                      <select 
-                        id="consult-timeline"
-                        value={formData.timeline}
-                        onChange={(e) => setFormData({ ...formData, timeline: e.target.value })}
-                        className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none cursor-pointer"
-                      >
-                        <option>Under 30 Days</option>
-                        <option>30-60 Days</option>
-                        <option>60-90 Days</option>
-                        <option>Flexible</option>
-                      </select>
-                    </div>
-                    <div className="space-y-1.5">
-                      <label htmlFor="consult-stage" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                        Current Stage
-                      </label>
-                      <select 
-                        id="consult-stage"
-                        value={formData.stage}
-                        onChange={(e) => setFormData({ ...formData, stage: e.target.value })}
-                        className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none cursor-pointer"
-                      >
-                        <option>Just an Idea</option>
-                        <option>Sampling</option>
-                        <option>Ready to Manufacture</option>
-                        <option>Fully Operational</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Textarea description */}
-                  <div className="space-y-1.5">
-                    <label htmlFor="consult-idea" className="text-[10px] font-black uppercase tracking-wider text-zinc-700 block">
-                      Tell Us About Your Idea
+                  {/* 1. Industry Category Pill Selection */}
+                  <div className="space-y-2.5 pt-2 border-t border-zinc-100">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-800 block">
+                      Industry Category
                     </label>
-                    <textarea 
-                      id="consult-idea"
-                      required 
-                      rows={3} 
-                      placeholder="Briefly describe your vision, target client, or packaging hope..." 
+                    <div className="flex flex-wrap gap-2">
+                      {INDUSTRIES.map((ind) => {
+                        const isSelected = formData.industry === ind;
+                        return (
+                          <button
+                            key={ind}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, industry: ind })}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#111111] text-white shadow-sm'
+                                : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/60'
+                            }`}
+                          >
+                            {ind}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 2. Budget Segment Pill Selection */}
+                  <div className="space-y-2.5 pt-2 border-t border-zinc-100">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-800 block">
+                      Budget Segment
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {BUDGETS.map((bud) => {
+                        const isSelected = formData.budget === bud;
+                        return (
+                          <button
+                            key={bud}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, budget: bud })}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#111111] text-white shadow-sm'
+                                : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/60'
+                            }`}
+                          >
+                            {bud}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 3. Launch Timeline Pill Selection */}
+                  <div className="space-y-2.5 pt-2 border-t border-zinc-100">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-800 block">
+                      Launch Timeline
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {TIMELINES.map((time) => {
+                        const isSelected = formData.timeline === time;
+                        return (
+                          <button
+                            key={time}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, timeline: time })}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#111111] text-white shadow-sm'
+                                : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/60'
+                            }`}
+                          >
+                            {time}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 4. Current Stage Pill Selection */}
+                  <div className="space-y-2.5 pt-2 border-t border-zinc-100">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-800 block">
+                      Current Stage
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {STAGES.map((stg) => {
+                        const isSelected = formData.stage === stg;
+                        return (
+                          <button
+                            key={stg}
+                            type="button"
+                            onClick={() => setFormData({ ...formData, stage: stg })}
+                            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                              isSelected
+                                ? 'bg-[#111111] text-white shadow-sm'
+                                : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/60'
+                            }`}
+                          >
+                            {stg}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Textarea Description */}
+                  <div className="space-y-1.5 pt-2 border-t border-zinc-100">
+                    <label htmlFor="idea" className="text-xs font-bold uppercase tracking-wider text-zinc-800 block">
+                      Tell Us About Your Idea <span className="text-[#FF5722]">*</span>
+                    </label>
+                    <textarea
+                      id="idea"
+                      required
+                      rows={3}
+                      placeholder="Describe your product vision, target market, formulation concept, or brand aspiration..."
                       value={formData.idea}
                       onChange={(e) => setFormData({ ...formData, idea: e.target.value })}
-                      className="w-full px-5 py-4 bg-[#FAFAFA]/80 backdrop-blur-sm border border-zinc-200 rounded-2xl font-bold text-sm text-[#111111] focus:bg-white focus:ring-2 focus:ring-[#D97706] transition-all outline-none resize-none" 
+                      className="w-full p-4 rounded-xl bg-zinc-50 border border-zinc-200 focus:bg-white focus:border-black focus:ring-1 focus:ring-black text-sm font-medium text-zinc-900 outline-none transition-all resize-none"
                     />
                   </div>
 
-                  {/* Submit button */}
-                  <button 
-                    type="submit" 
-                    className="w-full py-5 bg-[#D97706] hover:bg-[#111111] text-white rounded-2xl font-black text-sm uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-3 active:scale-95 leading-none mt-2 shadow-lg cursor-pointer group"
-                    aria-label="Submit Brand Launch Consultation Form"
+                  {/* High Impact Primary CTA Submit Button */}
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full py-4.5 rounded-2xl bg-[#FF5722] hover:bg-[#e04a1b] text-white font-bold text-sm sm:text-base uppercase tracking-wider transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-[#FF5722]/25 active:scale-98 flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50"
+                    style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
                   >
-                    <span>🚀 Start My Brand Launch — Free Consultation</span>
-                    <Send size={15} className="text-white group-hover:translate-x-1 transition-transform" />
+                    <span>{isSubmitting ? 'Transmitting Concept...' : 'Start My Brand Launch — Free Consultation'}</span>
+                    <ArrowRight size={18} />
                   </button>
 
-                  <p className="text-center text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
-                    No Spam. No Pressure. Expert Response Within 24 Hours.
-                  </p>
+                  <div 
+                    className="flex flex-wrap items-center justify-center gap-2 text-center text-[10px] sm:text-[11px] font-bold tracking-wider text-zinc-400 uppercase pt-1"
+                    style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
+                  >
+                    <span>CONFIDENTIAL</span>
+                    <span className="text-zinc-300">•</span>
+                    <span>NO SPAM</span>
+                    <span className="text-zinc-300">•</span>
+                    <span>24-HOUR EXECUTIVE SLA RESPONSE</span>
+                  </div>
                 </motion.form>
               )}
             </AnimatePresence>
 
-            {/* Glowing blur ball */}
-            <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-[#D97706]/5 rounded-full blur-3xl -z-10" />
-          </motion.div>
+          </div>
 
         </div>
       </div>
     </section>
   );
 };
+
+export default ConsultationSection;

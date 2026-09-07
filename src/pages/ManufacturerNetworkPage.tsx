@@ -24,11 +24,12 @@ import {
 } from 'lucide-react';
 
 import { Navbar } from '../components/Navbar';
-import { MainFooter } from '../components/MainFooter';
+import { FigmaFooter } from '../components/FigmaFooter';
+import { SchbangNetworkSection } from '../components/SchbangNetworkSection';
 
 export const ManufacturerNetworkPage = () => {
   // Simulator State variables
-  const [selectedCategory, setSelectedCategory] = useState<'perfume' | 'ayurveda' | 'cosmetics' | 'nutraceuticals'>('perfume');
+  const [selectedCategory, setSelectedCategory] = useState<'perfume' | 'ayurveda' | 'cosmetics' | 'skincare'>('perfume');
   const [targetEstVolume, setTargetEstVolume] = useState<number>(1000);
   const [activeTab, setActiveTab] = useState<'consultancy' | 'directory'>('consultancy');
 
@@ -49,17 +50,17 @@ export const ManufacturerNetworkPage = () => {
     },
     cosmetics: {
       title: 'High-End Cosmetic Compounding',
-      regulatory: 'ISO 22716 & Cruelty-Free Compliance',
+      regulatory: 'ISO 22716 & CDSCO Compliance',
       keyFactor: 'Viscosity, oxidation checks, and color-matching stability',
       typicalSamples: '4-5 formulation iterations',
       protection: 'Custom formulation copyright ownership'
     },
-    nutraceuticals: {
-      title: 'Dietary & Wellness Nutraceuticals',
-      regulatory: 'FSSAI Standards & WHO-GMP Labs',
-      keyFactor: 'Heavy metal screenings, capsule stability, shelf disintegration rates',
-      typicalSamples: '2-3 formulation iterations',
-      protection: 'Proprietary ingredient compound insulation'
+    skincare: {
+      title: 'Clinical Skincare & Derma Labs',
+      regulatory: 'CDSCO Compliance & Dermatological Patch Testing',
+      keyFactor: 'Active ingredient stability, micro-emulsification & cleanroom compounding',
+      typicalSamples: '3-4 formulation iterations',
+      protection: 'Proprietary clinical formula IP protection'
     }
   };
 
@@ -67,8 +68,8 @@ export const ManufacturerNetworkPage = () => {
     <div id="manufacturer-network-page" className="relative bg-[#FAFAFA] text-[#111111] selection:bg-[#D97706] selection:text-white min-h-screen font-sans overflow-x-hidden">
       <Helmet>
         <title>Verified Third-Party Manufacturing Network | Banega Brand – India's Leading Product Launch Company</title>
-        <meta name="description" content="Access our verified, audited ecosystem of GMP and ISO certified OEM/ODM manufacturers across perfume, cosmetics, skincare, Ayurveda, and nutraceuticals." />
-        <meta name="keywords" content="Third Party Manufacturers India, Cosmetic OEM India, Perfume Contract Manufacturing, Ayurveda Third Party Manufacturer, Banega Brand" />
+        <meta name="description" content="Access our verified, audited ecosystem of GMP and ISO certified OEM/ODM manufacturers across perfume, cosmetics, skincare, and Ayurveda." />
+        <meta name="keywords" content="Third Party Manufacturers India, Cosmetic OEM India, Perfume Contract Manufacturing, Ayurveda Third Party Manufacturer, Skincare Lab India, Banega Brand" />
         <link rel="canonical" href="https://banegabrand.com/manufacturer-network" />
         <meta property="og:title" content="Verified Manufacturing Network | Banega Brand" />
         <meta property="og:description" content="Audited GMP certified contract manufacturers across India." />
@@ -381,9 +382,9 @@ export const ManufacturerNetworkPage = () => {
                   <div className="grid grid-cols-2 gap-3">
                     {[
                       { id: 'perfume', label: 'Elegancia Perfume' },
+                      { id: 'cosmetics', label: 'Color Cosmetics' },
                       { id: 'ayurveda', label: 'Ayurveda Wellness' },
-                      { id: 'cosmetics', label: 'Organic Cosmetics' },
-                      { id: 'nutraceuticals', label: 'Nutraceuticals' }
+                      { id: 'skincare', label: 'Clinical Skincare' }
                     ].map((btn) => (
                       <button
                         key={btn.id}
@@ -629,9 +630,12 @@ export const ManufacturerNetworkPage = () => {
           </div>
         </section>
 
+        {/* ── BANEGA BRAND NETWORK & PARTNERSHIPS ACCORDION SECTION ─────────── */}
+        <SchbangNetworkSection />
+
       </main>
 
-      <MainFooter />
+      <FigmaFooter />
     </div>
   );
 };

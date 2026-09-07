@@ -1,0 +1,63 @@
+import React, { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+export const CosmeticsBrandingSection: React.FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+  const delivRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(headRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: headRef.current, start: 'top 80%' } });
+      gsap.fromTo(delivRef.current?.querySelectorAll('.deliverable') ?? [], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: 'power2.out', scrollTrigger: { trigger: delivRef.current, start: 'top 78%' } });
+    }, sectionRef);
+    return () => ctx.revert();
+  }, []);
+
+  const deliverables = [
+    { num: '01', item: 'Brand Name & Naming', desc: 'Beauty-sector naming research, trademark viability, phonaesthetic scoring.' },
+    { num: '02', item: 'Visual Identity System', desc: 'Logo, wordmark, monogram, icon suite in all formats.' },
+    { num: '03', item: 'Colour & Typography', desc: 'Brand palette with Pantone/CMYK, brand typefaces and usage.' },
+    { num: '04', item: 'Component Label Design', desc: 'Primary label for tube, compact, bullet — foil-print ready.' },
+    { num: '05', item: 'Carton & Box Artwork', desc: 'Dieline artwork with hot stamp, UV and emboss coordinates.' },
+    { num: '06', item: 'Brand Story & Copy', desc: 'Product narrative, shade names, about copy, tagline.' },
+    { num: '07', item: '3D Product Renders', desc: 'Photorealistic renders across all products for digital & print.' },
+    { num: '08', item: 'Brand Guidelines PDF', desc: '40-page brand bible: usage rules, spacing, tone of voice.' },
+  ];
+
+  return (
+    <section ref={sectionRef} className="py-24 sm:py-32 px-6 sm:px-12 lg:px-20 bg-white border-t border-zinc-100">
+      <div className="max-w-7xl mx-auto">
+        <div ref={headRef} className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-10 items-end">
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-px bg-zinc-400" />
+              <span className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">Branding</span>
+            </div>
+            <h2 className="text-[clamp(2.5rem,5vw,4.5rem)] font-normal tracking-[-0.02em] text-[#111111] leading-[1.05] uppercase" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>DON'T JUST MAKE</h2>
+            <h3 className="text-[clamp(2rem,4vw,3.5rem)] font-light tracking-[0.04em] text-[#888888] leading-[1.05] uppercase" style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontWeight: 300 }}>MAKEUP. BUILD A BRAND.</h3>
+          </div>
+          <p className="text-sm text-zinc-600 leading-relaxed max-w-lg" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            The beauty aisle is crowded. What wins isn't just a better formula — it's a brand that looks, sounds and feels worth buying. We build that system: from name to packaging to your first Reel.
+          </p>
+        </div>
+        <div ref={delivRef} className="divide-y divide-zinc-100">
+          {deliverables.map((d) => (
+            <div key={d.num} className="deliverable flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 py-6">
+              <span className="text-xs font-mono text-zinc-400 shrink-0 w-6">{d.num}</span>
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-[280px_1fr] gap-2">
+                <h4 className="text-sm font-medium text-[#111111]" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>{d.item}</h4>
+                <p className="text-sm text-zinc-500" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>{d.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default CosmeticsBrandingSection;

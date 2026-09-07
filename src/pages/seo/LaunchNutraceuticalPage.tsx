@@ -23,28 +23,39 @@ export const LaunchNutraceuticalPage = () => {
 
       <main className="pt-24">
         {/* Hero Section */}
-        <section className="py-20 lg:py-28 px-6 bg-white relative">
+        <section className="py-20 lg:py-28 px-6 bg-white relative select-none">
           <div className="max-w-5xl mx-auto text-center space-y-6">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#FAFAFA] border border-[#EAEAEA] text-[10px] font-black uppercase tracking-[0.2em] text-[#D97706]">
+            <span 
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200/80 text-[11px] font-black uppercase tracking-[0.18em] text-[#D97706]"
+              style={{ fontFamily: "'Mulish', 'Inter', system-ui, sans-serif" }}
+            >
               PREMIUM NUTRACEUTICAL LAUNCH SERVICE
             </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-sans font-black uppercase tracking-tight text-[#111111] leading-none mb-4">
+            <h1 
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-black uppercase tracking-[-0.03em] text-[#111111] leading-[1.08] mb-4"
+              style={{ fontFamily: "'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}
+            >
               LAUNCH YOUR OWN <br />
               <span className="text-[#D97706]">NUTRACEUTICAL DIETARY BRAND</span>
             </h1>
-            <p className="text-sm md:text-lg text-[#666666] font-bold max-w-2xl mx-auto leading-relaxed">
+            <p 
+              className="text-base sm:text-lg md:text-xl text-zinc-600 font-normal max-w-2xl mx-auto leading-relaxed"
+              style={{ fontFamily: "'Mulish', 'Inter', system-ui, sans-serif" }}
+            >
               We help founders build compliant wellness lines, secure clean WHO-GMP certified clinical sourcing, map FSSAI labels cleanly, and scale in 60–90 Days.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link 
                 to="/contact"
-                className="bg-[#D97706] text-white px-8 py-4.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#111111] transition-all"
+                className="bg-[#D97706] hover:bg-[#111111] text-white px-9 py-4.5 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-95"
+                style={{ fontFamily: "'Mulish', 'Inter', system-ui, sans-serif" }}
               >
                 BOOK NUTRA STRATEGY CALL
               </Link>
               <Link 
                 to="/industries"
-                className="bg-[#FAFAFA] text-[#111111] border border-[#EAEAEA] px-8 py-4.5 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-white transition-all"
+                className="bg-[#FAFAFA] hover:bg-white text-[#111111] border border-[#EAEAEA] px-9 py-4.5 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 active:scale-95"
+                style={{ fontFamily: "'Mulish', 'Inter', system-ui, sans-serif" }}
               >
                 BACK TO INDUSTRIES
               </Link>

@@ -19,7 +19,7 @@ export const WhyBanegaBrandSection = () => {
     {
       title: 'MANUFACTURING ECOSYSTEM',
       boldText: 'Trusted production partners.',
-      desc: 'Access a curated ecosystem of manufacturing partners across perfume, ayurveda, cosmetics, nutraceuticals and personal care categories.',
+      desc: 'Access a curated ecosystem of manufacturing partners across perfume, cosmetics, ayurveda, and clinical skincare categories.',
       icon: Factory,
     },
     {

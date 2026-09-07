@@ -59,6 +59,9 @@ const ShowcaseCard = ({
     </div>
   </motion.div>
 );
+//    animation adding before the section 
+
+
 
 export const ShowcaseSection = () => {
   return (

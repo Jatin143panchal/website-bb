@@ -15,7 +15,7 @@ export const FinalCtaSection = () => {
           playsInline
           className="w-full h-full object-cover opacity-40"
         >
-          <source src="/assets/4.mp4" type="video/mp4" />
+          <source src="/assets/product_idea_formulation.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         {/* Light overlay for text readability */}

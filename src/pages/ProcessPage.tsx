@@ -284,7 +284,7 @@ export const ProcessPage = () => {
                   <motion.div 
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
-                    transition={{ duration: 3, ease: "easeInOut", repeat: Infinity, repeatDelay: 1 }}
+                    transition={{ duration: 8, ease: "easeInOut", repeat: Infinity, repeatDelay: 1.5 }}
                     className="absolute top-1/2 left-0 h-[2.5px] bg-[#D97706] -translate-y-1/2 shadow-[0_0_12px_#D97706]"
                   />
                 </div>

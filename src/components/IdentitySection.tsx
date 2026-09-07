@@ -67,7 +67,7 @@ export const Hero = () => {
           <motion.div 
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.8, ease: [0.18, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/90 backdrop-blur-sm border border-white/20 shadow-sm rounded-full"
           >
             <span className="w-2 h-2 rounded-full bg-[#D97706] animate-pulse" />
@@ -199,8 +199,8 @@ export const Hero = () => {
                           borderColor: ["rgb(228, 228, 231)", "rgba(217, 119, 6, 0.8)", "rgb(228, 228, 231)"] 
                         }}
                         transition={{ 
-                          duration: 3, 
-                          delay: idx * 0.5, 
+                          duration: 6, 
+                          delay: idx * 1.0, 
                           repeat: Infinity 
                         }}
                         className={`w-8 h-8 rounded-full ${step.bg} border border-zinc-200 flex items-center justify-center shadow-sm`}

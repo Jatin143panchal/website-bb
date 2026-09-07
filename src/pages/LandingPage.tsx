@@ -1,25 +1,19 @@
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Hero } from '../components/Hero';
 import { Navbar } from '../components/Navbar';
-import { MainFooter } from '../components/MainFooter';
-
-// Lazy load below-the-fold components
-const TrustSection = lazy(() => import('../components/TrustSection').then(m => ({ default: m.TrustSection })));
-const BackendProcessSection = lazy(() => import('../components/BackendProcessSection').then(m => ({ default: m.BackendProcessSection })));
-const WhyBanegaBrandSection = lazy(() => import('../components/WhyBanegaBrandSection').then(m => ({ default: m.WhyBanegaBrandSection })));
-// const GallerySection = lazy(() => import('../components/GallerySection').then(m => ({ default: m.GallerySection })));
-const ManufacturingEcosystemSection = lazy(() => import('../components/ManufacturingEcosystemSection').then(m => ({ default: m.ManufacturingEcosystemSection })));
-
-const TestimonialsSection = lazy(() => import('../components/TestimonialsSection').then(m => ({ default: m.TestimonialsSection })));
-// const LegacySection = lazy(() => import('../components/LegacySection').then(m => ({ default: m.LegacySection })));
-const ConsultationSection = lazy(() => import('../components/ConsultationSection').then(m => ({ default: m.ConsultationSection })));
-
-const SectionLoader = () => <div className="h-40 w-full animate-pulse bg-zinc-900/5 rounded-[48px] my-6" />;
+import { FigmaHero } from '../components/FigmaHero';
+import { SchbangWhatDefinesUs } from '../components/SchbangWhatDefinesUs';
+import { FigmaCategoryShowcase } from '../components/FigmaCategoryShowcase';
+import { FigmaTrustGrid } from '../components/FigmaTrustGrid';
+import { ThreeDSteps } from '../components/ThreeDSteps';
+import { FigmaStrategyVideoSection } from '../components/FigmaStrategyVideoSection';
+import { FigmaCaseStudiesSection } from '../components/FigmaCaseStudiesSection';
+import { SchbangContactSection } from '../components/SchbangContactSection';
+import { FigmaFooter } from '../components/FigmaFooter';
 
 export const LandingPage = () => {
   return (
-    <div className="relative bg-[#FAFAFA] text-[#111111] selection:bg-[black] selection:text-white">
+    <div className="relative bg-white text-[#111111] selection:bg-[#FF5722] selection:text-white pt-20 md:pt-24">
       <Helmet>
         <title>Banega Brand – India's Leading Product Launch Company | D2C Brand Development &amp; Private Label Consultant</title>
         <meta
@@ -36,44 +30,40 @@ export const LandingPage = () => {
         <meta property="og:url" content="https://banegabrand.com/" />
         <meta property="og:type" content="website" />
       </Helmet>
+
+      {/* Navbar with Centered Logo */}
       <Navbar />
+
       <main>
-        {/* Section 1: Hero Section */}
-        <Hero />
-        
-        <Suspense fallback={<SectionLoader />}>
-          {/* Section 2: Trust Bar */}
-          <TrustSection />
+        {/* Schbang-Style Motion Hero with Scroll-Driven Video Expansion */}
+        <FigmaHero />
 
-          {/* Section 4: The Banega Brand Framework */}
-          <BackendProcessSection />
+        {/* Schbang-Style What Defines Us Manifesto Section */}
+        <SchbangWhatDefinesUs />
 
-          {/* Section 5: Why Most Product Launches Fail */}
-         
+        {/* Interactive Expandable Category Carousel (100% Full Width Screen) */}
+        <FigmaCategoryShowcase />
 
-          {/* Section 6: Why Banega Brand */}
-          <WhyBanegaBrandSection />
+        {/* High-Definition Pure Brand Logos (Clean 2 Rows on White Matching Reference) */}
+        <FigmaTrustGrid />
 
-          {/* Section 7: Industries We Serve */}
-          {/* <GallerySection /> */}
+        {/* 3D Animated 6-Step Launch Process */}
+        <ThreeDSteps />
 
-          {/* Section 7.5: Manufacturing Ecosystem */}
-          <ManufacturingEcosystemSection />
+        {/* Strategy Execution Room & Formulation Team Video (100% Full Width Edge-to-Edge) */}
+        <FigmaStrategyVideoSection />
 
-        
+        {/* 4 Brand Showcase Case Studies (Biographey, Venotine, ROUGX, Blush en Bloom) */}
+        <FigmaCaseStudiesSection />
 
-          {/* Section 10: Testimonials Section */}
-          <TestimonialsSection />
-
-          {/* Section 11: Legacy Section */}
-          {/* <LegacySection /> */}
-
-          {/* Section 12: Consultation Section (Contact) */}
-          <ConsultationSection />
-        </Suspense>
+        {/* Minimalist Split Contact Us Section (Schbang Design) */}
+        <SchbangContactSection />
       </main>
-      
-      <MainFooter />
+
+      {/* Clean Modern Structured Footer */}
+      <FigmaFooter />
     </div>
   );
 };
+
+export default LandingPage;

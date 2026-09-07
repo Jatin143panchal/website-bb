@@ -34,16 +34,24 @@ import { MainFooter } from '../components/MainFooter';
 // Let's declare our types and lists of categories clearly
 const categories = [
   { id: 'perfume', label: 'Luxury Perfume', hash: '#luxury-perfume' },
-  { id: 'ayurveda', label: 'Ayurveda', hash: '#ayurveda' },
-  { id: 'cosmetics', label: 'Cosmetics', hash: '#cosmetics' },
-  { id: 'nutraceuticals', label: 'Nutraceuticals', hash: '#nutraceuticals' },
-  { id: 'personal-care', label: 'Personal Care', hash: '#personal-care' },
-  { id: 'pet-care', label: 'Pet Care', hash: '#pet-care' }
+  { id: 'cosmetics', label: 'Color Cosmetics', hash: '#cosmetics' },
+  { id: 'ayurveda', label: 'Authentic Ayurveda', hash: '#ayurveda' },
+  { id: 'personal-care', label: 'Clinical Skincare', hash: '#personal-care' }
+];
+
+const PERFUME_SHOWCASE_IMAGES = [
+  { img: '/assets/perfume/blush_en_bloom_golden.jpg', label: 'Golden Silk', spec: 'Extrait · Rose Flacon' },
+  { img: '/assets/perfume/biographey_origin_roses.jpg', label: 'Biographey', spec: 'Origin · Red Roses' },
+  { img: '/assets/perfume/drefor_obsidian_botanical.jpg', label: 'Drefor', spec: 'Obsidian · Split Accord' },
+  { img: '/assets/perfume/108_luxury_velvet_model.jpg', label: '108 Velvet', spec: 'Velvet Eclipse · Model' },
+  { img: '/assets/perfume/blush_en_bloom_trio.jpg', label: 'Blush Trio', spec: 'Cherry Drip Collection' },
 ];
 
 export const IndustriesPage = () => {
   const [activeCategory, setActiveCategory] = useState('perfume');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [activePerfumeImg, setActivePerfumeImg] = useState(PERFUME_SHOWCASE_IMAGES[0].img);
+  const [activePerfumeSpec, setActivePerfumeSpec] = useState(PERFUME_SHOWCASE_IMAGES[0].spec);
 
   // Smooth scroll logic
   const handleScrollToSection = (id: string) => {
@@ -326,7 +334,7 @@ export const IndustriesPage = () => {
                     <span className="text-[10px] font-black uppercase tracking-widest text-[#D97706]">Manufacturing Support Available</span>
                   </div>
                   <p className="text-xs text-[#666666] font-semibold leading-relaxed">
-                    Get pre-vetted contact support for custom perfume bottling, French fragrance oil blending, and IFRA safety check protocols.
+                    Get pre-vetted contact support for custom perfume bottling, custom fine fragrance compounding, and safety check protocols.
                   </p>
                   <Link 
                     to="/manufacturer-network"
@@ -338,48 +346,62 @@ export const IndustriesPage = () => {
                 </div>
               </div>
 
-              {/* Graphic Mock Component Representation */}
-              <div className="lg:col-span-5 bg-[#FAFAFA] border border-[#EAEAEA] p-10 rounded-[48px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[380px]">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[9px] font-black tracking-widest uppercase text-zinc-400">
-                    PRODUCT GRAPHICS ARCHITECTURE
+              {/* Graphic Representation with Real Studio Photography */}
+              <div className="lg:col-span-5 bg-white border border-[#EAEAEA] p-6 sm:p-8 rounded-[40px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[460px]">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">
+                    FINISHED PRODUCT SPOTLIGHT
                   </span>
-                  <div className="px-3 py-1 bg-white border border-[#EAEAEA] rounded-full text-[9px] font-black text-[#D97706] uppercase tracking-wider">
-                    EFFICACY VALIDATION
+                  <div className="px-3 py-1 bg-amber-50 border border-amber-200 rounded-full text-[10px] font-black text-[#D97706] uppercase tracking-wider">
+                    {activePerfumeSpec}
                   </div>
                 </div>
 
-                {/* Symmetrical luxury design element simulating bottle assembly */}
-                <div className="flex-grow flex items-center justify-center py-6">
-                  <div className="relative w-36 h-48 border border-zinc-300 rounded-[28px] bg-white shadow-md flex flex-col justify-between p-4 flex-shrink-0">
-                    <div className="absolute top-0 inset-x-0 h-4 bg-[#D97706]/10 border-b border-zinc-200 rounded-t-[28px] flex items-center justify-center">
-                      <span className="text-[7px] font-black tracking-widest text-[#D97706] uppercase">20% INTENSE</span>
-                    </div>
-                    
-                    {/* Bottle cap mock */}
-                    <div className="w-16 h-8 bg-[#111111] rounded-lg -mt-8 mx-auto self-start border border-zinc-800 shadow-sm flex items-center justify-center">
-                      <span className="text-[6px] font-black text-white uppercase tracking-widest">METALLIC CAP</span>
-                    </div>
-
-                    <div className="my-auto text-center space-y-1">
-                      <p className="text-lg font-black uppercase text-zinc-900 tracking-tight leading-none leading-none">
-                        AURORA
-                      </p>
-                      <p className="text-[8px] font-black uppercase tracking-[0.25em] text-[#D97706] leading-none">
-                        PARFUM DE LUXE
-                      </p>
-                    </div>
-
-                    <div className="text-center pt-2 border-t border-zinc-100 flex justify-between items-center text-[7px] font-bold text-[#666666]">
-                      <span>100ML e</span>
-                      <span>FRANCE BLEND</span>
-                    </div>
-                  </div>
+                {/* Main Active Flacon Photo */}
+                <div className="flex-grow flex items-center justify-center py-2 relative">
+                  <img
+                    key={activePerfumeImg}
+                    src={activePerfumeImg}
+                    alt="Luxury Perfume Flacon by Banega"
+                    className="w-full max-h-[290px] object-cover rounded-2xl shadow-lg transition-all duration-300"
+                  />
                 </div>
 
-                <div className="pt-6 border-t border-zinc-200/60 mt-4 flex items-center justify-between text-xs font-bold text-[#666666]">
-                  <span>Formula Stability Certification</span>
-                  <span className="text-emerald-500 font-black tracking-wider uppercase">APPROVED 100%</span>
+                {/* 5-Thumbnail Selector */}
+                <div className="pt-3 border-t border-zinc-100 mt-2 space-y-2">
+                  <div className="flex items-center justify-between text-[9px] font-black uppercase tracking-wider text-zinc-400">
+                    <span>EXPLORE 5 REAL FOUNDER BOTTLES</span>
+                    <span className="text-emerald-600 font-bold">READY TO LAUNCH</span>
+                  </div>
+
+                  <div className="grid grid-cols-5 gap-2">
+                    {PERFUME_SHOWCASE_IMAGES.map((item, idx) => {
+                      const isSelected = activePerfumeImg === item.img;
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            setActivePerfumeImg(item.img);
+                            setActivePerfumeSpec(item.spec);
+                          }}
+                          onMouseEnter={() => {
+                            setActivePerfumeImg(item.img);
+                            setActivePerfumeSpec(item.spec);
+                          }}
+                          className={`aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
+                            isSelected ? 'border-[#D97706] scale-105 shadow-sm ring-2 ring-[#D97706]/20' : 'border-zinc-200 opacity-70 hover:opacity-100 hover:border-zinc-400'
+                          }`}
+                        >
+                          <img
+                            src={item.img}
+                            alt={item.label}
+                            className="w-full h-full object-cover"
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
 
@@ -392,40 +414,28 @@ export const IndustriesPage = () => {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
               
-              {/* Graphic Mock Left */}
-              <div className="lg:col-span-5 bg-white border border-[#EAEAEA] p-10 rounded-[48px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[380px] order-last lg:order-first">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[9px] font-black tracking-widest uppercase text-zinc-400">
-                    AYUSH COMPLIANCE CHECKLIST
+              {/* Graphic Representation with Real Studio Photography */}
+              <div className="lg:col-span-5 bg-white border border-[#EAEAEA] p-6 sm:p-8 rounded-[40px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[420px] order-last lg:order-first">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">
+                    AUTHENTIC BOTANICAL COLLECTION
                   </span>
-                  <div className="px-3 py-1 bg-[#FAFAFA] border border-[#EAEAEA] rounded-full text-[9px] font-black text-emerald-600 uppercase tracking-wider">
-                    COMPLIANT RUN
+                  <div className="px-3 py-1 bg-emerald-50 border border-emerald-200 rounded-full text-[10px] font-black text-emerald-600 uppercase tracking-wider">
+                    AYUSH CERTIFIED
                   </div>
                 </div>
 
-                {/* Symmetrical design element simulating an ayurvedic elixir bottle */}
-                <div className="flex-grow flex items-center justify-center py-6">
-                  <div className="relative w-36 h-48 border border-emerald-250/20 rounded-full bg-stone-50/50 shadow-md flex flex-col justify-between p-6 flex-shrink-0">
-                    <div className="text-center my-auto space-y-1">
-                      <span className="text-[6px] font-black uppercase tracking-[0.3em] text-emerald-600">CLASSIC HERBAL</span>
-                      <p className="text-lg font-black uppercase text-stone-900 tracking-tight leading-none">
-                        VITALITY
-                      </p>
-                      <p className="text-[8px] font-bold text-stone-500 max-w-[100px] mx-auto leading-relaxed">
-                        Pure cold-pressed botanicals & ashwagandha extract.
-                      </p>
-                    </div>
-
-                    <div className="text-center pt-2 border-t border-zinc-150/60 flex justify-between items-center text-[7px] font-black text-emerald-700">
-                      <span>AYURVEDIC FORMULA</span>
-                      <span>50 ML</span>
-                    </div>
-                  </div>
+                <div className="flex-grow flex items-center justify-center py-2 relative">
+                  <img
+                    src="/assets/ayurveda/ayurveda_hero.jpg"
+                    alt="Authentic Ayurveda & Botanical Formulations"
+                    className="w-full max-h-[320px] object-cover rounded-2xl shadow-md"
+                  />
                 </div>
 
-                <div className="pt-6 border-t border-zinc-200/60 mt-4 flex items-center justify-between text-xs font-bold text-[#666666]">
-                  <span>Lab Testing Protocols</span>
-                  <span className="text-emerald-500 font-black tracking-wider uppercase">FSSAI / AYUSH ASSURED</span>
+                <div className="pt-4 border-t border-zinc-100 mt-4 flex items-center justify-between text-xs font-bold text-[#666666]">
+                  <span>Lab Testing & Heavy Metal Clearance</span>
+                  <span className="text-emerald-600 font-black tracking-wider uppercase">100% PURE BOTANICALS</span>
                 </div>
               </div>
 
@@ -563,34 +573,28 @@ export const IndustriesPage = () => {
                 </div>
               </div>
 
-              {/* Graphic Mock Component representation */}
-              <div className="lg:col-span-5 bg-[#FAFAFA] border border-[#EAEAEA] p-10 rounded-[48px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[320px]">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[9px] font-black tracking-widest uppercase text-zinc-400">
-                    COSMETICS VISUAL STANDARD
+              {/* Graphic Representation with Real Studio Photography */}
+              <div className="lg:col-span-5 bg-white border border-[#EAEAEA] p-6 sm:p-8 rounded-[40px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[420px]">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">
+                    COLOR COSMETICS COLLECTION
                   </span>
-                  <div className="px-3 py-1 bg-white border border-[#EAEAEA] rounded-full text-[9px] font-black text-pink-600 uppercase tracking-wider">
-                    PREMIUM SPEC
+                  <div className="px-3 py-1 bg-pink-50 border border-pink-200 rounded-full text-[10px] font-black text-pink-600 uppercase tracking-wider">
+                    MICRO-PIGMENT FORMULA
                   </div>
                 </div>
 
-                <div className="flex-grow flex items-center justify-center py-6">
-                  <div className="relative w-40 h-28 border border-zinc-200 rounded-[20px] bg-white shadow-md flex flex-col justify-between p-4 flex-shrink-0">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[7px] font-black uppercase tracking-widest text-[#D97706]">MATTE COVERAGE</span>
-                      <div className="w-4 h-4 rounded-full bg-pink-100 border border-pink-400" />
-                    </div>
-                    <div className="my-auto text-left">
-                      <p className="text-md font-black uppercase text-zinc-950 tracking-tight leading-none">GLOW HYDRATE</p>
-                      <p className="text-[7px] font-bold text-zinc-500 uppercase tracking-widest block mt-1">ORGANIC FACE OIL BLEND</p>
-                    </div>
-                    <span className="text-[7px] text-right font-black block tracking-widest text-zinc-400 uppercase">SPF 35+ PROTECTED</span>
-                  </div>
+                <div className="flex-grow flex items-center justify-center py-2 relative">
+                  <img
+                    src="/assets/perfume/blush_en_bloom_trio.jpg"
+                    alt="Blush en Bloom Color Cosmetics & Tint Collection"
+                    className="w-full max-h-[320px] object-cover rounded-2xl shadow-md"
+                  />
                 </div>
 
-                <div className="pt-4 border-t border-zinc-200/65 flex justify-between items-center text-[10px] font-semibold text-zinc-500">
-                  <span>Dermatologist Approved Specs</span>
-                  <span className="text-pink-600 font-bold uppercase">100% CLINICAL PASS</span>
+                <div className="pt-4 border-t border-zinc-100 mt-4 flex items-center justify-between text-xs font-bold text-[#666666]">
+                  <span>Soft-Touch & Quick-Commerce Ready</span>
+                  <span className="text-pink-600 font-black tracking-wider uppercase">READY TO LAUNCH</span>
                 </div>
               </div>
 
@@ -733,31 +737,28 @@ export const IndustriesPage = () => {
                 </div>
               </div>
 
-              {/* Graphic Mock Component representation */}
-              <div className="lg:col-span-5 bg-[#FAFAFA] border border-[#EAEAEA] p-10 rounded-[48px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[320px]">
-                <div className="flex justify-between items-center mb-6">
-                  <span className="text-[9px] font-black tracking-widest uppercase text-zinc-400">
-                    PERSONAL HYGIENE STANDARDS
+              {/* Graphic Representation with Real Studio Photography */}
+              <div className="lg:col-span-5 bg-white border border-[#EAEAEA] p-6 sm:p-8 rounded-[40px] shadow-sm flex flex-col justify-between relative overflow-hidden self-stretch min-h-[420px]">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-[10px] font-black tracking-widest uppercase text-zinc-400">
+                    CLINICAL DERMA & SKINCARE SUITE
                   </span>
-                  <div className="px-3 py-1 bg-white border border-[#EAEAEA] rounded-full text-[9px] font-black text-indigo-600 uppercase tracking-wider">
-                    DAILY HYGIENE
+                  <div className="px-3 py-1 bg-indigo-50 border border-indigo-200 rounded-full text-[10px] font-black text-indigo-600 uppercase tracking-wider">
+                    5-SKU ACTIVE SUITE
                   </div>
                 </div>
 
-                <div className="flex-grow flex items-center justify-center py-6">
-                  <div className="relative w-36 h-40 border border-zinc-200 rounded-[24px] bg-white shadow-md flex flex-col justify-between p-4 flex-shrink-0">
-                    <div className="space-y-1">
-                      <span className="text-[7px] font-black uppercase text-indigo-600 block">SULFATE FREE</span>
-                      <p className="text-md font-black uppercase text-zinc-950 tracking-tight leading-none">NOURISH WASH</p>
-                    </div>
-                    <div className="text-center my-2 text-3xl">🧴</div>
-                    <span className="text-[7px] text-zinc-400 font-bold block text-left">ESTABLISHED ACTIVE DERM COMPONENT</span>
-                  </div>
+                <div className="flex-grow flex items-center justify-center py-2 relative">
+                  <img
+                    src="/assets/skincare/grevety_skincare_full_collection.jpg"
+                    alt="Grevety Clinical Skincare & Derma Collection"
+                    className="w-full max-h-[320px] object-cover rounded-2xl shadow-md"
+                  />
                 </div>
 
-                <div className="pt-4 border-t border-zinc-200/65 flex justify-between items-center text-[10px] font-semibold text-zinc-500">
-                  <span>pH-Standard Balance Testing</span>
-                  <span className="text-indigo-600 font-bold uppercase">STABLE LEVEL RUN</span>
+                <div className="pt-4 border-t border-zinc-100 mt-4 flex items-center justify-between text-xs font-bold text-[#666666]">
+                  <span>Active Serum, Moisturizer & Sunscreen</span>
+                  <span className="text-indigo-600 font-black tracking-wider uppercase">READY TO LAUNCH</span>
                 </div>
               </div>
 

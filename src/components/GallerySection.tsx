@@ -10,54 +10,53 @@ export const GallerySection = () => {
     {
       id: 0,
       name: 'Luxury Perfume',
-      desc: 'Formulation, premium crystal bottles, French atomizers, magnet caps, and bespoke packaging.',
+      desc: 'Formulation, premium crystal bottles, French atomizers, magnet caps, and bespoke rigid unboxing packaging.',
       ingredients: ['French Essential Oils', 'Custom Molecule Blends', 'SDA 40B Carrier Matrix'],
       accent: 'from-amber-500/10 to-orange-500/5',
       icon: FlameIcon,
       productName: 'EAU DE LUXE',
-      productImage: '/assets/perfume.webp'
+      productImage: '/assets/Banner 1.png'
     },
     {
       id: 1,
-      name: 'Modern Ayurveda',
-      desc: 'Bridging ancient alchemy with modern compliance. GMP laboratory sourcing and clean labeling.',
-      ingredients: ['Organic Adaptogens', 'Cold-Pressed Herbs', 'Bio-Active Phytoextracts'],
-      accent: 'from-emerald-500/10 to-teal-500/5',
-      icon: Leaf,
-      productName: 'VEDA ELIXIR',
-      productImage: '/assets/ayurveda.webp'
-    },
-    {
-      id: 2,
-      name: 'Cosmetics',
-      desc: 'High-pigment makeup, serums, matte lip glosses, custom foundations, and elegant tubes.',
+      name: 'Color Cosmetics',
+      desc: 'High-pigment makeup, velvet lipsticks, custom foundations, soft-touch magnetic cases, and quick-commerce ready.',
       ingredients: ['Hyaluronic Spheres', 'Organic Phyto-Pigments', 'Matte Finish Sealers'],
       accent: 'from-rose-500/10 to-pink-500/5',
       icon: Droplets,
       productName: 'MATTE COUTURE',
-      productImage: '/assets/cosmetics.webp'
+      productImage: '/assets/Banner 2.png'
+    },
+    {
+      id: 2,
+      name: 'Authentic Ayurveda',
+      desc: 'Bridging ancient alchemy with modern compliance. Standardized botanicals, AYUSH licensing, and amber glass.',
+      ingredients: ['Organic Adaptogens', 'Cold-Pressed Herbs', 'Bio-Active Phytoextracts'],
+      accent: 'from-emerald-500/10 to-teal-500/5',
+      icon: Leaf,
+      productName: 'VEDA ELIXIR',
+      productImage: '/assets/Banner 3.png'
     },
     {
       id: 3,
-      name: 'Nutraceuticals',
-      desc: 'Collagen matrices, biotic gummies, performance powders, clean packaging, and FSSAI audits.',
-      ingredients: ['Marine Collagen Peptides', 'Lactobacillus Probiotics', 'Complex Amino Blends'],
-      accent: 'from-purple-500/10 to-indigo-500/5',
-      icon: Pill,
-      productName: 'HYPER GLOW',
-      productImage: '/assets/nutraceuticals.webp'
-    
-    }
+      name: 'Clinical Skincare',
+      desc: 'Active serums, stabilized Vitamin C, SPF blends, ceramides, airless vacuum dispensers, and dermatological patch testing.',
+      ingredients: ['Stabilized Vitamin C 15%', 'Niacinamide + Zinc Matrix', 'Triple Ceramide Complex'],
+      accent: 'from-blue-500/10 to-indigo-500/5',
+      icon: ShieldCheck,
+      productName: 'CLINICAL RADIANCE',
+      productImage: '/assets/Banner 4.png'
+    },
   ];
 
   return (
     <section id="industries-section" className="py-24 md:py-32 px-6 bg-[#FAFAFA] overflow-hidden relative border-t border-zinc-200 font-sans">
-      
+
       {/* Background radial soft light */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#D97706]/5 blur-[150px] pointer-events-none rounded-full" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        
+
         {/* Section Title */}
         <div className="max-w-4xl mb-16 md:mb-24 space-y-4 text-left">
           <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#D97706] block">
@@ -69,9 +68,12 @@ export const GallerySection = () => {
           </h2>
         </div>
 
+
+        // GallerySection animation effect
+
         {/* Categories Tab Layout for rich desktop / mobile view */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
-          
+
           {/* Left Area: 6 Industry Tabs */}
           <div className="lg:col-span-5 flex flex-col gap-3">
             {industries.map((ind, idx) => {
@@ -81,11 +83,10 @@ export const GallerySection = () => {
                 <button
                   key={ind.id}
                   onClick={() => setActiveCategory(ind.id)}
-                  className={`w-full text-left p-6 rounded-[28px] border transition-all duration-300 flex items-center justify-between font-sans ${
-                    isActive 
-                      ? 'bg-[#111111] text-white border-[#111111] shadow-md scale-[1.01]' 
+                  className={`w-full text-left p-6 rounded-[28px] border transition-all duration-300 flex items-center justify-between font-sans ${isActive
+                      ? 'bg-[#111111] text-white border-[#111111] shadow-md scale-[1.01]'
                       : 'bg-white text-[#111111] border-zinc-200 hover:bg-zinc-50'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center gap-4">
                     <div className={`p-3 rounded-xl transition-colors duration-350 ${isActive ? 'bg-[#D97706] text-white' : 'bg-zinc-100 text-[#D97706]'}`}>
@@ -119,7 +120,7 @@ export const GallerySection = () => {
                 className="bg-white rounded-[40px] border-2 border-[#D97706]/10 p-8 md:p-12 shadow-sm h-full flex flex-col justify-between overflow-hidden relative"
               >
                 <div className="space-y-8">
-                  
+
                   {/* Category Card Header */}
                   <div className="flex justify-between items-center border-b border-zinc-150 pb-6">
                     <div className="space-y-1">
@@ -130,7 +131,9 @@ export const GallerySection = () => {
                         {industries[activeCategory].name}
                       </h3>
                     </div>
-                    
+
+                    //mobile view
+
                     <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">
                       [ SECURE FORMULA ]
                     </span>
@@ -143,7 +146,7 @@ export const GallerySection = () => {
 
                   {/* Formulations specifications pure CSS visual */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-                    
+
                     {/* Ingredients detail */}
                     <div className="p-6 bg-[#FAFAFA] rounded-2xl border border-zinc-250">
                       <p className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-3">
@@ -162,11 +165,11 @@ export const GallerySection = () => {
                     {/* Product Image Container */}
                     <div className="bg-[#FAFAFA] rounded-2xl p-4 border border-zinc-200 relative overflow-hidden flex flex-col justify-between items-center text-center shadow-inner">
                       <div className={`absolute inset-0 bg-gradient-to-br ${industries[activeCategory].accent} opacity-40`} />
-                      
+
                       {/* Product Image */}
                       <div className="relative z-10 w-full h-48 flex items-center justify-center">
-                        <img 
-                          src={industries[activeCategory].productImage} 
+                        <img
+                          src={industries[activeCategory].productImage}
                           alt={industries[activeCategory].productName}
                           className="w-full h-full object-contain rounded-xl"
                           onError={(e) => {
@@ -192,8 +195,8 @@ export const GallerySection = () => {
                     GMP & ISO compliance audited lab network
                   </span>
 
-                  <Link 
-                    to="/contact" 
+                  <Link
+                    to="/contact"
                     className="w-full sm:w-auto text-center px-8 py-4.5 bg-[#D97706] text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-[#111111] transition-all duration-300 flex items-center justify-center gap-3 active:scale-95 shadow-sm leading-none"
                   >
                     EXPLORE INDUSTRIES
