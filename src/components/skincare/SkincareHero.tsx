@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { ArrowRight, ArrowDown } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,44 +13,33 @@ interface SkincareHeroProps {
   onScrollToExplore: () => void;
 }
 
-export const SkincareHero: React.FC<SkincareHeroProps> = ({ onOpenWizard, onScrollToExplore }) => {
+export const SkincareHero: React.FC<SkincareHeroProps> = ({ onScrollToExplore }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLHeadingElement>(null);
-  const line2Ref = useRef<HTMLHeadingElement>(null);
-  const line3Ref = useRef<HTMLHeadingElement>(null);
   const subRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
-  const thumbsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      tl.fromTo(line1Ref.current, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1 })
-        .fromTo(line2Ref.current, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, '-=0.7')
-        .fromTo(line3Ref.current, { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 1 }, '-=0.7')
-        .fromTo(subRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.5')
-        .fromTo(ctaRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.5')
-        .fromTo(statsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, '-=0.4')
-        .fromTo(imgRef.current, { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: 'power2.out' }, 0.2)
-        .fromTo(
-          thumbsRef.current?.querySelectorAll('.thumb-item') ?? [],
-          { y: 30, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power2.out' },
-          0.8
-        );
+      tl.fromTo(line1Ref.current, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 })
+        .fromTo(subRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, '-=0.5')
+        .fromTo(ctaRef.current, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, '-=0.5')
+        .fromTo(statsRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, '-=0.4')
+        .fromTo(imgRef.current, { scale: 0.95, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.1 }, 0.2);
 
       if (imgRef.current && containerRef.current) {
         gsap.to(imgRef.current, {
-          y: -50,
+          y: -40,
           ease: 'none',
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top top',
             end: 'bottom top',
-            scrub: 1.8,
+            scrub: 1.5,
           },
         });
       }
@@ -68,110 +58,104 @@ export const SkincareHero: React.FC<SkincareHeroProps> = ({ onOpenWizard, onScro
   return (
     <section
       ref={containerRef}
-      className="relative min-h-screen flex items-center pt-24 sm:pt-32 pb-16 px-6 sm:px-12 lg:px-20 bg-white text-[#111111] overflow-hidden select-none border-b border-zinc-100"
+      className="relative min-h-[92vh] flex items-center pt-28 pb-16 sm:pt-36 sm:pb-24 px-4 sm:px-8 lg:px-16 bg-white text-[#111111] overflow-hidden select-none border-b border-zinc-200"
     >
-      {/* Thin horizontal rule under navbar */}
-      <div className="absolute top-0 inset-x-0 h-px bg-zinc-100" />
-
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
         
         {/* Left Column — Core Statement & CTAs */}
-        <div className="space-y-8 text-left">
+        <div className="lg:col-span-7 space-y-8 text-left">
           
-          {/* Eyebrow */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-px bg-zinc-400" />
-            <span className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
-              Skincare &amp; Clinical Derma
+          {/* Eyebrow — Removed horizontal line */}
+          <div>
+            <span
+              className="text-xs font-semibold uppercase tracking-[0.25em] text-[#FF5722] block"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              CLINICAL SKINCARE &amp; DERMA
             </span>
           </div>
 
           {/* Main Headline */}
-          <div className="space-y-0 overflow-hidden">
+          <div className="space-y-1 overflow-hidden">
             <h1
               ref={line1Ref}
-              className="text-[clamp(3rem,6vw,5.5rem)] font-normal tracking-[-0.02em] text-[#111111] leading-[1.0] uppercase"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="text-4xl sm:text-6xl md:text-7xl lg:text-[72px] font-bold uppercase tracking-tight text-[#111111] leading-[1.02]"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              YOUR
+              YOUR SKINCARE IDEA. <br />
+              <span className="text-[#FF5722]">
+                YOUR BRAND
+              </span>
             </h1>
-            <h2
-              ref={line2Ref}
-              className="text-[clamp(3rem,6vw,5.5rem)] font-light tracking-[0.04em] text-[#888888] leading-[1.0] uppercase"
-              style={{ fontFamily: "'Outfit', system-ui, sans-serif", fontWeight: 300 }}
-            >
-              SKINCARE IDEA.
-            </h2>
-            <h2
-              ref={line3Ref}
-              className="text-[clamp(3rem,6vw,5.5rem)] font-normal tracking-[-0.02em] text-[#111111] leading-[1.0] uppercase"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-            >
-              YOUR BRAND.
-            </h2>
           </div>
 
           {/* Subheading */}
           <p
             ref={subRef}
-            className="text-base sm:text-lg text-zinc-600 leading-relaxed max-w-lg font-normal"
-            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+            className="text-base sm:text-lg text-zinc-700 font-normal leading-relaxed max-w-xl"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            From product development and formulation to packaging, manufacturing, branding and launch — build your skincare brand with one connected launch partner.
+            From active formulation and texture development to airless packaging, manufacturing, branding and launch — build your skincare brand in 45–90 days.
           </p>
 
           {/* CTAs */}
-          <div ref={ctaRef} className="flex flex-col sm:flex-row items-start gap-4">
-            <button
-              type="button"
-              onClick={() => onOpenWizard()}
-              className="group inline-flex items-center gap-3 bg-black hover:bg-zinc-800 text-white text-xs uppercase tracking-widest font-semibold px-8 py-4 transition-all duration-300 rounded-full cursor-pointer"
+          <div ref={ctaRef} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+            <Link
+              to="/contact"
+              className="px-9 py-4 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white font-bold text-xs sm:text-sm uppercase tracking-[0.16em] shadow-lg transition-all duration-300 active:scale-95 flex items-center justify-center gap-2.5"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              <span>Start My Skincare</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-            </button>
+              <span>Start My Skincare Brand</span>
+              <ArrowRight size={15} />
+            </Link>
 
             <button
               type="button"
               onClick={onScrollToExplore}
-              className="inline-flex items-center gap-2 border border-zinc-200 hover:border-black text-xs uppercase tracking-wider text-zinc-600 hover:text-black px-6 py-4 transition-all rounded-full cursor-pointer"
+              className="px-8 py-4 rounded-full border-2 border-zinc-900 hover:border-[#FF5722] text-zinc-900 hover:text-[#FF5722] font-semibold text-xs sm:text-sm uppercase tracking-[0.16em] transition-all duration-300 text-center hover:bg-black/5 flex items-center justify-center gap-2 cursor-pointer"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
               <span>See How It Works</span>
-              <ArrowDown size={13} />
+              <ArrowDown size={14} />
             </button>
           </div>
 
-          {/* Stats Bar */}
+          {/* Metrics bar */}
           <div
             ref={statsRef}
-            className="pt-8 border-t border-zinc-100 grid grid-cols-3 gap-8"
+            className="pt-8 border-t border-zinc-200 grid grid-cols-3 gap-6 sm:gap-8 text-left"
           >
             <div>
-              <div className="text-2xl font-normal text-[#111111]" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>45–90</div>
-              <div className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider mt-0.5">Days to Shelf</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-[#111111]" style={{ fontFamily: "'Poppins', sans-serif" }}>45–90</div>
+              <div className="text-xs text-zinc-500 uppercase tracking-wider mt-1 font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                Days to Market
+              </div>
             </div>
+
             <div>
-              <div className="text-2xl font-normal text-[#111111]" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>108+</div>
-              <div className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider mt-0.5">Partner Labs</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-[#FF5722]" style={{ fontFamily: "'Poppins', sans-serif" }}>108+</div>
+              <div className="text-xs text-zinc-500 uppercase tracking-wider mt-1 font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                Partner Labs
+              </div>
             </div>
+
             <div>
-              <div className="text-2xl font-normal text-[#111111]" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>100%</div>
-              <div className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider mt-0.5">Active Stability</div>
+              <div className="text-2xl sm:text-4xl font-extrabold text-[#111111]" style={{ fontFamily: "'Poppins', sans-serif" }}>100%</div>
+              <div className="text-xs text-zinc-500 uppercase tracking-wider mt-1 font-semibold" style={{ fontFamily: "'Poppins', sans-serif" }}>
+                Active Stability
+              </div>
             </div>
           </div>
 
         </div>
 
-        {/* Right Column — Editorial Product Flacon Showcase */}
-        <div className="space-y-4">
-          <div
-            ref={imgRef}
-            className="relative w-full aspect-[4/5] max-h-[580px] rounded-2xl overflow-hidden bg-[#FAFAFA] border border-zinc-100"
-          >
+        {/* Right Column — Sharp Container (rounded-none), No rounded overlay badge */}
+        <div ref={imgRef} className="lg:col-span-5 space-y-4">
+          <div className="relative w-full aspect-[4/5] rounded-none overflow-hidden bg-transparent border border-zinc-200 shadow-2xl">
             <img
               src="/assets/skincare/grevety_skincare_full_collection.jpg"
               alt="Grevety Clinical Skincare Full Collection"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center rounded-none"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 if (target.src !== window.location.origin + '/assets/Banner 4.png') {
@@ -179,31 +163,19 @@ export const SkincareHero: React.FC<SkincareHeroProps> = ({ onOpenWizard, onScro
                 }
               }}
             />
-            {/* Subtle editorial bottom label */}
-            <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-white/90 backdrop-blur-md border border-zinc-100 text-left flex items-center justify-between">
-              <div>
-                <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-400">Clinical Formulation Flow</div>
-                <div className="text-xs font-semibold text-[#111111] mt-0.5" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                  IDEA → FORMULA → PRODUCT → BRAND → LAUNCH
-                </div>
-              </div>
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider bg-zinc-100 px-2.5 py-1 rounded">
-                Turnkey
-              </span>
-            </div>
           </div>
 
-          {/* 4 Clean Editorial Category Badges */}
-          <div ref={thumbsRef} className="grid grid-cols-4 gap-3">
+          {/* 4 Clean Sharp Category Badges */}
+          <div className="grid grid-cols-4 gap-3">
             {thumbProducts.map((item, idx) => (
               <div
                 key={idx}
-                className="thumb-item p-3 rounded-xl border border-zinc-100 bg-[#FAFAFA] text-left space-y-0.5"
+                className="p-3 rounded-none border border-zinc-200 bg-[#FAFAFA] text-left space-y-0.5"
               >
-                <div className="text-xs font-medium text-[#111111]" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <div className="text-xs font-bold text-[#111111]" style={{ fontFamily: "'Poppins', sans-serif" }}>
                   {item.label}
                 </div>
-                <div className="text-[10px] font-mono text-zinc-400 truncate">
+                <div className="text-[10px] text-zinc-500 truncate" style={{ fontFamily: "'Poppins', sans-serif" }}>
                   {item.desc}
                 </div>
               </div>

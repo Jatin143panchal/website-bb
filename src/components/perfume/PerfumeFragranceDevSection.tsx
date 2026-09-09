@@ -35,7 +35,7 @@ export const PerfumeFragranceDevSection: React.FC = () => {
   const specs = [
     { label: 'Concentrations', val: 'EDP 15–20%, Extrait 25–30%' },
     { label: 'Certification', val: 'IFRA 51st Amendment, CDSCO' },
-    { label: 'Lab Partners', val: '108+ IFRA Certified Labs' },
+    { label: 'Lab Partners', val: '108+  Certified Labs' },
     { label: 'Sampling Rounds', val: '3–5 Variants per Brief' },
     { label: 'Stability Testing', val: 'Accelerated 4-week shelf life' },
     { label: 'MOQ', val: 'From 100 bottles per SKU' },

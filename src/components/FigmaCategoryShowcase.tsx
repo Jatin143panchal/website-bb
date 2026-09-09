@@ -1,255 +1,430 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { motion } from 'motion/react';
+import perfumeBgImg from '../assets/showcase/perfume_showcase_bg.png';
+import ayurvedaBgImg from '../assets/showcase/ayurveda_showcase_bg.png';
+import cosmeticsBgImg from '../assets/showcase/cosmetics_showcase_bg.png';
+import skincareBgImg from '../assets/showcase/skincare_showcase_bg.png';
 
-interface CategoryPanel {
+interface SolutionItem {
   id: string;
-  categoryName: string;
-  fullTitle: string;
-  subtitle: string;
+  topTitle: string;
+  bottomTitle?: string;
   description: string;
-  color: string;
-  badge: string;
-  viewAllLink: string;
+  bgColor: string;
+  bgImage?: string;
+  textColor: string;
+  linkUrl: string;
 }
 
-const CATEGORIES: CategoryPanel[] = [
+const BASE_SOLUTIONS: SolutionItem[] = [
   {
     id: 'perfume',
-    categoryName: 'Perfume & Fragrance',
-    fullTitle: 'PERFUME &\nFINE FRAGRANCE',
-    subtitle: 'Custom Fragrance Development • Custom Glass Flacons • High Concentration EDP',
-    description: 'Bespoke fine fragrance compounding, long-lasting Extrait & EDP formulations, custom glass bottles, magnetic collars, and #1 Amazon & Nykaa best-seller execution.',
-    color: '#6B2276',
-    badge: '01 / 04 • Fine Fragrance',
-    viewAllLink: '/industry/perfume',
-  },
-  {
-    id: 'cosmetics',
-    categoryName: 'Color Cosmetics',
-    fullTitle: 'COLOR COSMETICS\n& MAKEUP',
-    subtitle: 'Micro-Fine Pigments • Soft-Touch Cases • Quick-Commerce Ready',
-    description: 'Velvet matte lipsticks, weightless foundations, FDA & AYUSH approved colorants, luxury tactile packaging, and rapid 10-minute delivery distribution on Blinkit & Zepto.',
-    color: '#89CFE4',
-    badge: '02 / 04 • Color Cosmetics',
-    viewAllLink: '/industry/cosmetics',
+    topTitle: 'Perfume',
+    bottomTitle: '',
+    description: 'Turnkey luxury fragrance formulation, IFRA-compliant master blending, custom glass bottle tooling, automated crimping & retail box packaging for D2C & Amazon.',
+    bgColor: '#9D4EDD', // Light vibrant lavender purple
+    bgImage: perfumeBgImg,
+    textColor: '#FFFFFF',
+    linkUrl: '/industry/perfume',
   },
   {
     id: 'ayurveda',
-    categoryName: 'Ayurveda & Botanicals',
-    fullTitle: 'AYURVEDA &\nBOTANICAL WELLNESS',
-    subtitle: 'Standardized Herbal Extracts • AYUSH Licensing • Modern Vedic',
-    description: 'Authentic classical Ayurvedic formulations, cold-pressed therapeutic oils, certified AYUSH regulatory approvals, and sustainable eco-luxury glass packaging for modern consumers.',
-    color: '#778144',
-    badge: '03 / 04 • Ayurveda & Botanicals',
-    viewAllLink: '/industry/ayurveda',
+    topTitle: 'Ayurveda',
+    bottomTitle: '',
+    description: 'Authentic Ministry of AYUSH-certified classical & proprietary herbal formulations, standardized botanical extracts, GMP batch manufacturing & clinical stability.',
+    bgColor: '#34D399', // Fresh light mint emerald
+    bgImage: ayurvedaBgImg,
+    textColor: '#FFFFFF',
+    linkUrl: '/industry/ayurveda',
+  },
+  {
+    id: 'cosmetics',
+    topTitle: 'Cosmetics',
+    bottomTitle: '',
+    description: 'FDA-approved color cosmetics, high-pigment lipsticks, liquid foundations, blushes, compacts & eye makeup with custom luxury packaging & regulatory compliance.',
+    bgColor: '#E495C5', // Soft pastel pinkish lilac
+    bgImage: cosmeticsBgImg,
+    textColor: '#FFFFFF',
+    linkUrl: '/industry/cosmetics',
   },
   {
     id: 'skincare',
-    categoryName: 'Clinical Skincare',
-    fullTitle: 'SKINCARE &\nCLINICAL DERMA',
-    subtitle: 'Stabilized Actives • Cleanroom R&D • Dermatologist Certified',
-    description: 'High-efficacy active serums, stabilized Vitamin C, Niacinamide & Retinol, airless pump dispensers, clinical patch testing, and turnkey scale to ₹1Cr+ monthly GMV.',
-    color: '#D9531E',
-    badge: '04 / 04 • Clinical Skincare',
-    viewAllLink: '/industry/skincare',
+    topTitle: 'Skincare',
+    bottomTitle: '',
+    description: 'Dermatologist-tested derma-cosmetics, active-ingredient face serums, barrier repair creams, sunscreens & gentle cleansers formulated for Indian skin tones.',
+    bgColor: '#00D2FF', // Fresh electric sky cyan
+    bgImage: skincareBgImg,
+    textColor: '#FFFFFF',
+    linkUrl: '/industry/skincare',
   },
 ];
 
-export const FigmaCategoryShowcase: React.FC = () => {
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
+// Create 3 identical sets for infinite continuous sliding carousel
+const EXTENDED_SOLUTIONS: SolutionItem[] = [
+  ...BASE_SOLUTIONS,
+  ...BASE_SOLUTIONS,
+  ...BASE_SOLUTIONS,
+];
 
-  // Silky slow auto-advance every 7.5 seconds
+export const FigmaCategoryShowcase: React.FC = () => {
+  // Start in middle set (index 4 to 7) -> default to Perfume Solution (index 4)
+  const [virtualIndex, setVirtualIndex] = useState<number>(4);
+  const [isTransitioning, setIsTransitioning] = useState<boolean>(true);
+  const [isHoveringActiveCard, setIsHoveringActiveCard] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  // ── SIGNATURE SCHBANG MOUSE-FOLLOWER CURSOR LOGIC ────────────────────────────
+  const followerRef = useRef<HTMLDivElement>(null);
+  const mousePos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const currentPos = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const animFrameId = useRef<number | null>(null);
+
   useEffect(() => {
-    if (isPaused) return;
-    const interval = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % CATEGORIES.length);
-    }, 7500);
-    return () => clearInterval(interval);
-  }, [isPaused]);
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const lerpLoop = () => {
+      currentPos.current.x += (mousePos.current.x - currentPos.current.x) * 0.16;
+      currentPos.current.y += (mousePos.current.y - currentPos.current.y) * 0.16;
+
+      if (followerRef.current) {
+        followerRef.current.style.transform = `translate3d(${currentPos.current.x}px, ${currentPos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+      animFrameId.current = requestAnimationFrame(lerpLoop);
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
+    animFrameId.current = requestAnimationFrame(lerpLoop);
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove);
+      if (animFrameId.current) cancelAnimationFrame(animFrameId.current);
+    };
+  }, []);
+
+  // ── HOVER INTENT & TIMEOUT MANAGEMENT ────────────────────────────────────────
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Slide navigation
+  const handleSlideTo = (targetIdx: number) => {
+    setIsTransitioning(true);
+    setVirtualIndex(targetIdx);
+  };
+
+  const handleCardMouseEnter = (idx: number, isAdjacent: boolean, isActive: boolean) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+
+    if (isActive) {
+      setIsHoveringActiveCard(true);
+      return;
+    }
+
+    if (isAdjacent) {
+      // 180ms hover intent debounce so rapid mouse sweeps don't cause rushed sliding
+      hoverTimeoutRef.current = setTimeout(() => {
+        handleSlideTo(idx);
+      }, 180);
+    }
+  };
+
+  const handleCardMouseLeave = (isActive: boolean) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    if (isActive) {
+      setIsHoveringActiveCard(false);
+    }
+  };
+
+  // Seamless wrap-around after transition
+  const handleTransitionEnd = () => {
+    if (virtualIndex >= 8) {
+      setIsTransitioning(false);
+      setVirtualIndex((virtualIndex % 4) + 4);
+    } else if (virtualIndex < 4) {
+      setIsTransitioning(false);
+      setVirtualIndex((virtualIndex % 4) + 4);
+    }
+  };
+
+  const activeItem = EXTENDED_SOLUTIONS[virtualIndex];
 
   return (
     <section
-      className="w-full bg-[#FAF8F5] py-20 sm:py-28 md:py-36 px-4 sm:px-8 lg:px-16 select-none overflow-hidden border-t border-b border-[#E8E5DF]"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      id="solutions-showcase"
+      className="relative w-full bg-white text-[#111111] select-none overflow-hidden border-none outline-none"
+      style={{ fontFamily: "'Sora', 'Outfit', 'Montserrat', system-ui, sans-serif" }}
     >
-      <div className="max-w-[1400px] mx-auto space-y-14 sm:space-y-20">
+      {/* ── GOOGLE FONT SORA & COMPACT TICKER CSS ── */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap');
 
-        {/* ── FULL-WIDTH EDITORIAL HEADER (MATCHING SCREENSHOT TYPOGRAPHY) ── */}
-        <div className="w-full text-center space-y-3">
-          <div className="space-y-0.5">
-            <h2
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[88px] font-normal tracking-[0.04em] sm:tracking-[0.06em] text-[#111111] leading-[1.02] uppercase"
-              style={{
-                fontFamily: "'Outfit', 'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontWeight: 400,
-              }}
-            >
-              WHAT DO YOU WANT TO LAUNCH?
-            </h2>
-            <h3
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[88px] font-light tracking-[0.04em] sm:tracking-[0.06em] text-[#888888] leading-[1.02] uppercase"
-              style={{
-                fontFamily: "'Outfit', 'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontWeight: 300,
-              }}
-            >
-              START HERE.
-            </h3>
+        @keyframes ticker-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-ticker-marquee {
+          display: flex;
+          width: max-content;
+          animation: ticker-scroll 3.5s linear infinite;
+        }
+      `}</style>
+
+      {/* ── COMPACT SCHBANG FLOATING MOUSE-FOLLOWER BADGE ── */}
+      <div
+        ref={followerRef}
+        className="hidden md:block fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-200"
+        style={{
+          opacity: isHoveringActiveCard ? 1 : 0,
+        }}
+      >
+        <div className="w-[124px] h-[34px] px-3 bg-black rounded-full shadow-2xl flex items-center justify-center overflow-hidden border border-white/20">
+          <div className="animate-ticker-marquee text-[11px] font-bold text-white tracking-wider gap-2.5">
+            <span>View More</span>
+            <span className="opacity-50">•</span>
+            <span>View More</span>
+            <span className="opacity-50">•</span>
+            <span>View More</span>
+            <span className="opacity-50">•</span>
           </div>
-
-          <p
-            className="text-sm sm:text-base md:text-lg text-zinc-500 max-w-xl mx-auto font-light pt-2"
-            style={{ fontFamily: "'Outfit', 'Mulish', system-ui, sans-serif" }}
-          >
-            Tell us what you want to launch. We'll show you the next steps.
-          </p>
         </div>
+      </div>
 
-        {/* ── SEAMLESS ULTRA-SLOW SILKY ACCORDION SHOWCASE ── */}
-        <div className="flex flex-col md:flex-row h-auto md:h-[580px] lg:h-[640px] w-full gap-0 items-stretch overflow-hidden border border-zinc-300 shadow-[0_25px_70px_rgba(0,0,0,0.12)] bg-black">
-          {CATEGORIES.map((item, index) => {
-            const isActive = activeIndex === index;
+      {/* ── DESKTOP: INFINITE HORIZONTAL SLIDING CAROUSEL STAGE ── */}
+      <div className="hidden md:block w-full h-[600px] lg:h-[650px] xl:h-[680px] relative overflow-hidden bg-white">
+        <div
+          onTransitionEnd={handleTransitionEnd}
+          className="h-full flex items-stretch will-change-transform"
+          style={{
+            transform: `translate3d(${(1 - virtualIndex) * 33}vw, 0, 0)`,
+            transition: isTransitioning
+              ? 'transform 1.85s cubic-bezier(0.16, 1, 0.3, 1)'
+              : 'none',
+          }}
+        >
+          {EXTENDED_SOLUTIONS.map((item, idx) => {
+            const isActive = idx === virtualIndex;
+            const isPrev = idx === virtualIndex - 1;
+            const isNext = idx === virtualIndex + 1;
 
             return (
               <div
-                key={item.id}
-                onMouseEnter={() => {
-                  setIsPaused(true);
-                  setActiveIndex(index);
-                }}
+                key={`slide-${item.id}-${idx}`}
                 onClick={() => {
-                  setIsPaused(true);
-                  setActiveIndex(index);
+                  if (isActive) {
+                    navigate(item.linkUrl);
+                  } else {
+                    handleSlideTo(idx);
+                  }
                 }}
-                className={`cursor-pointer transition-all duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] relative flex flex-col justify-between overflow-hidden border-b md:border-b-0 md:border-r border-white/20 last:border-r-0 ${isActive
-                  ? 'md:flex-[4.5] text-white shadow-2xl z-10 min-h-[480px] md:min-h-0'
-                  : 'md:flex-1 text-white hover:brightness-110 min-h-[80px] md:min-h-0 opacity-85 hover:opacity-100'
-                  }`}
+                onMouseEnter={() => handleCardMouseEnter(idx, isPrev || isNext, isActive)}
+                onMouseLeave={() => handleCardMouseLeave(isActive)}
                 style={{
-                  backgroundColor: item.color,
+                  width: isActive ? '34vw' : '33vw',
+                  backgroundColor: isActive ? item.bgColor : '#FFFFFF',
+                  transition: isTransitioning
+                    ? 'width 1.85s cubic-bezier(0.16, 1, 0.3, 1), background-color 1.2s ease'
+                    : 'none',
                 }}
+                className={`h-full shrink-0 relative overflow-hidden select-none cursor-pointer flex flex-col justify-between items-center text-center ${isActive
+                    ? 'z-20 shadow-2xl'
+                    : 'z-10 bg-white hover:bg-zinc-50/70 border-r border-zinc-200/80 group'
+                  }`}
               >
-                {/* Subtle Luxury Depth Vignette */}
-                <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/10 via-transparent to-black/25" />
-
-                {isActive ? (
-                  /* ── ACTIVE EXPANDED BOX WITH SILKY SLOW CONTENT REVEAL ── */
-                  <div className="relative z-10 h-full w-full p-8 sm:p-12 md:p-14 lg:p-16 flex flex-col justify-between items-center text-center">
-                    {/* Top Index & Vertical Tag */}
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-                      className="w-full flex items-center justify-between text-xs tracking-[0.2em] uppercase text-white/80 border-b border-white/20 pb-4"
-                      style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
+                {/* ── GHOST INACTIVE CARD VIEW (LEFT OR RIGHT) ── */}
+                <div
+                  className={`w-full h-full flex flex-col items-center justify-center p-6 text-center absolute inset-0 transition-opacity duration-500 ${isActive ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                    }`}
+                >
+                  <div className="flex flex-col items-center justify-center space-y-1 opacity-35 group-hover:opacity-80 transition-all duration-400 transform group-hover:scale-105 px-2">
+                    <span
+                      className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-extrabold tracking-tight text-[#9E9E9E] leading-tight text-center whitespace-nowrap"
+                      style={{ fontFamily: "'Sora', sans-serif" }}
                     >
-                      <span>0{index + 1} / 04</span>
-                      <span className="font-semibold text-white">{item.badge}</span>
-                      <span>Turnkey Launch</span>
-                    </motion.div>
-
-                    {/* Middle Content (Title, Subtitle, Description, CTA) */}
-                    <motion.div
-                      key={`content-${item.id}`}
-                      initial={{ opacity: 0, y: 28 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                      className="flex flex-col items-center justify-center my-auto space-y-6 max-w-xl py-6"
-                    >
-                      <div className="space-y-2">
-                        <h3
-                          className="text-3xl sm:text-4xl md:text-5xl lg:text-[52px] font-normal uppercase tracking-[0.03em] text-white leading-[1.04] whitespace-pre-line drop-shadow-sm"
-                          style={{
-                            fontFamily: "'Outfit', 'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                            fontWeight: 400,
-                          }}
-                        >
-                          {item.fullTitle}
-                        </h3>
-
-                        <p
-                          className="text-xs sm:text-sm font-light uppercase tracking-[0.15em] text-white/85"
-                          style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                        >
-                          {item.subtitle}
-                        </p>
-                      </div>
-
-                      <p
-                        className="text-white/95 text-xs sm:text-sm md:text-base font-light leading-relaxed max-w-lg drop-shadow-sm"
-                        style={{ fontFamily: "'Outfit', 'Mulish', system-ui, sans-serif" }}
+                      {item.topTitle}
+                    </span>
+                    {item.bottomTitle ? (
+                      <span
+                        className="text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-extrabold tracking-tight text-[#9E9E9E] leading-tight text-center whitespace-nowrap"
+                        style={{ fontFamily: "'Sora', sans-serif" }}
                       >
-                        {item.description}
-                      </p>
-
-                      {/* Clean High-Converting Start Your Launch CTA */}
-                      <div className="pt-2">
-                        <Link
-                          to={item.viewAllLink}
-                          onClick={(e) => e.stopPropagation()}
-                          className="group inline-flex items-center gap-3 px-9 py-4 bg-white hover:bg-black text-[#111111] hover:text-white text-xs sm:text-sm font-semibold uppercase tracking-[0.18em] shadow-xl active:scale-95 transition-all duration-300"
-                          style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                        >
-                          <span>Start Your Launch</span>
-                          <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />
-                        </Link>
-                      </div>
-                    </motion.div>
-
-                    {/* Bottom Status Timeline Indicator */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
-                      className="w-full flex items-center justify-between text-[11px] tracking-[0.16em] uppercase text-white/75 border-t border-white/20 pt-4"
-                      style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                    >
-                      <span>{item.categoryName}</span>
-                      <span className="text-white font-medium">Concept to Shelf in 45–90 Days</span>
-                    </motion.div>
+                        {item.bottomTitle}
+                      </span>
+                    ) : null}
                   </div>
-                ) : (
-                  /* ── INACTIVE COLLAPSED VERTICAL TAB WITH SMOOTH HOVER ── */
-                  <div className="h-full w-full flex items-center justify-center p-4 sm:p-6 text-center select-none">
-                    {/* Desktop Vertical Title */}
-                    <div className="hidden md:flex flex-col items-center justify-between h-full py-8">
-                      <span
-                        className="text-xs font-mono text-white/70 tracking-wider font-bold"
-                        style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                      >
-                        0{index + 1}
-                      </span>
+                </div>
 
-                      <span
-                        className="font-semibold text-xs lg:text-sm uppercase tracking-[0.24em] text-white whitespace-nowrap [writing-mode:vertical-lr] rotate-180 drop-shadow-sm"
-                        style={{ fontFamily: "'Outfit', 'Mulish', system-ui, sans-serif" }}
-                      >
-                        {item.categoryName}
-                      </span>
-
-                      <span className="w-1.5 h-1.5 rounded-full bg-white/60" />
-                    </div>
-
-                    {/* Mobile Horizontal Bar */}
-                    <div className="md:hidden flex items-center justify-between w-full py-2">
-                      <span className="text-xs font-mono text-white/70">0{index + 1}</span>
-                      <span
-                        className="font-semibold text-sm uppercase tracking-wider text-white"
-                        style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                      >
-                        {item.categoryName}
-                      </span>
-                      <ArrowRight size={14} className="text-white/70" />
-                    </div>
+                {/* ── BACKGROUND IMAGE (FOR RICH VISUAL CARDS) ── */}
+                {item.bgImage && (
+                  <div
+                    className={`absolute inset-0 z-0 transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0'
+                      }`}
+                  >
+                    <img
+                      src={item.bgImage}
+                      alt={item.topTitle}
+                      className="w-full h-full object-cover select-none brightness-105 saturate-[0.92]"
+                    />
+                    {/* Soft Category Tint & Gradient Vignette Overlay for Fresh Light Theme */}
+                    <div
+                      className="absolute inset-0 mix-blend-overlay opacity-30"
+                      style={{ backgroundColor: item.bgColor }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-black/30" />
                   </div>
                 )}
+
+                {/* ── ACTIVE CENTER EXPANDED CARD VIEW ── */}
+                <div
+                  className={`relative z-10 w-full h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between items-center text-center transition-all duration-800 ${isActive
+                      ? 'opacity-100 translate-y-0 delay-200 pointer-events-auto'
+                      : 'opacity-0 translate-y-4 pointer-events-none'
+                    }`}
+                >
+                  {/* Subtle top spacer */}
+                  <div className="w-full h-2" />
+
+                  {/* Center Content: Stacked Bold Titles & Description */}
+                  <div className="my-auto flex flex-col items-center justify-center space-y-4 max-w-xs sm:max-w-sm">
+                    {/* Bold Title */}
+                    <div className="space-y-0.5">
+                      <h3
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] font-extrabold tracking-tight text-white leading-[0.94] drop-shadow-md"
+                        style={{ fontFamily: "'Sora', sans-serif" }}
+                      >
+                        {item.topTitle}
+                      </h3>
+                      {item.bottomTitle ? (
+                        <h3
+                          className="text-3xl sm:text-4xl md:text-5xl lg:text-[58px] font-extrabold tracking-tight text-white leading-[0.94] drop-shadow-md"
+                          style={{ fontFamily: "'Sora', sans-serif" }}
+                        >
+                          {item.bottomTitle}
+                        </h3>
+                      ) : null}
+                    </div>
+
+                    {/* Clean White Paragraph Description */}
+                    <p
+                      className="text-xs sm:text-[13px] md:text-sm font-medium text-white leading-relaxed max-w-[280px] drop-shadow-md opacity-95"
+                      style={{ fontFamily: "'Sora', sans-serif" }}
+                    >
+                      {item.description}
+                    </p>
+                  </div>
+
+                  {/* Bottom: Signature Schbang White Circular Arrow Button */}
+                  <div className="pt-4 flex items-center justify-center">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(item.linkUrl);
+                      }}
+                      aria-label={`Explore ${item.topTitle} ${item.bottomTitle || ''}`}
+                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white text-black flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer group"
+                    >
+                      <ArrowRight size={24} strokeWidth={2.4} className="group-hover:translate-x-1 transition-transform duration-300" />
+                    </button>
+                  </div>
+                </div>
+
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* ── MOBILE: RESPONSIVE CATEGORY SWITCHER & ACTIVE CARD ── */}
+      <div className="md:hidden w-full flex flex-col bg-white">
+        {/* Horizontal Category Switcher Tabs */}
+        <div className="flex items-center gap-2 p-3 overflow-x-auto no-scrollbar border-b border-zinc-100 bg-zinc-50/50">
+          {BASE_SOLUTIONS.map((item, idx) => {
+            const isCurrent = (virtualIndex % 4) === idx;
+
+            return (
+              <button
+                key={`tab-${item.id}`}
+                onClick={() => handleSlideTo(4 + idx)}
+                className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-200 cursor-pointer ${isCurrent
+                    ? 'bg-black text-white shadow-md'
+                    : 'bg-white text-zinc-600 hover:bg-zinc-100 border border-zinc-200'
+                  }`}
+              >
+                {item.topTitle}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Active Card Body for Mobile */}
+        <div
+          onClick={() => navigate(activeItem.linkUrl)}
+          className="relative w-full h-[540px] p-8 flex flex-col justify-between items-center text-center cursor-pointer transition-colors duration-500 select-none shadow-lg overflow-hidden"
+          style={{
+            backgroundColor: activeItem.bgColor,
+            color: activeItem.textColor,
+          }}
+        >
+          {activeItem.bgImage && (
+            <div className="absolute inset-0 z-0 pointer-events-none">
+              <img
+                src={activeItem.bgImage}
+                alt={activeItem.topTitle}
+                className="w-full h-full object-cover select-none brightness-105 saturate-[0.92]"
+              />
+              <div
+                className="absolute inset-0 mix-blend-overlay opacity-30"
+                style={{ backgroundColor: activeItem.bgColor }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-black/30" />
+            </div>
+          )}
+
+          <div className="relative z-10 w-full h-2" />
+
+          <div className="relative z-10 my-auto flex flex-col items-center justify-center space-y-5 max-w-xs">
+            <div className="space-y-0.5">
+              <h3
+                className="text-4xl sm:text-5xl font-extrabold tracking-tight uppercase leading-[0.94] text-white drop-shadow-md"
+                style={{ fontFamily: "'Sora', sans-serif" }}
+              >
+                {activeItem.topTitle}
+              </h3>
+              {activeItem.bottomTitle ? (
+                <h3
+                  className="text-4xl sm:text-5xl font-extrabold tracking-tight uppercase leading-[0.94] text-white drop-shadow-md"
+                  style={{ fontFamily: "'Sora', sans-serif" }}
+                >
+                  {activeItem.bottomTitle}
+                </h3>
+              ) : null}
+            </div>
+
+            <p
+              className="text-xs sm:text-sm font-medium leading-relaxed opacity-95 text-white drop-shadow-md"
+              style={{ fontFamily: "'Sora', sans-serif" }}
+            >
+              {activeItem.description}
+            </p>
+          </div>
+
+          <div className="relative z-10 pt-4 flex items-center justify-center">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(activeItem.linkUrl);
+              }}
+              className="w-13 h-13 rounded-full bg-white text-black flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all cursor-pointer"
+            >
+              <ArrowRight size={22} strokeWidth={2.4} />
+            </button>
+          </div>
         </div>
       </div>
     </section>

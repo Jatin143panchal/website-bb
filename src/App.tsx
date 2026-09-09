@@ -30,6 +30,8 @@ const PageLoader = () => (
   </div>
 );
 
+const BrandStoryPage = lazy(() => import('./pages/BrandStoryPage').then(module => ({ default: module.BrandStoryPage })));
+
 export default function App() {
   useEffect(() => {
     const lenis = new Lenis({
@@ -68,6 +70,8 @@ export default function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/manufacturer-network" element={<ManufacturerNetworkPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/articles" element={<BlogPage />} />
+            <Route path="/story/:brandId" element={<BrandStoryPage />} />
             <Route path="/admin" element={<AdminBlogPage />} />
             <Route path="/admin-blog" element={<AdminBlogPage />} />
             <Route path="/Privacy-Policy" element={<PrivacyPolicyPage />} />

@@ -1,99 +1,91 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface AyurvedaBrandingSectionProps {
   onBuildBrand: () => void;
 }
 
-export const AyurvedaBrandingSection: React.FC<AyurvedaBrandingSectionProps> = ({ onBuildBrand }) => {
+export const AyurvedaBrandingSection: React.FC<AyurvedaBrandingSectionProps> = () => {
   const steps = [
-    { step: '01', title: 'NAME', desc: 'Evocative Sanskrit, Latin, or modern botanical naming with trademark validation.' },
-    { step: '02', title: 'POSITIONING', desc: 'Defining your target dosha, wellness ritual, price tier, and competitive whitespace.' },
-    { step: '03', title: 'LOGO', desc: 'Timeless typography, botanical crests, and scalable vector icon marks.' },
-    { step: '04', title: 'VISUAL IDENTITY', desc: 'Warm earth color palette, typographic system, and tactile paper styling.' },
-    { step: '05', title: 'PACKAGING', desc: '3D renders, dielines, foil-block embossing, and regulatory text layouts.' },
-    { step: '06', title: 'PRODUCT RANGE', desc: 'Hero SKU + complementary ritual cross-sell architecture.' },
-    { step: '07', title: 'WEBSITE', desc: 'High-speed Shopify D2C store with dosha diagnostic quiz and subscription upsell.' },
-    { step: '08', title: 'LAUNCH', desc: 'Amazon Brand Registry, Nykaa listing, and Meta ads creative execution.' },
+    { title: 'NAME', desc: 'Evocative Sanskrit, Latin, or modern botanical naming with trademark validation.' },
+    { title: 'POSITIONING', desc: 'Defining your target dosha, wellness ritual, price tier, and competitive whitespace.' },
+    { title: 'LOGO', desc: 'Timeless typography, botanical crests, and scalable vector icon marks.' },
+    { title: 'VISUAL IDENTITY', desc: 'Warm earth color palette, typographic system, and tactile paper styling.' },
+    { title: 'PACKAGING', desc: '3D renders, dielines, foil-block embossing, and regulatory text layouts.' },
+    { title: 'PRODUCT RANGE', desc: 'Hero SKU + complementary ritual cross-sell architecture.' },
+    { title: 'WEBSITE', desc: 'High-speed D2C store with dosha diagnostic quiz and subscription upsell.' },
+    { title: 'LAUNCH', desc: 'Amazon Brand Registry, Nykaa listing, and Meta ads creative execution.' },
   ];
 
   return (
-    <section id="ayurveda-branding" className="py-24 sm:py-32 px-4 sm:px-8 lg:px-16 bg-white text-[#111111] select-none border-b border-zinc-200">
+    <section id="ayurveda-branding" className="py-20 sm:py-28 px-4 sm:px-8 lg:px-16 bg-white text-[#111111] select-none border-b border-zinc-200">
       <div className="max-w-7xl mx-auto space-y-16">
         
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="text-left space-y-3 max-w-2xl">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-px bg-zinc-400" />
-              <span className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
-                10 — BRANDING &amp; POSITIONING
-              </span>
-            </div>
+            <span
+              className="text-xs font-semibold uppercase tracking-[0.25em] text-[#FF5722] block"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
+              BRANDING &amp; POSITIONING
+            </span>
 
             <h2
-              className="text-[clamp(2.4rem,4.5vw,4.2rem)] font-normal tracking-[-0.02em] text-[#111111] leading-[1.08] uppercase"
-              style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[#111111] uppercase leading-tight"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              DON'T JUST SELL AYURVEDA. <br />
-              <span className="font-light text-zinc-500 italic" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
-                BUILD A BRAND AROUND IT.
+              BUILD A BRAND <br />
+              <span className="text-[#FF5722]">
+                AROUND AYURVEDA
               </span>
             </h2>
 
             <p
-              className="text-base sm:text-lg text-zinc-600 font-normal leading-relaxed"
-              style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+              className="text-sm sm:text-base text-zinc-600 font-normal leading-relaxed"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              Commodity herbal sellers compete on low price. True Ayurvedic brands command 70%+ gross margins because they sell an emotional ritual, exquisite aesthetics, and uncompromising quality.
+              Commodity herbal sellers compete on low price. True Ayurvedic brands command high gross margins by selling emotional rituals, premium aesthetics, and uncompromising quality.
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={onBuildBrand}
-            className="self-start md:self-auto px-8 py-4 rounded-full bg-black hover:bg-zinc-800 text-white text-xs font-semibold uppercase tracking-widest transition-all duration-300 flex items-center gap-3 shadow-sm active:scale-95 cursor-pointer"
+          <Link
+            to="/contact"
+            className="self-start md:self-auto px-8 py-4 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white text-xs sm:text-sm font-bold uppercase tracking-[0.16em] transition-all duration-300 flex items-center gap-2.5 shadow-lg active:scale-95 cursor-pointer"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            <span style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>BUILD MY AYURVEDIC BRAND</span>
-            <ArrowRight size={14} />
-          </button>
+            <span>Build My Ayurvedic Brand</span>
+            <ArrowRight size={15} />
+          </Link>
         </div>
 
-        {/* 8-Step Branding Linear Progression */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        {/* 8-Step Branding Horizontal Slider / Grid — Sharp corners (rounded-none), No numbers */}
+        <div className="flex overflow-x-auto gap-6 snap-x pb-4 md:grid md:grid-cols-4 md:overflow-visible no-scrollbar">
           {steps.map((st, idx) => (
             <motion.div
-              key={st.step}
+              key={idx}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.45, delay: idx * 0.05 }}
-              className="p-6 rounded-2xl bg-[#FAFAFA] border border-zinc-200 hover:border-black hover:bg-white transition-all duration-300 text-left flex flex-col justify-between group"
+              transition={{ duration: 0.4, delay: idx * 0.05 }}
+              className="min-w-[260px] md:min-w-0 snap-start p-7 rounded-none bg-[#FAFAFA] border border-zinc-200/90 shadow-xs hover:shadow-xl hover:border-black transition-all duration-300 space-y-3 text-left group flex flex-col justify-between"
             >
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-mono font-medium text-zinc-400 group-hover:text-black transition-colors">
-                    PHASE {st.step}
-                  </span>
-                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-300 group-hover:bg-black transition-colors" />
-                </div>
-
                 <h3
-                  className="text-lg font-normal uppercase text-[#111111] tracking-tight"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+                  className="text-lg sm:text-xl font-bold uppercase text-[#111111] group-hover:text-[#FF5722] transition-colors leading-snug"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
                 >
                   {st.title}
                 </h3>
 
-                <p className="text-xs text-zinc-600 leading-relaxed font-normal" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                <p
+                  className="text-xs sm:text-sm text-zinc-600 leading-relaxed font-normal"
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
                   {st.desc}
                 </p>
-              </div>
-
-              <div className="pt-4 mt-4 border-t border-zinc-200 flex items-center justify-between text-[10px] font-mono text-zinc-400 uppercase tracking-wider">
-                <span>Integrated Deliverable</span>
-                <CheckCircle2 size={12} className="text-zinc-600" />
               </div>
             </motion.div>
           ))}

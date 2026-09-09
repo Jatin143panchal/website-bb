@@ -3,27 +3,16 @@ import { Helmet } from 'react-helmet-async';
 import { Navbar } from '../../components/Navbar';
 import { FigmaFooter } from '../../components/FigmaFooter';
 
-// 20 Dedicated Ayurveda & Botanicals Components
+// Dedicated Ayurveda & Botanicals Components
 import { AyurvedaHero } from '../../components/ayurveda/AyurvedaHero';
 import { AyurvedaCategoriesSection } from '../../components/ayurveda/AyurvedaCategoriesSection';
-import { AyurvedaProductSelector } from '../../components/ayurveda/AyurvedaProductSelector';
-import { AyurvedaStageSection } from '../../components/ayurveda/AyurvedaStageSection';
-import { AyurvedaScopeSection } from '../../components/ayurveda/AyurvedaScopeSection';
 import { AyurvedaProcessSection } from '../../components/ayurveda/AyurvedaProcessSection';
 import { AyurvedaIngredientStorySection } from '../../components/ayurveda/AyurvedaIngredientStorySection';
 import { AyurvedaTraditionModernSection } from '../../components/ayurveda/AyurvedaTraditionModernSection';
 import { AyurvedaPackagingSection } from '../../components/ayurveda/AyurvedaPackagingSection';
 import { AyurvedaBrandingSection } from '../../components/ayurveda/AyurvedaBrandingSection';
 import { AyurvedaManufacturingSection } from '../../components/ayurveda/AyurvedaManufacturingSection';
-import { AyurvedaRangeBuilderSection } from '../../components/ayurveda/AyurvedaRangeBuilderSection';
-import { AyurvedaBrandArchetypeSection } from '../../components/ayurveda/AyurvedaBrandArchetypeSection';
-import { AyurvedaCostVariablesSection } from '../../components/ayurveda/AyurvedaCostVariablesSection';
-import { AyurvedaCaseStudiesSection } from '../../components/ayurveda/AyurvedaCaseStudiesSection';
-import { AyurvedaWhyBanegaSection } from '../../components/ayurveda/AyurvedaWhyBanegaSection';
-import { AyurvedaEmotionalBannerSection } from '../../components/ayurveda/AyurvedaEmotionalBannerSection';
-import { AyurvedaRoadmapSection } from '../../components/ayurveda/AyurvedaRoadmapSection';
 import { AyurvedaFaqSection } from '../../components/ayurveda/AyurvedaFaqSection';
-import { AyurvedaFinalCtaSection } from '../../components/ayurveda/AyurvedaFinalCtaSection';
 
 // Interactive Guided Launch Modal & Sticky CTA
 import { AyurvedaLaunchWizardModal, AyurvedaWizardPrefill } from '../../components/ayurveda/AyurvedaLaunchWizardModal';
@@ -44,13 +33,6 @@ export const LaunchAyurvedaPage: React.FC = () => {
 
   const handleScrollToCategories = useCallback(() => {
     const elem = document.getElementById('ayurveda-categories');
-    if (elem) {
-      elem.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  const handleScrollToFaq = useCallback(() => {
-    const elem = document.getElementById('ayurveda-faq');
     if (elem) {
       elem.scrollIntoView({ behavior: 'smooth' });
     }
@@ -80,7 +62,7 @@ export const LaunchAyurvedaPage: React.FC = () => {
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://banegabrand.com/assets/Banner%203.png" />
 
-        {/* Structured Data / Schema.org for SEO & AEO (Google AI Overviews, Perplexity, ChatGPT Search) */}
+        {/* Structured Data / Schema.org for SEO & AEO */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -131,7 +113,7 @@ export const LaunchAyurvedaPage: React.FC = () => {
                     'name': 'Can I launch an Ayurvedic product in India starting from just an idea?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Yes. Over 65% of founders who partner with Banega Brand start with just a concept or target concern (e.g. postpartum hair fall, brightening kumkumadi elixir). We handle the active botanical sourcing, laboratory formulation, stability testing, custom bottle sourcing, and AYUSH licensing from scratch.',
+                      'text': 'Yes. Over 65% of founders who partner with Banega Brand start with just a concept or target concern (e.g. postpartum hair fall, brightening kumkumadi elixir). We handle active botanical sourcing, laboratory formulation, stability testing, custom bottle sourcing, and AYUSH licensing from scratch.',
                     },
                   },
                   {
@@ -139,7 +121,7 @@ export const LaunchAyurvedaPage: React.FC = () => {
                     'name': 'How does Banega Brand ensure AYUSH and regulatory compliance?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'We formulate according to classical Sanskrit Ayurvedic texts (Charaka Samhita, Sharangadhara Samhita) or proprietary modern polyherbal benchmarks, managing complete state AYUSH licensing, heavy metal ICP-MS screening (Lead, Mercury, Arsenic, Cadmium), and microbial clearance.',
+                      'text': 'We formulate according to classical Sanskrit Ayurvedic texts or proprietary modern polyherbal benchmarks, managing state AYUSH licensing, heavy metal ICP-MS screening, and microbial clearance.',
                     },
                   },
                   {
@@ -147,7 +129,7 @@ export const LaunchAyurvedaPage: React.FC = () => {
                     'name': 'Who owns the Ayurvedic formula and brand IP?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'You own 100% of the formulation IP and brand assets. Banega Brand signs an intellectual property assignment agreement delivering all batch master records, vendor source codes, and design assets upon launch.',
+                      'text': 'You retain 100% of formulation IP and brand assets. Banega Brand signs an intellectual property assignment agreement delivering all batch master records, vendor source codes, and design assets upon launch.',
                     },
                   },
                   {
@@ -182,103 +164,34 @@ export const LaunchAyurvedaPage: React.FC = () => {
           }
         />
 
-        {/* 03 — PRODUCT SELECTOR */}
-        <AyurvedaProductSelector
-          onProceed={(data) =>
-            handleOpenWizard({ category: data.category, products: data.products })
-          }
-        />
-
-        {/* 04 — WHERE ARE YOU IN YOUR JOURNEY? */}
-        <AyurvedaStageSection
-          onSelectStage={(stageId, label) =>
-            handleOpenWizard({ stage: label })
-          }
-        />
-
-        {/* 05 — WHAT DO YOU WANT BANEGA TO HANDLE? */}
-        <AyurvedaScopeSection
-          onSelectScope={(scopeId, label) =>
-            handleOpenWizard({ scope: label })
-          }
-        />
-
-        {/* 06 — FROM INGREDIENT TO PRODUCT (7-Step Process) */}
+        {/* 03 — FROM INGREDIENT TO PRODUCT (7-Step Process) */}
         <AyurvedaProcessSection
           onStartProduct={() => handleOpenWizard()}
         />
 
-        {/* 07 — INGREDIENT & FORMULATION STORY */}
+        {/* 04 — INGREDIENT & FORMULATION STORY */}
         <AyurvedaIngredientStorySection />
 
-        {/* 08 — TRADITION × MODERN PRODUCT */}
+        {/* 05 — TRADITION × MODERN PRODUCT */}
         <AyurvedaTraditionModernSection />
 
-        {/* 09 — PACKAGING (Ayurveda Doesn't Have to Look Old) */}
+        {/* 06 — PACKAGING */}
         <AyurvedaPackagingSection
           onDesignProduct={() => handleOpenWizard({ scope: 'Packaging' })}
         />
 
-        {/* 10 — BRANDING & POSITIONING */}
+        {/* 07 — BRANDING & POSITIONING */}
         <AyurvedaBrandingSection
           onBuildBrand={() => handleOpenWizard({ scope: 'Brand' })}
         />
 
-        {/* 11 — MANUFACTURING */}
+        {/* 08 — MANUFACTURING */}
         <AyurvedaManufacturingSection
           onTalkSpecialist={() => handleOpenWizard({ scope: 'Manufacturing' })}
         />
 
-        {/* 12 — BUILD YOUR PRODUCT RANGE */}
-        <AyurvedaRangeBuilderSection
-          onBuildRange={(data) =>
-            handleOpenWizard({
-              products: data.selectedItems,
-              totalProducts: data.totalProducts,
-            })
-          }
-        />
-
-        {/* 13 — WHAT SHOULD YOUR BRAND FEEL LIKE? (Brand Archetype) */}
-        <AyurvedaBrandArchetypeSection
-          onSelectArchetype={(archetypeId, label) =>
-            handleOpenWizard({ archetype: label })
-          }
-        />
-
-        {/* 14 — WHAT DOES IT TAKE? (Cost Variables) */}
-        <AyurvedaCostVariablesSection
-          onGetLaunchPlan={() => handleOpenWizard()}
-        />
-
-        {/* 15 — CASE STUDIES / REAL WORK */}
-        <AyurvedaCaseStudiesSection
-          onStartBrand={() => handleOpenWizard()}
-        />
-
-        {/* 16 — WHY BANEGA FOR AYURVEDA? */}
-        <AyurvedaWhyBanegaSection
-          onStartJourney={() => handleOpenWizard()}
-        />
-
-        {/* 17 — YOU DON'T NEED TO HAVE THE FORMULA READY (Full-width Emotional) */}
-        <AyurvedaEmotionalBannerSection
-          onHelpStart={() => handleOpenWizard({ stage: 'Just an Idea' })}
-        />
-
-        {/* 18 — LAUNCH ROADMAP */}
-        <AyurvedaRoadmapSection
-          onBuildRoadmap={() => handleOpenWizard()}
-        />
-
-        {/* 19 — FAQ ACCORDION */}
+        {/* 09 — FAQ ACCORDION */}
         <AyurvedaFaqSection />
-
-        {/* 20 — FINAL CTA */}
-        <AyurvedaFinalCtaSection
-          onStartLaunch={() => handleOpenWizard()}
-          onTalkSpecialist={() => handleOpenWizard()}
-        />
       </main>
 
       {/* Global Modern Footer */}

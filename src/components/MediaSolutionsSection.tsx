@@ -12,7 +12,8 @@ interface SolutionItem {
   linkUrl: string;
 }
 
-// Crisp Vector Logos matching reference screenshot
+// ── CRISP VECTOR PARTNER LOGOS ───────────────────────────────────────────────
+
 const MetaPartnerLogo = () => (
   <div className="flex items-center gap-2">
     <svg viewBox="0 0 100 60" className="w-10 h-7 fill-[#0081FB]">
@@ -29,7 +30,7 @@ const MetaPartnerLogo = () => (
   </div>
 );
 
-const GooglePremierBadge = () => (
+const GooglePartnerBadge = () => (
   <div className="flex flex-col items-center justify-center p-2.5 border border-zinc-200 rounded-md bg-white shadow-2xs w-32 sm:w-36 text-center">
     <div className="flex items-center justify-center gap-1 mb-0.5">
       <span className="text-lg font-black text-[#4285F4]">G</span>
@@ -41,16 +42,46 @@ const GooglePremierBadge = () => (
   </div>
 );
 
-const AdobeSolutionBadge = () => (
-  <div className="flex flex-col items-center justify-center text-center">
-    <div className="flex items-center gap-1 mb-0.5">
-      <span className="text-base font-black text-[#EB1000] tracking-tight">Adobe</span>
-    </div>
-    <span className="text-xs font-bold text-zinc-800 tracking-tight block">
-      Solution Partner
+const AmazonLogo = () => (
+  <div className="flex flex-col items-center justify-center">
+    <span className="text-2xl sm:text-3xl font-black tracking-tight text-[#111111] font-sans lowercase leading-none">
+      amazon
     </span>
-    <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest block">
-      BRONZE
+    {/* Orange curved smile arrow */}
+    <svg viewBox="0 0 100 22" className="w-16 sm:w-20 h-4 mt-0.5">
+      <path
+        d="M 6 6 Q 50 20 94 6"
+        fill="none"
+        stroke="#FF9900"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+      />
+      <path
+        d="M 85 4 L 95 6 L 90 14 Z"
+        fill="#FF9900"
+      />
+    </svg>
+  </div>
+);
+
+const FlipkartLogo = () => (
+  <div className="flex items-center gap-2 justify-center">
+    <div className="w-8 h-8 rounded-lg bg-[#2874F0] flex items-center justify-center text-[#FFE11B] font-black text-xl italic shadow-2xs">
+      f
+    </div>
+    <span className="text-xl sm:text-2xl font-bold tracking-tight text-[#2874F0] italic font-sans">
+      Flipkart
+    </span>
+  </div>
+);
+
+const NykaaLogo = () => (
+  <div className="flex items-center justify-center">
+    <span 
+      className="text-2xl sm:text-3xl font-black tracking-widest text-[#FC2779] uppercase italic"
+      style={{ fontFamily: "'Inter', sans-serif", letterSpacing: '0.12em' }}
+    >
+      NYKAA
     </span>
   </div>
 );
@@ -66,28 +97,7 @@ const ONDCLogo = () => (
   </div>
 );
 
-const HubSpotBadge = () => (
-  <div className="flex items-center justify-center gap-2 p-2 border border-zinc-200 rounded-md bg-zinc-900 text-white shadow-2xs">
-    <div className="flex flex-col text-left">
-      <span className="text-xs font-black tracking-tight text-[#FF7A59]">HubSpot</span>
-      <span className="text-[8px] font-bold uppercase tracking-widest text-zinc-300">CERTIFIED PARTNER</span>
-    </div>
-    <span className="text-lg">🤝</span>
-  </div>
-);
-
-const SemrushLogo = () => (
-  <div className="flex items-center justify-center gap-1.5">
-    {/* Semrush fiery comet icon */}
-    <svg viewBox="0 0 100 100" className="w-6 h-6 fill-[#FF642D]">
-      <circle cx="50" cy="50" r="38" />
-      <path d="M50 20 C65 20, 78 32, 78 48 C78 60, 68 70, 56 70 C48 70, 42 65, 42 58 C42 52, 47 48, 52 48 C56 48, 60 51, 60 55 C60 58, 58 60, 56 60 C50 60, 48 50, 54 44 C58 40, 66 42, 66 48" stroke="white" strokeWidth="6" fill="none" strokeLinecap="round" />
-    </svg>
-    <span className="text-lg sm:text-xl font-black tracking-tight text-[#1F2937] font-sans">
-      SEMRUSH
-    </span>
-  </div>
-);
+// ── ACCORDION ITEMS ─────────────────────────────────────────────────────────
 
 const MEDIA_SOLUTIONS: SolutionItem[] = [
   {
@@ -153,7 +163,7 @@ export const MediaSolutionsSection: React.FC = () => {
 
   return (
     <section 
-      id="media-solutions"
+      id="launch-growth-solutions"
       className="w-full bg-white text-[#111111] py-20 sm:py-28 md:py-36 px-4 sm:px-8 lg:px-16 select-none border-b border-zinc-100"
       style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
     >
@@ -165,12 +175,12 @@ export const MediaSolutionsSection: React.FC = () => {
             
             {/* Main Heading */}
             <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-bold tracking-tight text-[#111111] leading-tight">
-              Media Solutions
+              Launch &amp; Growth Solutions
             </h2>
 
             {/* Department Intro */}
             <p className="text-base sm:text-lg text-zinc-700 font-normal leading-relaxed max-w-xl">
-              Our Media Sciences department specializes in implementing and managing paid marketing strategies to increase your brand awareness, market share and business revenue.
+              Our Growth &amp; Scale department specializes in implementing and managing data-driven marketing strategies to transform your innovative ideas into market-leading brands. We focus on increasing your brand awareness, market share, and long-term business revenue.
             </p>
 
             {/* Solid Black Underline Divider */}
@@ -178,10 +188,10 @@ export const MediaSolutionsSection: React.FC = () => {
 
             {/* Collaboration Subheading */}
             <h3 className="text-lg sm:text-xl font-bold text-zinc-900 leading-snug max-w-xl">
-              Proud to be collaborating with media industry leaders to power growth for brands!
+              Proud to be collaborating with marketplace and industry leaders to power growth for D2C brands!
             </h3>
 
-            {/* Partner Logo Grid (3 columns, 2 rows matching reference screenshot) */}
+            {/* Partner Logo Grid (3 columns, 2 rows matching user specifications) */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10 pt-4 items-center max-w-2xl">
               
               {/* Row 1, Col 1: Meta Business Partner */}
@@ -189,35 +199,35 @@ export const MediaSolutionsSection: React.FC = () => {
                 <MetaPartnerLogo />
               </div>
 
-              {/* Row 1, Col 2: Google Premier Partner */}
+              {/* Row 1, Col 2: Google Partner */}
               <div className="flex items-center justify-start sm:justify-center h-16">
-                <GooglePremierBadge />
+                <GooglePartnerBadge />
               </div>
 
-              {/* Row 1, Col 3: Adobe Solution Partner */}
+              {/* Row 1, Col 3: Amazon */}
               <div className="flex items-center justify-start sm:justify-center h-16">
-                <AdobeSolutionBadge />
+                <AmazonLogo />
               </div>
 
-              {/* Row 2, Col 1: ONDC */}
+              {/* Row 2, Col 1: Flipkart */}
+              <div className="flex items-center justify-start sm:justify-center h-16">
+                <FlipkartLogo />
+              </div>
+
+              {/* Row 2, Col 2: Nykaa */}
+              <div className="flex items-center justify-start sm:justify-center h-16">
+                <NykaaLogo />
+              </div>
+
+              {/* Row 2, Col 3: ONDC */}
               <div className="flex items-center justify-start sm:justify-center h-16">
                 <ONDCLogo />
-              </div>
-
-              {/* Row 2, Col 2: HubSpot Certified Partner */}
-              <div className="flex items-center justify-start sm:justify-center h-16">
-                <HubSpotBadge />
-              </div>
-
-              {/* Row 2, Col 3: SEMRUSH */}
-              <div className="flex items-center justify-start sm:justify-center h-16">
-                <SemrushLogo />
               </div>
 
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN: CLEAN ACCORDION LIST MATCHING SCREENSHOT ───────── */}
+          {/* ── RIGHT COLUMN: ACCORDION LIST ─────────────────────────────────── */}
           <div className="lg:col-span-5 w-full pt-2 lg:pt-4 text-left">
             <div className="border-t border-zinc-200 divide-y divide-zinc-200">
               {MEDIA_SOLUTIONS.map((item) => {
@@ -275,7 +285,7 @@ export const MediaSolutionsSection: React.FC = () => {
                               to={item.linkUrl}
                               className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-black hover:text-[#FF5722] underline underline-offset-4 transition-colors"
                             >
-                              <span>Consult Our Media Sciences Team</span>
+                              <span>Consult Our Growth &amp; Scale Team</span>
                               <ArrowRight size={13} />
                             </Link>
                           </div>

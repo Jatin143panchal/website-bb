@@ -3,27 +3,11 @@ import { Helmet } from 'react-helmet-async';
 import { Navbar } from '../../components/Navbar';
 import { FigmaFooter } from '../../components/FigmaFooter';
 
-// 20 Dedicated Skincare & Clinical Derma Components
+// Dedicated Skincare & Clinical Derma Components
 import { SkincareHero } from '../../components/skincare/SkincareHero';
 import { SkincareProductCategoriesSection } from '../../components/skincare/SkincareProductCategoriesSection';
-import { SkincareProductBuilderSection } from '../../components/skincare/SkincareProductBuilderSection';
-import { SkincarePurposeSection } from '../../components/skincare/SkincarePurposeSection';
-import { SkincareActiveIngredientsSection } from '../../components/skincare/SkincareActiveIngredientsSection';
-import { SkincareScopeSection } from '../../components/skincare/SkincareScopeSection';
-import { SkincareProcessSection } from '../../components/skincare/SkincareProcessSection';
-import { SkincareTextureSection } from '../../components/skincare/SkincareTextureSection';
-import { SkincarePackagingSection } from '../../components/skincare/SkincarePackagingSection';
-import { SkincareBrandingSection } from '../../components/skincare/SkincareBrandingSection';
-import { SkincareRangeBuilderSection } from '../../components/skincare/SkincareRangeBuilderSection';
-import { SkincareRoutineBuilderSection } from '../../components/skincare/SkincareRoutineBuilderSection';
 import { SkincareManufacturingSection } from '../../components/skincare/SkincareManufacturingSection';
-import { SkincareCostVariablesSection } from '../../components/skincare/SkincareCostVariablesSection';
-import { SkincareCaseStudiesSection } from '../../components/skincare/SkincareCaseStudiesSection';
-import { SkincareWhyBanegaSection } from '../../components/skincare/SkincareWhyBanegaSection';
-import { SkincareEmotionalBannerSection } from '../../components/skincare/SkincareEmotionalBannerSection';
-import { SkincareRoadmapSection } from '../../components/skincare/SkincareRoadmapSection';
 import { SkincareFaqSection } from '../../components/skincare/SkincareFaqSection';
-import { SkincareFinalCtaSection } from '../../components/skincare/SkincareFinalCtaSection';
 
 // Interactive Guided Launch Modal & Sticky CTA
 import { SkincareLaunchWizardModal, SkincareWizardPrefill } from '../../components/skincare/SkincareLaunchWizardModal';
@@ -73,7 +57,7 @@ export const LaunchPersonalCarePage: React.FC = () => {
         <meta property="og:type" content="website" />
         <meta property="og:image" content="https://banegabrand.com/assets/Banner%204.png" />
 
-        {/* Structured Data / Schema.org for SEO & AEO (Google AI Overviews, Perplexity, ChatGPT Search) */}
+        {/* Structured Data / Schema.org for SEO & AEO */}
         <script type="application/ld+json">
           {JSON.stringify({
             '@context': 'https://schema.org',
@@ -124,12 +108,12 @@ export const LaunchPersonalCarePage: React.FC = () => {
                     'name': 'Can I launch a clinical skincare brand in India starting with just an idea?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
-                      'text': 'Yes. More than 70% of skincare founders begin with just a problem statement (e.g. gentle Niacinamide serum for sensitive barrier repair). We engineer the active formula, source airless vacuum bottles, conduct dermatological patch testing, and manage GMP manufacturing from scratch.',
+                      'text': 'Yes. More than 70% of skincare founders begin with just a problem statement (e.g. gentle Niacinamide serum for sensitive barrier repair). We engineer active formulas, source airless vacuum bottles, conduct dermatological patch testing, and manage GMP manufacturing from scratch.',
                     },
                   },
                   {
                     '@type': 'Question',
-                    'name': 'What is the minimum order quantity (MOQ) for custom skincare manufacturing?',
+                    'name': 'What is the minimum order quantity (MOQ) for custom skincare manufacturing with Banega Brand?',
                     'acceptedAnswer': {
                       '@type': 'Answer',
                       'text': 'We offer low starting pilot batch MOQs beginning at 250 to 500 units per SKU for market validation launches, scaling up to 5,000+ units for commercial volume runs.',
@@ -173,108 +157,13 @@ export const LaunchPersonalCarePage: React.FC = () => {
           onSelectCategory={(catName) => handleOpenWizard({ productType: catName })}
         />
 
-        {/* 03 — PRODUCT BUILDER */}
-        <SkincareProductBuilderSection
-          onProceed={(data) =>
-            handleOpenWizard({
-              productType: data.productType,
-              kind: data.kind,
-              format: data.format,
-            })
-          }
-        />
-
-        {/* 04 — WHAT IS YOUR PRODUCT'S PURPOSE? */}
-        <SkincarePurposeSection
-          onSelectPurpose={(purposeName) => handleOpenWizard({ kind: purposeName })}
-        />
-
-        {/* 05 — INGREDIENT / ACTIVE DIRECTION */}
-        <SkincareActiveIngredientsSection />
-
-        {/* 06 — HOW MUCH SHOULD BANEGA HANDLE? */}
-        <SkincareScopeSection
-          onSelectScope={(scopeId, label) => handleOpenWizard({ scope: label })}
-        />
-
-        {/* 07 — FROM IDEA TO SKINCARE PRODUCT */}
-        <SkincareProcessSection
-          onStartSkincare={() => handleOpenWizard()}
-        />
-
-        {/* 08 — TEXTURE SECTION */}
-        <SkincareTextureSection
-          onBuildFormula={() => handleOpenWizard({ format: 'Custom Texture' })}
-        />
-
-        {/* 09 — PACKAGING */}
-        <SkincarePackagingSection
-          onDesignSkincare={() => handleOpenWizard({ scope: 'Product + Packaging' })}
-        />
-
-        {/* 10 — BRANDING */}
-        <SkincareBrandingSection
-          onBuildBrand={() => handleOpenWizard({ scope: 'Brand + Product' })}
-        />
-
-        {/* 11 — BUILD YOUR SKINCARE RANGE */}
-        <SkincareRangeBuilderSection
-          onBuildRange={(data) =>
-            handleOpenWizard({
-              products: data.selectedItems,
-              totalProducts: data.totalProducts,
-            })
-          }
-        />
-
-        {/* 12 — SKINCARE ROUTINE BUILDER */}
-        <SkincareRoutineBuilderSection
-          onTurnIntoBrand={(routine) =>
-            handleOpenWizard({
-              routine,
-              scope: 'End-to-End Turnkey',
-            })
-          }
-        />
-
-        {/* 13 — MANUFACTURING */}
+        {/* 03 — MANUFACTURING */}
         <SkincareManufacturingSection
           onTalkSpecialist={() => handleOpenWizard({ scope: 'Product Only' })}
         />
 
-        {/* 14 — WHAT DOES IT TAKE? */}
-        <SkincareCostVariablesSection
-          onGetLaunchPlan={() => handleOpenWizard()}
-        />
-
-        {/* 15 — CASE STUDIES */}
-        <SkincareCaseStudiesSection
-          onStartSkincare={() => handleOpenWizard()}
-        />
-
-        {/* 16 — WHY BANEGA? */}
-        <SkincareWhyBanegaSection
-          onStartJourney={() => handleOpenWizard()}
-        />
-
-        {/* 17 — YOU DON'T NEED TO KNOW THE FORMULA */}
-        <SkincareEmotionalBannerSection
-          onHelpStart={() => handleOpenWizard({ scope: 'End-to-End Turnkey' })}
-        />
-
-        {/* 18 — LAUNCH ROADMAP */}
-        <SkincareRoadmapSection
-          onBuildRoadmap={() => handleOpenWizard()}
-        />
-
-        {/* 19 — FAQ */}
+        {/* 04 — FAQ */}
         <SkincareFaqSection />
-
-        {/* 20 — FINAL CTA */}
-        <SkincareFinalCtaSection
-          onStartLaunch={() => handleOpenWizard()}
-          onTalkSpecialist={() => handleOpenWizard()}
-        />
       </main>
 
       {/* Global Footer */}

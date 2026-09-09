@@ -8,12 +8,13 @@ import { FigmaTrustGrid } from '../components/FigmaTrustGrid';
 import { ThreeDSteps } from '../components/ThreeDSteps';
 import { FigmaStrategyVideoSection } from '../components/FigmaStrategyVideoSection';
 import { FigmaCaseStudiesSection } from '../components/FigmaCaseStudiesSection';
+import { ArticlesSection } from '../components/ArticlesSection';
 import { SchbangContactSection } from '../components/SchbangContactSection';
 import { FigmaFooter } from '../components/FigmaFooter';
 
 export const LandingPage = () => {
   return (
-    <div className="relative bg-white text-[#111111] selection:bg-[#FF5722] selection:text-white pt-20 md:pt-24">
+    <div className="relative bg-white text-[#111111] selection:bg-[#FF5722] selection:text-white pt-0">
       <Helmet>
         <title>Banega Brand – India's Leading Product Launch Company | D2C Brand Development &amp; Private Label Consultant</title>
         <meta
@@ -55,6 +56,9 @@ export const LandingPage = () => {
 
         {/* 4 Brand Showcase Case Studies (Biographey, Venotine, ROUGX, Blush en Bloom) */}
         <FigmaCaseStudiesSection />
+
+        {/* Articles & Brand Case Studies Section */}
+        <ArticlesSection />
 
         {/* Minimalist Split Contact Us Section (Schbang Design) */}
         <SchbangContactSection />

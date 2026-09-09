@@ -4,9 +4,8 @@ import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 
 import { Navbar } from '../components/Navbar';
+import { Services3DProductHero } from '../components/Services3DProductHero';
 import { ServicesCapabilitiesWorkflow } from '../components/ServicesCapabilitiesWorkflow';
-import { ServicesEditorialShowcase } from '../components/ServicesEditorialShowcase';
-import { ServicesBottleExplodedSection } from '../components/ServicesBottleExplodedSection';
 import { ServicesTrustBannerSection } from '../components/ServicesTrustBannerSection';
 import { MediaSolutionsSection } from '../components/MediaSolutionsSection';
 import { FigmaFooter } from '../components/FigmaFooter';
@@ -67,55 +66,11 @@ export const ServicesPage: React.FC = () => {
 
       <main>
 
-        {/* ── 1. FULL-WIDTH DARK HERO SECTION (MATCHING SCREENSHOT 1) ────────── */}
-        <section className="relative w-full bg-[#141414] text-white py-24 sm:py-32 md:py-40 px-4 sm:px-6 lg:px-8 overflow-hidden select-none">
-          <div className="max-w-5xl mx-auto text-center space-y-6">
-
-            {/* Main Headline */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-[76px] font-bold text-white tracking-tight leading-[1.08]"
-            >
-              Top Product Launching <br className="hidden sm:inline" />
-              Companies in India
-            </motion.h1>
-
-            {/* Subtitle */}
-            <motion.p
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-base sm:text-xl md:text-2xl text-zinc-300 font-normal pt-1"
-            >
-              Which one is the best for your company?
-            </motion.p>
-
-            {/* White Pill CTA Button & Microcopy */}
-            <motion.div
-              initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="pt-4 flex flex-col items-center space-y-3"
-            >
-              <Link
-                to="/contact"
-                className="inline-flex items-center justify-center px-8 py-3.5 rounded-full bg-white hover:bg-zinc-100 text-[#111111] text-sm sm:text-base font-semibold shadow-lg hover:shadow-2xl transition-all duration-200 active:scale-95 cursor-pointer"
-              >
-                Find my company
-              </Link>
-
-              <span className="text-xs text-zinc-400 font-normal">
-                Takes 3 min. <strong className="text-white font-bold">100% free</strong>
-              </span>
-            </motion.div>
-
-          </div>
-        </section>
+        {/* ── 1. 3D PRODUCT CAROUSEL HERO (MATCHING USER REQUEST SCREENSHOT) ────────── */}
+        <Services3DProductHero />
 
         {/* ── 2. EDITORIAL LUXURY STATEMENT (MATCHING SCREENSHOT 2) ─────────── */}
-        <section className="w-full bg-white py-20 sm:py-28 md:py-36 px-4 sm:px-8 lg:px-16 text-center select-none border-b border-zinc-100 overflow-hidden">
+        <section className="w-full bg-white pt-8 sm:pt-12 md:pt-14 pb-14 sm:pb-20 px-4 sm:px-8 lg:px-16 text-center select-none border-b border-zinc-100 overflow-hidden">
           <div className="max-w-6xl mx-auto flex flex-col items-center justify-center space-y-2 sm:space-y-3">
 
             {/* Top Line: Luxury High-Contrast Serif */}
@@ -191,13 +146,7 @@ export const ServicesPage: React.FC = () => {
         {/* ── 4. FULL-STACK ANIMATED CAPABILITIES WORKFLOW (BRAND NAME -> TM -> GST -> LOGO -> MFG -> SCALE) ── */}
         <ServicesCapabilitiesWorkflow />
 
-        {/* ── 5. 2-COLUMN EDITORIAL SHOWCASE (ING & ALAÏA MATCHING SCREENSHOT) ── */}
-        <ServicesEditorialShowcase />
-
-        {/* ── 6. FULL-WIDTH EXPLODED PERFUME HARDWARE ARCHITECTURE (TUESDAY LONDON ROYAL 17) ── */}
-        <ServicesBottleExplodedSection />
-
-        {/* ── 7. FULL-WIDTH WHY BRANDS TRUST US / STERILE LAB FACILITY BANNER (ISO, GMP, FDA) ── */}
+        {/* ── 5. FULL-WIDTH WHY BRANDS TRUST US / STERILE LAB FACILITY BANNER (ISO, GMP, FDA) ── */}
         <ServicesTrustBannerSection />
 
         {/* ── 8. MEDIA SOLUTIONS & ACCORDION SECTION (MATCHING SCHBANG REFERENCE) ── */}

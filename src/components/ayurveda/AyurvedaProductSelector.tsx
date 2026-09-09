@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Check, ArrowRight, Droplet, Feather, Sun, HeartHandshake, Layers } from 'lucide-react';
+import { Check, ArrowRight, Layers } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface AyurvedaProductSelectorProps {
-  onProceed: (data: { category: string; products: string[] }) => void;
+  onProceed?: (data: { category: string; products: string[] }) => void;
 }
 
 interface CategoryOption {
   id: string;
   name: string;
-  icon: any;
   items: { name: string; desc: string; popular?: boolean }[];
 }
 
@@ -17,7 +17,6 @@ const PRODUCT_CATEGORIES: CategoryOption[] = [
   {
     id: 'skincare',
     name: 'HERBAL SKINCARE',
-    icon: Droplet,
     items: [
       { name: 'Face Serum', desc: 'Active botanical serums with Bakuchiol, Vitamin C or Niacinamide base.', popular: true },
       { name: 'Face Cream', desc: 'Moisture-locking day/night creams with saffron, ghee or ceramide.', popular: true },
@@ -25,49 +24,39 @@ const PRODUCT_CATEGORIES: CategoryOption[] = [
       { name: 'Face Oil', desc: 'Classical Kumkumadi Taila & cold-pressed botanical facial oils.', popular: true },
       { name: 'Body Oil', desc: 'Nourishing botanical body oils for daily ritual hydration.' },
       { name: 'Mask & Lepa', desc: 'Clay and herbal masks with sandalwood, turmeric and multani mitti.' },
-      { name: 'Other Skincare', desc: 'Mists, lip balms, under-eye elixirs or targeted treatments.' },
     ],
   },
   {
     id: 'haircare',
     name: 'HAIR & SCALP',
-    icon: Feather,
     items: [
       { name: 'Hair Growth Oil', desc: 'Traditional kshirpak taila with Bhringraj, Amla and Brahmi.', popular: true },
       { name: 'Herbal Shampoo', desc: 'Sulfate-free scalp cleansers infused with Reetha & Shikakai.', popular: true },
       { name: 'Hair Mask', desc: 'Deep conditioning Ayurvedic hair butter & repair masque.' },
       { name: 'Scalp Serum', desc: 'Water-based root energizing peptide & herbal tonic.', popular: true },
-      { name: 'Herbal Conditioner', desc: 'Silicone-free botanical smoothing balm with hibiscus & fenugreek.' },
-      { name: 'Other Haircare', desc: 'Scalp scrubs, heat protection mists or anti-graying treatments.' },
     ],
   },
   {
     id: 'bodycare',
     name: 'BODYCARE',
-    icon: Sun,
     items: [
       { name: 'Ayurvedic Body Wash', desc: 'Gentle sulfate-free herbal cleansers with sandalwood & vetiver.', popular: true },
       { name: 'Abhyanga Body Oil', desc: 'Warm cured sesame & herb infused traditional body oils.', popular: true },
       { name: 'Herbal Ubtan Polish', desc: 'Exfoliating body scrubs with walnut, chickpea flour and rose.' },
-      { name: 'Body Butter / Lotion', desc: 'Ultra-rich kokum and shea butter moisturizing creams.' },
-      { name: 'Hand & Foot Salve', desc: 'Intensive restorative salves for dry cracked skin.' },
     ],
   },
   {
     id: 'wellness',
     name: 'WELLNESS & BOTANICALS',
-    icon: HeartHandshake,
     items: [
       { name: 'Ashwagandha Elixir', desc: 'Standardized KSM-66 root extract stress relief formulations.', popular: true },
       { name: 'Herbal Kwatha / Tea', desc: 'Bioactive herbal decoctions for immunity and digestive wellness.' },
       { name: 'Chyawanprash Luxe', desc: 'Gold-grade Amla rasayana formulated for modern palates.', popular: true },
-      { name: 'Shilajit Resin', desc: 'Pure Himalayan purified shilajit with fulvic acid standardized testing.' },
-      { name: 'Single Herb Extracts', desc: 'Standardized capsules or liquid extracts (Turmeric, Tulsi, Shatavari).' },
     ],
   },
 ];
 
-export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = ({ onProceed }) => {
+export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = () => {
   const [selectedCatId, setSelectedCatId] = useState<string>('skincare');
   const [selectedProducts, setSelectedProducts] = useState<string[]>(['Face Serum', 'Face Oil']);
 
@@ -90,28 +79,28 @@ export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = (
   };
 
   return (
-    <section id="ayurveda-product-selector" className="py-24 sm:py-32 px-4 sm:px-8 lg:px-16 bg-[#FAFAFA] text-[#111111] select-none border-b border-zinc-200">
+    <section id="ayurveda-product-selector" className="py-20 sm:py-28 px-4 sm:px-8 lg:px-16 bg-[#FAFAFA] text-[#111111] select-none border-b border-zinc-200">
       <div className="max-w-7xl mx-auto space-y-12">
         
         {/* Header */}
         <div className="text-left space-y-3 max-w-3xl">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-px bg-zinc-400" />
-            <span className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
-              03 — PRODUCT SELECTOR
-            </span>
-          </div>
+          <span
+            className="text-xs font-semibold uppercase tracking-[0.25em] text-[#FF5722] block"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            PRODUCT SELECTOR
+          </span>
 
           <h2
-            className="text-[clamp(2.2rem,4vw,3.8rem)] font-normal tracking-[-0.02em] text-[#111111] leading-[1.08] uppercase"
-            style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-bold uppercase tracking-tight text-[#111111]"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             WHAT ARE YOU BUILDING?
           </h2>
 
           <p
-            className="text-base sm:text-lg text-zinc-600 font-normal"
-            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+            className="text-sm sm:text-base text-zinc-600 font-normal leading-relaxed"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             Select your product category and pick the formats you want to develop. We will configure your lab formulation and MOQ parameters accordingly.
           </p>
@@ -126,14 +115,13 @@ export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = (
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`flex items-center gap-2.5 px-6 py-3 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                className={`px-6 py-3 rounded-none text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                   isActive
-                    ? 'bg-black text-white shadow-sm'
+                    ? 'bg-[#FF5722] text-white shadow-sm'
                     : 'bg-white hover:bg-zinc-100 text-zinc-700 border border-zinc-200'
                 }`}
-                style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+                style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                <cat.icon size={15} className={isActive ? 'text-white' : 'text-zinc-500'} />
                 <span>{cat.name}</span>
               </button>
             );
@@ -153,7 +141,7 @@ export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = (
                   exit={{ opacity: 0, scale: 0.96 }}
                   transition={{ duration: 0.25, delay: idx * 0.04 }}
                   onClick={() => handleToggleProduct(item.name)}
-                  className={`p-6 rounded-2xl border transition-all duration-300 cursor-pointer text-left flex flex-col justify-between ${
+                  className={`p-6 rounded-none border transition-all duration-300 cursor-pointer text-left flex flex-col justify-between ${
                     isChecked
                       ? 'bg-white border-black ring-1 ring-black shadow-sm'
                       : 'bg-white hover:bg-[#FAFAFA] border-zinc-200 hover:border-zinc-400'
@@ -162,25 +150,34 @@ export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = (
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div
-                        className={`w-5 h-5 rounded flex items-center justify-center transition-colors ${
-                          isChecked ? 'bg-black text-white' : 'border border-zinc-300 bg-[#FAFAFA]'
+                        className={`w-5 h-5 rounded-none flex items-center justify-center transition-colors ${
+                          isChecked ? 'bg-[#FF5722] text-white' : 'border border-zinc-300 bg-[#FAFAFA]'
                         }`}
                       >
                         {isChecked && <Check size={12} strokeWidth={3} />}
                       </div>
 
                       {item.popular && (
-                        <span className="text-[9px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-zinc-100 text-zinc-700 border border-zinc-200">
+                        <span
+                          className="text-[9px] font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-none bg-zinc-100 text-[#FF5722] border border-zinc-200"
+                          style={{ fontFamily: "'Poppins', sans-serif" }}
+                        >
                           Bestseller
                         </span>
                       )}
                     </div>
 
                     <div>
-                      <h3 className="text-base font-normal uppercase text-[#111111] tracking-tight" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+                      <h3
+                        className="text-base font-bold uppercase text-[#111111] tracking-tight"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
+                      >
                         {item.name}
                       </h3>
-                      <p className="text-xs text-zinc-600 leading-relaxed mt-1 font-normal" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+                      <p
+                        className="text-xs text-zinc-600 leading-relaxed mt-1 font-normal"
+                        style={{ fontFamily: "'Poppins', sans-serif" }}
+                      >
                         {item.desc}
                       </p>
                     </div>
@@ -192,17 +189,23 @@ export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = (
         </div>
 
         {/* Dynamic Selection Bar & Next CTA */}
-        <div className="p-6 sm:p-8 rounded-2xl bg-black text-white flex flex-col md:flex-row items-center justify-between gap-6 border border-zinc-800">
+        <div className="p-6 sm:p-8 rounded-none bg-black text-white flex flex-col md:flex-row items-center justify-between gap-6 border border-zinc-800">
           <div className="space-y-1 text-left">
-            <div className="flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.25em] text-zinc-400">
+            <div
+              className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#FF5722]"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
               <Layers size={14} />
               <span>CURRENT SELECTION</span>
             </div>
-            <div className="text-sm font-normal text-zinc-300" style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}>
+            <div
+              className="text-xs sm:text-sm font-normal text-zinc-300"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
+            >
               {selectedProducts.length > 0 ? (
                 <>
-                  <span className="font-semibold text-white">{selectedProducts.length} product(s)</span> selected in{' '}
-                  <span className="font-semibold text-white">{currentCategory.name}</span>:{' '}
+                  <span className="font-bold text-white">{selectedProducts.length} product(s)</span> selected in{' '}
+                  <span className="font-bold text-white">{currentCategory.name}</span>:{' '}
                   <span className="text-zinc-400">{selectedProducts.join(', ')}</span>
                 </>
               ) : (
@@ -211,20 +214,14 @@ export const AyurvedaProductSelector: React.FC<AyurvedaProductSelectorProps> = (
             </div>
           </div>
 
-          <button
-            type="button"
-            disabled={selectedProducts.length === 0}
-            onClick={() => onProceed({ category: currentCategory.name, products: selectedProducts })}
-            className={`px-8 py-4 rounded-full font-semibold text-xs uppercase tracking-widest transition-all duration-300 flex items-center gap-3 shrink-0 ${
-              selectedProducts.length > 0
-                ? 'bg-white hover:bg-zinc-200 text-black cursor-pointer active:scale-95 shadow-sm'
-                : 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-60'
-            }`}
-            style={{ fontFamily: "'Outfit', system-ui, sans-serif" }}
+          <Link
+            to="/contact"
+            className="px-8 py-4 rounded-full bg-[#FF5722] hover:bg-[#E64A19] text-white font-bold text-xs uppercase tracking-[0.16em] transition-all duration-300 flex items-center gap-2.5 shrink-0 shadow-lg active:scale-95"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
           >
-            <span>CONFIGURE THIS PRODUCT (NEXT)</span>
-            <ArrowRight size={14} />
-          </button>
+            <span>Start My Launch</span>
+            <ArrowRight size={15} />
+          </Link>
         </div>
 
       </div>

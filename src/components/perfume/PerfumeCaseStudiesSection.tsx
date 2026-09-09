@@ -117,11 +117,11 @@ export const PerfumeCaseStudiesSection: React.FC = () => {
               </div>
 
               {/* Product Image */}
-              <div className="hidden lg:block rounded-2xl overflow-hidden border border-zinc-100 shadow-sm aspect-[3/4]">
+              <div className="hidden lg:block rounded-none overflow-hidden border border-zinc-100 shadow-sm aspect-[3/4]">
                 <img
                   src={c.img}
                   alt={c.brand}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 rounded-none"
                 />
               </div>
 

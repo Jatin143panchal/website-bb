@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Volume2, VolumeX } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Volume2, VolumeX } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -9,47 +8,12 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const METRICS = [
-  { value: '215+', label: 'BRANDS LAUNCHED' },
-  { value: '108+', label: 'MANUFACTURING PARTNERS' },
-  { value: '6-Step', label: 'LAUNCH FRAMEWORK' },
-  { value: '4', label: 'HIGH-GROWTH INDUSTRIES' },
-];
-
 const MARQUEE_ITEMS = [
   "HAVE A PRODUCT IDEA? LET'S LAUNCH IT",
-  "IT'S TIME TO CREATE A SCHBANG",
   "IT'S TIME TO LAUNCH YOUR BRAND",
-  "INDIA'S NO. 1 PRODUCT LAUNCH COMPANY",
+  "INDIA'S PRODUCT LAUNCH PARTNER",
+  "TURNKEY FORMULATION & PACKAGING",
 ];
-
-// ── EXACT SCHBANG MULTI-SPOKE SUNBURST ASTERISK ICON ──────────────────────────
-const BigSunburstIcon: React.FC = () => (
-  <span className="inline-flex items-center justify-center mx-4 sm:mx-6 md:mx-8 shrink-0 select-none">
-    <svg
-      viewBox="0 0 100 100"
-      className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 fill-[#111111] animate-spin select-none"
-      style={{ animationDuration: '14s' }}
-    >
-      <circle cx="50" cy="50" r="16" fill="#111111" />
-      {Array.from({ length: 24 }).map((_, i) => {
-        const angle = (i * 360) / 24;
-        return (
-          <rect
-            key={i}
-            x="48.2"
-            y="2"
-            width="3.6"
-            height="27"
-            rx="1.8"
-            transform={`rotate(${angle} 50 50)`}
-            fill="#111111"
-          />
-        );
-      })}
-    </svg>
-  </span>
-);
 
 export const FigmaHero: React.FC = () => {
   const pinSectionRef = useRef<HTMLDivElement>(null);
@@ -76,12 +40,14 @@ export const FigmaHero: React.FC = () => {
       tl.fromTo(
         videoWrapperRef.current,
         {
-          width: '94%',
-          scale: 0.96,
-          borderRadius: '20px',
+          width: '95%',
+          height: '92vh',
+          scale: 0.98,
+          borderRadius: '16px',
         },
         {
           width: '100%',
+          height: '100vh',
           scale: 1,
           borderRadius: '0px',
           ease: 'power2.inOut',
@@ -99,159 +65,173 @@ export const FigmaHero: React.FC = () => {
   };
 
   return (
-    <section className="relative w-full bg-white text-[#111111] overflow-hidden">
+    <section className="relative w-full bg-white text-[#111111] overflow-hidden select-none border-none outline-none">
 
-      {/* ── 1. EXACT REFERENCE MATCH: LEFT-ALIGNED HERO HEADLINE & VALUE PROP ── */}
-      <div className="w-full max-w-7xl px-4 sm:px-8 md:px-12 lg:px-16 pt-16 sm:pt-20 md:pt-24 pb-2 sm:pb-3 text-left select-none">
-        {/* Eyebrow */}
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-px bg-zinc-400" />
-          <span className="text-xs font-mono uppercase tracking-[0.25em] text-zinc-500">
-            India's No. 1 Product Launch Company
-          </span>
+      {/* ── 1. TOP HERO HEADER ZONE (ORANGE TO WHITE VERTICAL GRADIENT) ── */}
+      <div className="relative w-full bg-gradient-to-b from-[#FF5722] via-[#FFA07A]/50 to-[#FFFFFF] overflow-hidden select-none border-none">
+
+        {/* Hero Headline & Value Prop */}
+        <div className="relative z-10 w-full max-w-7xl px-4 sm:px-8 md:px-12 lg:px-16 pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-4 sm:pb-6 text-left select-none">
+          {/* Eyebrow */}
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-xs sm:text-sm font-mono uppercase tracking-[0.25em] text-[#111111] font-bold">
+              India's Product Launch Partner
+            </span>
+          </div>
+
+          {/* Huge Solid Bold Matte Black Headline (No Outlines, No Shadows) */}
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] xl:text-[66px] font-black tracking-[-0.03em] leading-[1.06] max-w-5xl uppercase"
+            style={{
+              fontFamily: "'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            }}
+          >
+            <span className="block text-[#111111]">HAVE A PRODUCT IDEA?</span>
+            <span className="block text-[#111111]/90">LET'S LAUNCH IT</span>
+          </motion.h1>
+
+          {/* Narrative Subtext */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
+            className="mt-4 sm:mt-5 text-base sm:text-lg md:text-xl text-[#1a1a1a] font-medium leading-relaxed max-w-4xl"
+            style={{ fontFamily: "'Outfit', 'Mulish', 'Inter', system-ui, sans-serif" }}
+          >
+            From product development and formulation to packaging manufacturing and branding, BanegaBrand helps founders and businesses turn product ideas into market-ready brands in India.
+          </motion.p>
         </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-[56px] xl:text-[66px] font-black tracking-[-0.03em] text-[#0a0a0a] leading-[1.08] max-w-5xl uppercase"
-          style={{
-            fontFamily: "'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-          }}
-        >
-          <span className="block">HAVE A PRODUCT IDEA?</span>
-          <span className="block text-zinc-400">LET'S LAUNCH IT.</span>
-        </motion.h1>
+        {/* Continuous Filled Text Marquee (Orange Gradient Text on Seamless Transparent Background) */}
+        <div className="relative z-10 w-full py-2 sm:py-3 bg-transparent overflow-hidden flex select-none">
+          {/* Track 1 */}
+          <div className="flex shrink-0 items-center animate-hero-marquee whitespace-nowrap">
+            {MARQUEE_ITEMS.map((phrase, idx) => (
+              <div key={`t1-${idx}`} className="flex shrink-0 items-center whitespace-nowrap">
+                <span
+                  className="font-black uppercase select-none whitespace-nowrap leading-none tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] bg-gradient-to-r from-[#FF5722] via-[#FF8A65] to-[#FF5722] bg-clip-text text-transparent shrink-0"
+                  style={{
+                    fontFamily: "'Mulish', 'Inter', system-ui, sans-serif",
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  {phrase}
+                </span>
+                <span className="inline-flex items-center justify-center mx-4 sm:mx-6 md:mx-8 shrink-0 select-none">
+                  <svg
+                    viewBox="0 0 100 100"
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 fill-[#FF5722] animate-spin select-none"
+                    style={{ animationDuration: '14s' }}
+                  >
+                    <circle cx="50" cy="50" r="16" fill="currentColor" />
+                    {Array.from({ length: 24 }).map((_, i) => {
+                      const angle = (i * 360) / 24;
+                      return (
+                        <rect
+                          key={i}
+                          x="48.2"
+                          y="2"
+                          width="3.6"
+                          height="27"
+                          rx="1.8"
+                          transform={`rotate(${angle} 50 50)`}
+                          fill="currentColor"
+                        />
+                      );
+                    })}
+                  </svg>
+                </span>
+              </div>
+            ))}
+          </div>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: 'easeOut' }}
-          className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-zinc-600 font-normal leading-relaxed max-w-4xl"
-          style={{ fontFamily: "'Outfit', 'Mulish', 'Inter', system-ui, sans-serif" }}
-        >
-          From formulation to packaging, manufacturing, branding &amp; launch — we help turn your idea into a market-ready product.
-        </motion.p>
+          {/* Track 2 (Seamless Infinite Duplicate) */}
+          <div className="flex shrink-0 items-center animate-hero-marquee whitespace-nowrap" aria-hidden="true">
+            {MARQUEE_ITEMS.map((phrase, idx) => (
+              <div key={`t2-${idx}`} className="flex shrink-0 items-center whitespace-nowrap">
+                <span
+                  className="font-black uppercase select-none whitespace-nowrap leading-none tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] bg-gradient-to-r from-[#FF5722] via-[#FF8A65] to-[#FF5722] bg-clip-text text-transparent shrink-0"
+                  style={{
+                    fontFamily: "'Mulish', 'Inter', system-ui, sans-serif",
+                    letterSpacing: '0.01em',
+                  }}
+                >
+                  {phrase}
+                </span>
+                <span className="inline-flex items-center justify-center mx-4 sm:mx-6 md:mx-8 shrink-0 select-none">
+                  <svg
+                    viewBox="0 0 100 100"
+                    className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 fill-[#FF5722] animate-spin select-none"
+                    style={{ animationDuration: '14s' }}
+                  >
+                    <circle cx="50" cy="50" r="16" fill="currentColor" />
+                    {Array.from({ length: 24 }).map((_, i) => {
+                      const angle = (i * 360) / 24;
+                      return (
+                        <rect
+                          key={i}
+                          x="48.2"
+                          y="2"
+                          width="3.6"
+                          height="27"
+                          rx="1.8"
+                          transform={`rotate(${angle} 50 50)`}
+                          fill="currentColor"
+                        />
+                      );
+                    })}
+                  </svg>
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
 
-      {/* ── 2. COMPACT OUTLINE TEXT MARQUEE (NO BORDER LINES) ─────── */}
-      <div className="w-full py-1.5 sm:py-2.5 bg-white overflow-hidden relative flex select-none">
-        {/* Track 1 */}
-        <div className="flex shrink-0 items-center animate-hero-marquee whitespace-nowrap">
-          {MARQUEE_ITEMS.map((phrase, idx) => (
-            <div key={`t1-${idx}`} className="flex shrink-0 items-center whitespace-nowrap">
-              <span
-                className="font-extrabold uppercase select-none whitespace-nowrap leading-none tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] text-transparent shrink-0 transition-all duration-300 hover:text-black/10"
-                style={{
-                  fontFamily: "'Mulish', 'Inter', system-ui, sans-serif",
-                  letterSpacing: '0.01em',
-                  WebkitTextStroke: '1.2px #71717a',
-                  color: 'transparent',
-                }}
-              >
-                {phrase}
-              </span>
-              <BigSunburstIcon />
-            </div>
-          ))}
-        </div>
-
-        {/* Track 2 (Seamless Infinite Duplicate) */}
-        <div className="flex shrink-0 items-center animate-hero-marquee whitespace-nowrap" aria-hidden="true">
-          {MARQUEE_ITEMS.map((phrase, idx) => (
-            <div key={`t2-${idx}`} className="flex shrink-0 items-center whitespace-nowrap">
-              <span
-                className="font-extrabold uppercase select-none whitespace-nowrap leading-none tracking-tight text-xl sm:text-2xl md:text-3xl lg:text-[34px] xl:text-[38px] text-transparent shrink-0 transition-all duration-300 hover:text-black/10"
-                style={{
-                  fontFamily: "'Mulish', 'Inter', system-ui, sans-serif",
-                  letterSpacing: '0.01em',
-                  WebkitTextStroke: '1.2px #71717a',
-                  color: 'transparent',
-                }}
-              >
-                {phrase}
-              </span>
-              <BigSunburstIcon />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ── 3. PINNED SCROLL-DRIVEN FULL-WIDTH EXPANDING VIDEO (ZERO TOP MARGIN) ───────────────── */}
+      {/* ── 2. PINNED SCROLL-DRIVEN FULL-WIDTH EXPANDING VIDEO (ON CLEAN WHITE BACKGROUND) ── */}
       <div
         ref={pinSectionRef}
-        className="w-full h-screen flex flex-col items-center justify-start pt-0 mt-0 bg-white overflow-hidden"
+        className="w-full h-screen flex flex-col items-center justify-center p-0 m-0 bg-white overflow-hidden select-none border-none"
       >
         <div
           ref={videoWrapperRef}
-          className="relative w-[94%] sm:w-[96%] h-[85vh] md:h-[92vh] mt-0 overflow-hidden bg-zinc-950 shadow-2xl transition-all will-change-transform flex items-center justify-center rounded-2xl"
+          className="relative w-[95%] h-[92vh] md:h-[94vh] rounded-[16px] overflow-hidden shadow-2xl transition-all duration-300 group cursor-pointer"
         >
+          {/* Main Reel Video (High Performance Local Stream with Autoplay) */}
           <video
             ref={videoRef}
             src="/assets/showcase/launchvid.mp4"
             autoPlay
             loop
-            muted={isMuted}
+            muted
             playsInline
             preload="auto"
-            onError={(e) => {
-              const target = e.target as HTMLVideoElement;
-              if (target.src !== window.location.origin + '/assets/273922.mp4') {
-                target.src = '/assets/273922.mp4';
-                target.play().catch(() => { });
-              }
-            }}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover select-none"
           />
 
-          {/* Minimalist Sound Control Toggle */}
-          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
-            <button
-              onClick={toggleMute}
-              className="p-3 rounded-full bg-black/60 hover:bg-black text-white backdrop-blur-md border border-white/20 transition-all shadow-md active:scale-95 cursor-pointer"
-              aria-label={isMuted ? 'Unmute Audio' : 'Mute Audio'}
-            >
-              {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-            </button>
-          </div>
-        </div>
-      </div>
+          {/* Luxury Video Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
 
-      {/* ── 4. EXACT FIGMA / SCHBANG METRICS ROW (MATCHING USER SCREENSHOT) ────── */}
-      <div className="w-full border-t border-b border-zinc-200/90 bg-white py-10 sm:py-14 px-4 sm:px-8 lg:px-12 select-none">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 items-center">
-            {METRICS.map((metric, i) => (
-              <motion.div
-                key={metric.label}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className={`flex flex-col text-left ${i < METRICS.length - 1 ? 'border-r border-zinc-200/90 pr-4 sm:pr-6 md:pr-8' : ''
-                  }`}
-              >
-                <span
-                  className="text-4xl sm:text-5xl lg:text-[56px] font-normal text-[#111111] tracking-tight leading-none mb-2"
-                  style={{
-                    fontFamily: "'Playfair Display', 'Bodoni MT', 'Didot', 'Cormorant Garamond', Georgia, serif",
-                    letterSpacing: '-0.02em'
-                  }}
-                >
-                  {metric.value}
-                </span>
-                <span
-                  className="text-xs sm:text-[13px] font-semibold uppercase tracking-wider text-[#555555]"
-                  style={{
-                    fontFamily: "'Mulish', 'Outfit', 'Sora', system-ui, sans-serif",
-                    letterSpacing: '0.04em'
-                  }}
-                >
-                  {metric.label}
-                </span>
-              </motion.div>
-            ))}
+          {/* Centered Floating Play/Mute Control */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMute();
+              }}
+              className="pointer-events-auto w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white shadow-2xl hover:scale-110 active:scale-95 hover:bg-white/30 transition-all duration-300 cursor-pointer group"
+              aria-label={isMuted ? 'Unmute video reel' : 'Mute video reel'}
+            >
+              {isMuted ? (
+                <VolumeX size={28} className="text-white group-hover:scale-110 transition-transform" />
+              ) : (
+                <Volume2 size={28} className="text-white group-hover:scale-110 transition-transform" />
+              )}
+            </button>
           </div>
         </div>
       </div>

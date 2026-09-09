@@ -1,249 +1,270 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+interface TimelineDeliverable {
+  title: string;
+  desc: string;
+}
 
 interface TimelineStep {
   stepNum: string;
-  stepCode: string;
   title: string;
-  timeframe: string;
   description: string;
-  deliverables: string[];
+  gradientClass: string;
+  deliverables: TimelineDeliverable[];
 }
 
 const TIMELINE_STEPS: TimelineStep[] = [
   {
-    stepNum: '1',
-    stepCode: 'STEP 01',
+    stepNum: '01',
     title: 'Define Product Concept & Category',
-    timeframe: 'Day 01 – 15',
     description:
       'We identify competitive market whitespace, target price bands, consumer rituals, and formulate your high-margin hero SKU launch blueprint.',
-    deliverables: ['Category Whitespace Mapping', 'Unit Economics & COGS Modeling', 'Portfolio Architecture'],
+    gradientClass: 'bg-gradient-to-b from-[#8B5CF6] via-[#A78BFA] to-[#FFFFFF]', // Royal Orchid Purple
+    deliverables: [
+      { title: 'Category Whitespace Mapping', desc: 'Competitor audit & consumer pricing matrix' },
+      { title: 'Unit Economics & COGS Modeling', desc: 'Detailed margin structures & BOM breakdowns' },
+      { title: 'Portfolio Architecture', desc: 'Hero SKU blueprint & collection expansion plan' },
+    ],
   },
   {
-    stepNum: '2',
-    stepCode: 'STEP 02',
+    stepNum: '02',
     title: 'Build Product & Formulation Direction',
-    timeframe: 'Day 12 – 35',
     description:
       'Cleanroom custom formulation using European IFRA-certified fragrance oils, clinical dermatological actives, and standardized botanical extracts with 90-day stability clearance.',
-    deliverables: ['Custom Lab Sampling', 'IFRA & Microbiological Tests', 'Accelerated Stability Trials'],
+    gradientClass: 'bg-gradient-to-b from-[#00C4FF] via-[#7DD3FC] to-[#FFFFFF]', // Electric Cyan Sky
+    deliverables: [
+      { title: 'Custom Lab Sampling', desc: 'Up to 5 sensory benchmark formulation iterations' },
+      { title: 'IFRA & Microbiological Tests', desc: 'International safety & hypoallergenic clearances' },
+      { title: 'Accelerated Stability Trials', desc: 'Oven & freeze-thaw batch stability validation' },
+    ],
   },
   {
-    stepNum: '3',
-    stepCode: 'STEP 03',
+    stepNum: '03',
     title: 'Select Packaging & Tactile Architecture',
-    timeframe: 'Day 25 – 50',
     description:
       'Procurement of custom Italian glass flacons, UV-shielded amber droppers, precision airless pumps, tactile hot-foil stamping, and FSC-certified rigid presentation boxes.',
-    deliverables: ['Custom Tooling & Bottle Molds', 'Tactile Embossing & Foil Stamping', 'Luxury Rigid Unboxing Cartons'],
+    gradientClass: 'bg-gradient-to-b from-[#F59E0B] via-[#FDE047] to-[#FFFFFF]', // Golden Amber
+    deliverables: [
+      { title: 'Custom Tooling & Bottle Molds', desc: 'Precision engineered custom luxury glass flacons' },
+      { title: 'Tactile Embossing & Foil Stamping', desc: 'Multi-level micro-embossed accents & closures' },
+      { title: 'Luxury Rigid Unboxing Cartons', desc: 'Custom unboxing presentation & transit protection' },
+    ],
   },
   {
-    stepNum: '4',
-    stepCode: 'STEP 04',
+    stepNum: '04',
     title: 'Build Brand Identity & Flagship Store',
-    timeframe: 'Day 40 – 65',
     description:
       'Design of trademark-cleared logo crests, luxury editorial typography systems, hyper-photorealistic 3D CGI product renders, and high-converting Shopify digital flagships.',
-    deliverables: ['Trademark Ready Crest', '3D Photorealistic CGI Renders', 'High-Speed Flagship E-Commerce'],
+    gradientClass: 'bg-gradient-to-b from-[#6366F1] via-[#A5B4FC] to-[#FFFFFF]', // Electric Indigo Violet
+    deliverables: [
+      { title: 'Trademark Ready Crest', desc: 'Comprehensive IP clearance & brand filing' },
+      { title: '3D Photorealistic CGI Renders', desc: 'Cinematic lighting & 4K photoreal packshots' },
+      { title: 'High-Speed Flagship E-Commerce', desc: 'Conversion-optimized Shopify flagship experience' },
+    ],
   },
   {
-    stepNum: '5',
-    stepCode: 'STEP 05',
+    stepNum: '05',
     title: 'GMP Pilot Production & Regulatory Filings',
-    timeframe: 'Day 55 – 75',
     description:
       'Sterile automated filling and pilot batch runs starting at low MOQs (250–500 units) backed by complete AYUSH, CDSCO, and FDA regulatory compliance clearances.',
-    deliverables: ['GMP Certified Compounding', 'Pilot Low MOQs (250 Units)', 'Regulatory Licensing & Barcodes'],
+    gradientClass: 'bg-gradient-to-b from-[#10B981] via-[#6EE7B7] to-[#FFFFFF]', // Fresh Mint Emerald
+    deliverables: [
+      { title: 'GMP Certified Compounding', desc: 'Cleanroom ISO/GMP precision batch compounding' },
+      { title: 'Pilot Low MOQs (250 Units)', desc: 'Low-risk pilot run to test consumer demand' },
+      { title: 'Regulatory Licensing & Barcodes', desc: 'Official GS1 barcodes, CDSCO & legal filings' },
+    ],
   },
   {
-    stepNum: '6',
-    stepCode: 'STEP 06',
+    stepNum: '06',
     title: 'Omnichannel Launch & Commercial Scale',
-    timeframe: 'Day 75 – 90',
     description:
       'Direct onboarding on Amazon Brand Registry, Nykaa, Flipkart, and Blinkit quick-commerce, paired with influencer PR seeding and performance marketing to your first 1,000 orders.',
-    deliverables: ['Amazon & Nykaa Listing Execution', 'Quick-Commerce 10-Min Delivery', 'Influencer PR & Paid Media Scale'],
+    gradientClass: 'bg-gradient-to-b from-[#FF5722] via-[#FF8A65] to-[#FFFFFF]', // Sunset Coral Flame
+    deliverables: [
+      { title: 'Amazon & Nykaa Execution', desc: 'Brand Registry onboarding, A+ Content & SEO' },
+      { title: 'Quick-Commerce 10-Min Delivery', desc: 'Blinkit & Zepto dark-store network distribution' },
+      { title: 'Influencer PR & Paid Media', desc: 'Creator gifting seeding & high-ROAS Meta ads' },
+    ],
   },
 ];
 
 export const ThreeDSteps: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  // Scroll progress for vertical animated line draw
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start 75%', 'end 85%'],
-  });
+  useEffect(() => {
+    if (!sectionRef.current) return;
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '+=350%',
+          pin: true,
+          pinSpacing: true,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      // Cards 1 through 5 smoothly slide in from below over previous card
+      for (let i = 1; i < TIMELINE_STEPS.length; i++) {
+        const cardEl = cardsRef.current[i];
+        if (cardEl) {
+          tl.fromTo(
+            cardEl,
+            {
+              yPercent: 100,
+            },
+            {
+              yPercent: 0,
+              ease: 'power1.inOut',
+              duration: 1,
+            }
+          );
+          tl.to({}, { duration: 0.25 });
+        }
+      }
+
+      tl.to({}, { duration: 0.4 });
+    }, sectionRef);
+
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 250);
+
+    return () => {
+      clearTimeout(refreshTimer);
+      ctx.revert();
+    };
+  }, []);
 
   return (
     <section
-      ref={containerRef}
-      className="w-full bg-[#FAF8F5] text-[#111111] py-20 sm:py-28 md:py-36 px-4 sm:px-8 lg:px-16 select-none overflow-hidden border-t border-b border-[#E8E5DF]"
+      ref={sectionRef}
+      className="relative w-full h-screen bg-white text-[#111111] select-none flex flex-col justify-between overflow-hidden"
+      style={{ fontFamily: "'Sora', 'Poppins', sans-serif" }}
     >
-      <div className="max-w-6xl mx-auto space-y-16 sm:space-y-24">
+      {/* ── 1. SECTION TITLE AT TOP ── */}
+      <div className="w-full text-center py-2 sm:py-3.5 bg-white shrink-0 z-30 shadow-2xs">
+        <h2
+          className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-black tracking-tight text-[#111111] leading-tight uppercase"
+          style={{
+            fontFamily: "'Sora', 'Poppins', sans-serif",
+          }}
+        >
+          YOUR 6-STEP LAUNCH
+        </h2>
+      </div>
 
-        {/* ── 1. EDITORIAL HEADER (MATCHING SCREENSHOT TYPOGRAPHY EXACTLY) ── */}
-        <div className="w-full text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white border border-[#E5E2DC] text-[11px] font-mono tracking-[0.25em] uppercase text-[#111111]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF6505]" />
-            SIX LAUNCH STAGES
-          </div>
-
-          <div className="space-y-1">
-            <h2
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-[0.04em] sm:tracking-[0.06em] text-[#111111] leading-[1.02] uppercase"
+      {/* ── 2. 100% FULL-WIDTH DISTINCT VIBRANT GRADIENT STAGE ── */}
+      <div className="relative w-full flex-1 overflow-hidden bg-white">
+        {TIMELINE_STEPS.map((step, index) => {
+          return (
+            <div
+              key={step.stepNum}
+              ref={(el) => {
+                cardsRef.current[index] = el;
+              }}
+              className="absolute inset-0 w-full h-full flex flex-col justify-center bg-white overflow-hidden"
               style={{
-                fontFamily: "'Outfit', 'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontWeight: 400,
+                zIndex: index + 10,
               }}
             >
-              YOUR 6-STEP LAUNCH
-            </h2>
-            <h3
-              className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-light tracking-[0.04em] sm:tracking-[0.06em] text-[#888888] leading-[1.02] uppercase"
-              style={{
-                fontFamily: "'Outfit', 'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                fontWeight: 300,
-              }}
-            >
-              START HERE.
-            </h3>
-          </div>
-
-          <p
-            className="text-sm sm:text-base md:text-lg text-zinc-500 max-w-xl mx-auto font-light pt-2 leading-relaxed"
-            style={{ fontFamily: "'Outfit', 'Mulish', system-ui, sans-serif" }}
-          >
-            A disciplined, milestone-driven framework to transform your raw product concept into a market-dominating brand in 45–90 days.
-          </p>
-        </div>
-
-        {/* ── 2. VERTICAL ZIG-ZAG TIMELINE WITH SCROLL-ANIMATED LINE ── */}
-        <div className="relative w-full">
-
-          {/* Center Vertical Background Track (Desktop: Center / Mobile: Left-aligned) */}
-          <div className="absolute top-8 bottom-8 left-6 md:left-1/2 -translate-x-1/2 w-[2px] bg-[#E2DFD7]" />
-
-          {/* Center Vertical Animated Fill Line (Driven by scroll) */}
-          <motion.div
-            style={{ height: lineHeight }}
-            className="absolute top-8 left-6 md:left-1/2 -translate-x-1/2 w-[2px] bg-[#111111] origin-top z-10"
-          />
-
-          {/* Timeline Nodes & Cards */}
-          <div className="relative z-20 space-y-12 sm:space-y-16 md:space-y-20">
-            {TIMELINE_STEPS.map((step, index) => {
-              const isEven = index % 2 === 0; // Left side on desktop
-
-              return (
-                <div
-                  key={step.stepNum}
-                  className={`relative flex flex-col md:flex-row items-start md:items-center ${
-                    isEven ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Step Card Container (50% width on Desktop) */}
-                  <div className="w-full md:w-1/2 pl-14 md:pl-0 md:px-10 lg:px-14">
-                    <motion.div
-                      initial={{ opacity: 0, x: isEven ? -40 : 40, y: 20 }}
-                      whileInView={{ opacity: 1, x: 0, y: 0 }}
-                      viewport={{ once: true, margin: '-80px' }}
-                      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                      className="group bg-white border border-[#E5E2DC] rounded-2xl p-6 sm:p-8 md:p-9 shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.07)] hover:border-zinc-400 transition-all duration-300 text-left space-y-4"
-                    >
-                      {/* Step Header Meta */}
-                      <div className="flex items-center justify-between border-b border-[#F0EDE6] pb-3">
-                        <span
-                          className="text-xs font-semibold tracking-[0.16em] uppercase text-[#111111]"
-                          style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                        >
-                          {step.stepCode}
-                        </span>
-
-                        <span
-                          className="text-[11px] font-medium tracking-wider uppercase text-[#777777] bg-[#FAF8F5] border border-[#EAE7E0] px-2.5 py-0.5 rounded"
-                          style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                        >
-                          {step.timeframe}
-                        </span>
-                      </div>
-
-                      {/* Step Title & Description */}
-                      <div className="space-y-2">
-                        <h4
-                          className="text-xl sm:text-2xl md:text-[26px] font-normal uppercase tracking-[0.02em] text-[#111111] leading-snug"
-                          style={{
-                            fontFamily: "'Outfit', 'Mulish', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
-                            fontWeight: 400,
-                          }}
-                        >
-                          {step.title}
-                        </h4>
-
-                        <p
-                          className="text-xs sm:text-sm text-zinc-600 font-light leading-relaxed"
-                          style={{ fontFamily: "'Outfit', 'Mulish', system-ui, sans-serif" }}
-                        >
-                          {step.description}
-                        </p>
-                      </div>
-
-                      {/* Deliverables Checklist */}
-                      <div className="pt-2 space-y-2 border-t border-[#F0EDE6]">
-                        <div className="flex flex-wrap gap-2">
-                          {step.deliverables.map((item, dIdx) => (
-                            <div
-                              key={dIdx}
-                              className="inline-flex items-center gap-1.5 text-[11px] text-[#444444] bg-[#FAF8F5] px-2.5 py-1 rounded border border-[#EAE7E0]"
-                              style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                            >
-                              <CheckCircle2 className="w-3 h-3 text-[#111111] shrink-0" />
-                              <span>{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Central Circular Numbered Node */}
-                  <motion.div
-                    initial={{ scale: 0.6, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    viewport={{ once: true, margin: '-80px' }}
-                    transition={{ duration: 0.5, ease: 'backOut' }}
-                    className="absolute left-6 md:left-1/2 -translate-x-1/2 top-6 md:top-auto w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white border-2 border-[#111111] shadow-md flex items-center justify-center text-sm font-semibold text-[#111111] z-20 group"
-                    style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-                  >
-                    <span className="group-hover:scale-110 transition-transform">{step.stepNum}</span>
-                  </motion.div>
-
-                  {/* Empty Spacer on Opposite Side for Desktop Layout Balance */}
-                  <div className="hidden md:block w-1/2" />
+              {/* 100% Edge-to-Edge Full Bleed Card with Unique Vertical Gradient */}
+              <div
+                className={`relative w-full h-full rounded-none shadow-none px-4 sm:px-8 md:px-12 py-3 sm:py-4 md:py-5 flex flex-col justify-between items-center text-center overflow-hidden ${step.gradientClass}`}
+              >
+                {/* Subtle Background Wireframe Watermark */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.15] flex items-center justify-center -z-0">
+                  <svg viewBox="0 0 1440 600" fill="none" className="w-full h-full object-cover text-white">
+                    <circle cx="200" cy="300" r="240" stroke="currentColor" strokeWidth="1.2" />
+                    <circle cx="720" cy="300" r="280" stroke="currentColor" strokeWidth="1.2" />
+                    <circle cx="1240" cy="300" r="240" stroke="currentColor" strokeWidth="1.2" />
+                    <line x1="0" y1="300" x2="1440" y2="300" stroke="currentColor" strokeWidth="0.8" />
+                  </svg>
                 </div>
-              );
-            })}
-          </div>
 
-        </div>
+                {/* Step Number Tag at Top */}
+                <div className="relative z-10 w-full flex items-center justify-between text-[11px] sm:text-xs font-bold uppercase tracking-[0.25em] text-white/95 border-b border-white/20 pb-1.5">
+                  <span>Step {step.stepNum} of 06</span>
+                  <span>Milestone Execution</span>
+                </div>
 
-        {/* ── 3. BOTTOM CTA: DIRECT LAUNCH SESSION WITH MAYANK TIWARI ── */}
-        <div className="w-full text-center pt-8">
-          <Link
-            to="/contact"
-            className="inline-flex items-center gap-3 px-9 sm:px-12 py-5 bg-[#111111] hover:bg-[#FF6505] text-white text-xs sm:text-sm font-medium uppercase tracking-[0.18em] transition-all duration-300 shadow-xl hover:shadow-2xl active:scale-95 group"
-            style={{ fontFamily: "'Outfit', 'Mulish', sans-serif" }}
-          >
-            <span>Start Your Launch Project</span>
-            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </Link>
-        </div>
+                {/* Center Content: Title, Description, Deliverables */}
+                <div className="relative z-10 my-auto space-y-2 sm:space-y-3 max-w-4xl mx-auto text-center">
+                  {/* Main Step Title */}
+                  <h4
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold uppercase tracking-tight text-white leading-[1.1] text-center drop-shadow-sm"
+                    style={{
+                      fontFamily: "'Sora', 'Poppins', sans-serif",
+                    }}
+                  >
+                    {step.title}
+                  </h4>
 
+                  {/* Narrative Description */}
+                  <p
+                    className="text-xs sm:text-sm md:text-base text-white/95 font-medium leading-relaxed max-w-2xl mx-auto text-center drop-shadow-xs"
+                    style={{ fontFamily: "'Sora', 'Poppins', sans-serif" }}
+                  >
+                    {step.description}
+                  </p>
+
+                  {/* Deliverables Section on the Lower White Zone */}
+                  <div className="pt-2 space-y-1 text-center border-t border-white/25">
+                    <div
+                      className="text-[10px] sm:text-xs font-bold tracking-[0.2em] uppercase text-zinc-900 text-center"
+                      style={{ fontFamily: "'Sora', 'Poppins', sans-serif" }}
+                    >
+                      Deliverables &amp; Milestones
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-5 pt-0.5">
+                      {step.deliverables.map((item, dIdx) => (
+                        <div key={dIdx} className="space-y-0.5 text-center">
+                          <div
+                            className="text-xs sm:text-sm font-extrabold text-zinc-900 uppercase tracking-wide"
+                            style={{ fontFamily: "'Sora', 'Poppins', sans-serif" }}
+                          >
+                            {item.title}
+                          </div>
+                          <p
+                            className="text-[11px] sm:text-xs text-zinc-700 font-normal leading-snug line-clamp-2"
+                            style={{ fontFamily: "'Sora', 'Poppins', sans-serif" }}
+                          >
+                            {item.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Prominent "Start Your Launch" CTA Button */}
+                <div className="relative z-10 pt-1.5 sm:pt-2 pb-0.5 flex justify-center w-full">
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-2 sm:py-2.5 bg-black hover:bg-[#FF5722] text-white text-xs font-extrabold uppercase tracking-wider rounded-full transition-all duration-300 shadow-xl hover:scale-105 active:scale-95 cursor-pointer group"
+                    style={{ fontFamily: "'Sora', sans-serif" }}
+                  >
+                    <span>Start Your Launch</span>
+                    <span className="text-sm transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
