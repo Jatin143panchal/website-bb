@@ -20,6 +20,7 @@ export const FigmaHero: React.FC = () => {
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [isVideoReady, setIsVideoReady] = useState(false);
 
   useEffect(() => {
     if (!pinSectionRef.current || !videoWrapperRef.current) return;
@@ -67,7 +68,7 @@ export const FigmaHero: React.FC = () => {
   return (
     <section className="relative w-full bg-white text-[#111111] overflow-hidden select-none border-none outline-none">
 
-      {/* ── 1. TOP HERO HEADER ZONE (ORANGE TO WHITE VERTICAL GRADIENT) ── */}
+      {/* ── 1. TOP HERO HEADER ZONE (ORANGE TO WHITE VERTICAL GRADIENT) ── */}v
       <div className="relative w-full bg-gradient-to-b from-[#FF5722] via-[#FFA07A]/50 to-[#FFFFFF] overflow-hidden select-none border-none">
 
         {/* Hero Headline & Value Prop */}
@@ -199,18 +200,27 @@ export const FigmaHero: React.FC = () => {
       >
         <div
           ref={videoWrapperRef}
-          className="relative w-[95%] h-[92vh] md:h-[94vh] rounded-[16px] overflow-hidden shadow-2xl transition-all duration-300 group cursor-pointer"
+          className="relative w-[95%] h-[92vh] md:h-[94vh] rounded-[16px] overflow-hidden shadow-2xl transition-all duration-300 group cursor-pointer bg-zinc-950"
+          style={{
+            backgroundImage: "url('/assets/showcase/launchvid_poster.webp')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
         >
-          {/* Main Reel Video (High Performance Local Stream with Autoplay) */}
+          {/* Main Reel Video (Ultra-Fast 5.7MB Stream with Faststart & WebP Poster) */}
           <video
             ref={videoRef}
             src="/assets/showcase/launchvid.mp4"
+            poster="/assets/showcase/launchvid_poster.webp"
             autoPlay
             loop
             muted
             playsInline
             preload="auto"
-            className="w-full h-full object-cover select-none"
+            onLoadedData={() => setIsVideoReady(true)}
+            className={`w-full h-full object-cover select-none transition-opacity duration-700 ${
+              isVideoReady ? 'opacity-100' : 'opacity-95'
+            }`}
           />
 
           {/* Luxury Video Overlay Gradient */}

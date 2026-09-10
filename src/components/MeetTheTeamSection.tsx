@@ -1,17 +1,50 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useInView } from 'motion/react';
 import { Link } from 'react-router-dom';
-import { 
-  ArrowRight, 
-  Sparkles, 
-  CheckCircle2, 
-  Award, 
-  TrendingUp, 
-  Users, 
-  Clock, 
-  Rocket, 
-  ShieldCheck 
-} from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+
+interface AnimatedCounterProps {
+  target: number;
+  suffix?: string;
+}
+
+const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ target, suffix = '' }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const isInView = useInView(ref, { once: true, margin: '-40px' });
+
+  useEffect(() => {
+    if (!isInView) return;
+
+    let startTime: number | null = null;
+    const duration = 1800; // 1.8 seconds smooth count up
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      // easeOutQuart for smooth premium deceleration
+      const ease = 1 - Math.pow(1 - progress, 4);
+      const current = Math.round(ease * target);
+      setCount(current);
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
+    };
+
+    const animId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animId);
+  }, [isInView, target]);
+
+  return (
+    <span ref={ref}>
+      {count.toLocaleString()}
+      {suffix}
+    </span>
+  );
+};
 
 interface MeetTheTeamSectionProps {
   title?: string;
@@ -24,28 +57,28 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
 }) => {
   const stats = [
     {
-      val: '120+',
+      target: 120,
+      suffix: '+',
       label: 'Product Launches',
       sub: 'Turnkey D2C & FMCG',
-      icon: Rocket,
     },
     {
-      val: '80+',
+      target: 80,
+      suffix: '+',
       label: 'Brands Scaled',
       sub: 'Formulation to Retail',
-      icon: TrendingUp,
     },
     {
-      val: '5,000+',
+      target: 5000,
+      suffix: '+',
       label: 'Product Strategy Hours',
       sub: 'Dedicated Consulting',
-      icon: Clock,
     },
     {
-      val: '200+',
+      target: 200,
+      suffix: '+',
       label: 'Founders Mentored',
       sub: 'India & International',
-      icon: Users,
     },
   ];
 
@@ -84,14 +117,14 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
           
           {/* LEFT: EXECUTIVE PORTRAIT CARD (5 cols) */}
           <div className="lg:col-span-5 sticky top-28 space-y-6">
-            <div className="relative rounded-3xl overflow-hidden bg-zinc-950 shadow-2xl border border-zinc-200/80 group">
+            <div className="relative rounded-none overflow-hidden bg-zinc-950 shadow-2xl border border-zinc-200/80 group">
               
               {/* Founder Photography */}
               <div className="aspect-[4/5] w-full overflow-hidden relative">
                 <img
                   src="/assets/team/mayank.jpg"
                   alt="Mayank Tiwari - Founder & CEO Banega Brand"
-                  className="w-full h-full object-cover object-top grayscale contrast-110 brightness-95 transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = '/mayank.webp';
@@ -99,11 +132,11 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
                 />
                 
                 {/* Gradient Vignette Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
 
                 {/* Floating Verified Authority Badge */}
-                <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#FF5722] animate-pulse" />
+                <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-none border border-white/20 text-white flex items-center gap-2">
+                  <span className="w-2 h-2 bg-[#FF5722] animate-pulse" />
                   <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-200">
                     Product Strategy Architect
                   </span>
@@ -126,7 +159,7 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
             </div>
 
             {/* Quick Consultation Callout Box */}
-            <div className="p-5 rounded-2xl bg-zinc-50 border border-zinc-200 flex items-center justify-between gap-4">
+            <div className="p-5 rounded-none bg-zinc-50 border border-zinc-200 flex items-center justify-between gap-4">
               <div className="space-y-0.5">
                 <div className="text-[10px] font-mono uppercase tracking-wider text-[#FF5722] font-semibold">
                   Direct Founder Advisory
@@ -137,7 +170,7 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
               </div>
               <Link
                 to="/contact"
-                className="shrink-0 px-4 py-2 rounded-full bg-black hover:bg-[#FF5722] text-white text-xs font-semibold transition-colors"
+                className="shrink-0 px-4 py-2 rounded-none bg-black hover:bg-[#FF5722] text-white text-xs font-semibold transition-colors"
               >
                 Connect
               </Link>
@@ -149,7 +182,7 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
             
             {/* Main Editorial Header */}
             <div className="space-y-3 pb-6 border-b border-zinc-200">
-              <span className="px-3 py-1 rounded-full text-[11px] font-mono uppercase tracking-wider bg-amber-500/10 text-amber-900 border border-amber-200 font-medium inline-block">
+              <span className="px-3 py-1 text-[11px] font-mono uppercase tracking-wider bg-amber-500/10 text-amber-900 border border-amber-200 font-medium inline-block">
                 Product Coach &amp; Strategic Consultant
               </span>
               <h3 
@@ -186,31 +219,25 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-2 gap-4">
-                {stats.map((s) => {
-                  const Icon = s.icon;
-                  return (
-                    <div 
-                      key={s.label}
-                      className="p-5 sm:p-6 rounded-2xl bg-[#FAFAFA] border border-zinc-200/90 hover:border-zinc-300 transition-all group"
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-2xl sm:text-3xl md:text-4xl font-black font-mono text-zinc-950 tracking-tight group-hover:text-[#FF5722] transition-colors">
-                          {s.val}
-                        </span>
-                        <div className="w-8 h-8 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-600 group-hover:text-[#FF5722] transition-colors">
-                          <Icon className="w-4 h-4" />
-                        </div>
-                      </div>
-
-                      <div className="text-xs sm:text-sm font-bold text-zinc-900 uppercase tracking-tight">
-                        {s.label}
-                      </div>
-                      <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider mt-0.5">
-                        {s.sub}
-                      </div>
+                {stats.map((s) => (
+                  <div 
+                    key={s.label}
+                    className="p-5 sm:p-6 rounded-none bg-[#FAFAFA] border border-zinc-200 hover:border-zinc-400 hover:shadow-lg transition-all duration-300 group"
+                  >
+                    <div className="mb-2">
+                      <span className="text-2xl sm:text-3xl md:text-4xl font-black font-mono text-zinc-950 tracking-tight group-hover:text-[#FF5722] transition-colors">
+                        <AnimatedCounter target={s.target} suffix={s.suffix} />
+                      </span>
                     </div>
-                  );
-                })}
+
+                    <div className="text-xs sm:text-sm font-bold text-zinc-900 uppercase tracking-tight">
+                      {s.label}
+                    </div>
+                    <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider mt-0.5">
+                      {s.sub}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -219,7 +246,7 @@ export const MeetTheTeamSection: React.FC<MeetTheTeamSectionProps> = ({
               <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-3 px-8 py-4 rounded-full bg-black hover:bg-[#FF5722] text-white font-semibold text-sm tracking-wide shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 group"
+                  className="inline-flex items-center gap-3 px-8 py-4 rounded-none bg-black hover:bg-[#FF5722] text-white font-semibold text-sm tracking-wide shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 group"
                 >
                   <span>Book Product Consultation with Mayank</span>
                   <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

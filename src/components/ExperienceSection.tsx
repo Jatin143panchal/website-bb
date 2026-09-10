@@ -96,11 +96,13 @@ export const ExperienceSection = () => {
             className="lg:col-span-8 bg-[#FAFAFA] rounded-[40px] md:rounded-[60px] relative overflow-hidden group border border-zinc-100/50 hover:shadow-[0_40px_100px_-20px_rgba(0,0,0,0.06)] transition-all duration-700 min-h-[350px] lg:min-h-[600px]"
           >
             <video 
-              src="/assets/showcase/launchvid.webm" 
+              src="/assets/showcase/launchvid.mp4" 
+              poster="/assets/showcase/launchvid_poster.webp"
               autoPlay 
               loop 
               muted 
               playsInline 
+              preload="metadata"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000"
             />
             {/* Background Accent */}

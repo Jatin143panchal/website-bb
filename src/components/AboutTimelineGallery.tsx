@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { motion } from 'motion/react';
 
 interface TimelineItem {
-  year: string;
   category: string;
   title: string;
   image: string;
@@ -11,42 +10,36 @@ interface TimelineItem {
 
 const TIMELINE_DATA: TimelineItem[] = [
   {
-    year: '2026',
     category: 'Future Frontier',
     title: "What's your next frontier? hello@banegabrand.com",
     image: '/assets/Banner 1.png',
     aspect: 'w-[280px] sm:w-[340px] aspect-[4/5]'
   },
   {
-    year: '2025',
     category: 'Quick Commerce Scale',
     title: 'Blinkit & Zepto 10-Minute Dark Store Launch',
     image: '/assets/Banner 2.png',
     aspect: 'w-[320px] sm:w-[380px] aspect-[16/10]'
   },
   {
-    year: '2024',
     category: 'Luxury Fragrance',
     title: 'European Glass Flacons & Magnetic Weighted Caps',
     image: '/assets/Banner 3.png',
     aspect: 'w-[260px] sm:w-[300px] aspect-[3/4]'
   },
   {
-    year: '2023',
     category: 'Clinical Cosmeceuticals',
     title: 'AYUSH & US-FDA Audited Botanical Formulations',
     image: '/assets/Banner 4.png',
     aspect: 'w-[300px] sm:w-[360px] aspect-[16/9]'
   },
   {
-    year: '2022',
     category: 'Marketplace Domination',
     title: 'Amazon Launchpad & Nykaa Luxury Priority Onboarding',
     image: '/assets/klust_landing_page.webp',
     aspect: 'w-[340px] sm:w-[420px] aspect-[16/10]'
   },
   {
-    year: '2020',
     category: 'The Inception',
     title: '45-Day Turnkey Molecule-to-Market Machinery',
     image: '/assets/Banner 1.png',
@@ -58,21 +51,8 @@ export const AboutTimelineGallery: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section className="w-full bg-white py-12 sm:py-16 md:py-20 overflow-hidden select-none border-b border-zinc-100">
+    <section className="w-full bg-white pt-4 pb-12 sm:pb-16 md:pb-20 overflow-hidden select-none border-b border-zinc-100">
       
-      {/* ── TOP HORIZONTAL CONTINUOUS TIMELINE AXIS ───────────────────────── */}
-      <div className="w-full relative px-4 sm:px-8 mb-8 sm:mb-12">
-        <div className="relative w-full border-t border-zinc-300 flex justify-between items-center pt-2.5">
-          {TIMELINE_DATA.map((item, idx) => (
-            <div key={idx} className="flex flex-col items-center">
-              <span className="text-xs sm:text-sm md:text-base font-mono font-bold text-zinc-500 hover:text-black transition-colors">
-                {item.year}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* ── HORIZONTAL ASYMMETRIC IMAGE STREAM GALLERY ─────────────────────── */}
       <div 
         ref={containerRef}

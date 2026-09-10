@@ -8,10 +8,10 @@ import { MeetTheTeamSection } from '../components/MeetTheTeamSection';
 import { HowWeWorkManifestoSection } from '../components/HowWeWorkManifestoSection';
 
 const MARQUEE_ITEMS = [
-  "IT'S TIME TO CREATE A SCHBANG",
-  "IT'S TIME TO LAUNCH YOUR BRAND",
   "IT'S TIME TO CREATE A BANEGA BRAND",
+  "IT'S TIME TO LAUNCH YOUR BRAND",
   "INDIA'S NO. 1 PRODUCT LAUNCH COMPANY",
+  "TURNKEY FORMULATION & PACKAGING",
 ];
 
 // 24-ray solid black rotating sunburst asterisk icon
