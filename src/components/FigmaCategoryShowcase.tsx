@@ -72,7 +72,20 @@ export const FigmaCategoryShowcase: React.FC = () => {
   const [virtualIndex, setVirtualIndex] = useState<number>(4);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(true);
   const [isHoveringActiveCard, setIsHoveringActiveCard] = useState<boolean>(false);
+  const [isAutoPlayPaused, setIsAutoPlayPaused] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  // ── GENTLE LEISURELY AUTO-ADVANCE (6 SECONDS PER SLIDE) ─────────────────────
+  useEffect(() => {
+    if (isAutoPlayPaused) return;
+
+    const autoPlayTimer = setInterval(() => {
+      setIsTransitioning(true);
+      setVirtualIndex((prev) => prev + 1);
+    }, 6000);
+
+    return () => clearInterval(autoPlayTimer);
+  }, [isAutoPlayPaused]);
 
   // ── SIGNATURE SCHBANG MOUSE-FOLLOWER CURSOR LOGIC ────────────────────────────
   const followerRef = useRef<HTMLDivElement>(null);
@@ -125,10 +138,10 @@ export const FigmaCategoryShowcase: React.FC = () => {
     }
 
     if (isAdjacent) {
-      // 180ms hover intent debounce so rapid mouse sweeps don't cause rushed sliding
+      // 450ms deliberate hover intent debounce so quick cursor sweeps don't cause sudden sliding
       hoverTimeoutRef.current = setTimeout(() => {
         handleSlideTo(idx);
-      }, 180);
+      }, 450);
     }
   };
 
@@ -158,6 +171,10 @@ export const FigmaCategoryShowcase: React.FC = () => {
   return (
     <section
       id="solutions-showcase"
+      onMouseEnter={() => setIsAutoPlayPaused(true)}
+      onMouseLeave={() => setIsAutoPlayPaused(false)}
+      onTouchStart={() => setIsAutoPlayPaused(true)}
+      onTouchEnd={() => setIsAutoPlayPaused(false)}
       className="relative w-full bg-white text-[#111111] select-none overflow-hidden border-none outline-none"
       style={{ fontFamily: "'Sora', 'Outfit', 'Montserrat', system-ui, sans-serif" }}
     >
@@ -172,14 +189,14 @@ export const FigmaCategoryShowcase: React.FC = () => {
         .animate-ticker-marquee {
           display: flex;
           width: max-content;
-          animation: ticker-scroll 3.5s linear infinite;
+          animation: ticker-scroll 7s linear infinite;
         }
       `}</style>
 
       {/* ── COMPACT SCHBANG FLOATING MOUSE-FOLLOWER BADGE ── */}
       <div
         ref={followerRef}
-        className="hidden md:block fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-200"
+        className="hidden md:block fixed top-0 left-0 pointer-events-none z-[9999] will-change-transform transition-opacity duration-300"
         style={{
           opacity: isHoveringActiveCard ? 1 : 0,
         }}
@@ -204,7 +221,7 @@ export const FigmaCategoryShowcase: React.FC = () => {
           style={{
             transform: `translate3d(${(1 - virtualIndex) * 33}vw, 0, 0)`,
             transition: isTransitioning
-              ? 'transform 1.85s cubic-bezier(0.16, 1, 0.3, 1)'
+              ? 'transform 2.4s cubic-bezier(0.25, 1, 0.5, 1)'
               : 'none',
           }}
         >
@@ -229,7 +246,7 @@ export const FigmaCategoryShowcase: React.FC = () => {
                   width: isActive ? '34vw' : '33vw',
                   backgroundColor: isActive ? item.bgColor : '#FFFFFF',
                   transition: isTransitioning
-                    ? 'width 1.85s cubic-bezier(0.16, 1, 0.3, 1), background-color 1.2s ease'
+                    ? 'width 2.4s cubic-bezier(0.25, 1, 0.5, 1), background-color 1.6s ease'
                     : 'none',
                 }}
                 className={`h-full shrink-0 relative overflow-hidden select-none cursor-pointer flex flex-col justify-between items-center text-center ${isActive
@@ -263,7 +280,7 @@ export const FigmaCategoryShowcase: React.FC = () => {
                 {/* ── BACKGROUND IMAGE (FOR RICH VISUAL CARDS) ── */}
                 {item.bgImage && (
                   <div
-                    className={`absolute inset-0 z-0 transition-opacity duration-700 pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0'
+                    className={`absolute inset-0 z-0 transition-opacity duration-1000 ease-in-out pointer-events-none ${isActive ? 'opacity-100' : 'opacity-0'
                       }`}
                   >
                     <img
@@ -282,8 +299,8 @@ export const FigmaCategoryShowcase: React.FC = () => {
 
                 {/* ── ACTIVE CENTER EXPANDED CARD VIEW ── */}
                 <div
-                  className={`relative z-10 w-full h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between items-center text-center transition-all duration-800 ${isActive
-                      ? 'opacity-100 translate-y-0 delay-200 pointer-events-auto'
+                  className={`relative z-10 w-full h-full p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-between items-center text-center transition-all duration-1000 ease-out ${isActive
+                      ? 'opacity-100 translate-y-0 delay-300 pointer-events-auto'
                       : 'opacity-0 translate-y-4 pointer-events-none'
                     }`}
                 >

@@ -24,7 +24,7 @@ const AnimatedLogoTagline: React.FC<{ isScrolled?: boolean }> = ({ isScrolled })
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % LOGO_ROTATING_TAGS.length);
-    }, 2400);
+    }, 4500);
     return () => clearInterval(timer);
   }, []);
 
@@ -33,10 +33,10 @@ const AnimatedLogoTagline: React.FC<{ isScrolled?: boolean }> = ({ isScrolled })
       <AnimatePresence mode="wait">
         <motion.span
           key={LOGO_ROTATING_TAGS[index]}
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.55, ease: [0.25, 1, 0.5, 1] }}
           className="text-[#111111] font-black text-sm sm:text-base md:text-[17px] lg:text-[18px] tracking-tight whitespace-nowrap lowercase select-none leading-none"
           style={{ fontFamily: "'Mulish', system-ui, sans-serif" }}
         >

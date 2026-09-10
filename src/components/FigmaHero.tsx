@@ -68,7 +68,7 @@ export const FigmaHero: React.FC = () => {
   return (
     <section className="relative w-full bg-white text-[#111111] overflow-hidden select-none border-none outline-none">
 
-      {/* ── 1. TOP HERO HEADER ZONE (ORANGE TO WHITE VERTICAL GRADIENT) ── */}v
+      {/* ── 1. TOP HERO HEADER ZONE (ORANGE TO WHITE VERTICAL GRADIENT) ── */}
       <div className="relative w-full bg-gradient-to-b from-[#FF5722] via-[#FFA07A]/50 to-[#FFFFFF] overflow-hidden select-none border-none">
 
         {/* Hero Headline & Value Prop */}
