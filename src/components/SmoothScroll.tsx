@@ -1,5 +1,6 @@
-import React, { useLayoutEffect, useCallback } from 'react';
-import Lenis from '@studio-freight/lenis';
+import React, { useLayoutEffect } from 'react';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
@@ -9,12 +10,11 @@ export const SmoothScroll = ({ children }: { children: React.ReactNode }) => {
   useLayoutEffect(() => {
     // Initialize Lenis with improved defaults for premium feel
     const lenis = new Lenis({
-      lerp: 0.1,
+      duration: 1.25,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
-      // @ts-ignore
-      normalizeWheel: true,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 1.8,
     });
 
     const raf = (time: number) => {

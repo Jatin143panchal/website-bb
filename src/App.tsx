@@ -2,7 +2,14 @@ import React, { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToTop } from './components/ScrollToTop';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(module => ({ default: module.PrivacyPolicyPage })));
 const RefundPolicyPage = lazy(() => import('./pages/RefundPolicyPage').then(module => ({ default: module.RefundPolicyPage })));
@@ -35,23 +42,33 @@ const BrandStoryPage = lazy(() => import('./pages/BrandStoryPage').then(module =
 export default function App() {
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.25,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 2,
+      wheelMultiplier: 1.05,
+      touchMultiplier: 1.8,
     });
 
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+    // Expose lenis instance globally for programmatic scroll (e.g., ScrollToTop, navigation)
+    (window as any).lenis = lenis;
 
-    requestAnimationFrame(raf);
+    // Connect Lenis to GSAP ScrollTrigger for seamless scroll-driven animations
+    lenis.on('scroll', ScrollTrigger.update);
 
-    return () => lenis.destroy();
+    const updateTicker = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
+
+    return () => {
+      gsap.ticker.remove(updateTicker);
+      lenis.destroy();
+      delete (window as any).lenis;
+    };
   }, []);
 
   return (
